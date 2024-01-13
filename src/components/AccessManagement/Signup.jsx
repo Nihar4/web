@@ -6,6 +6,8 @@ import CustomError from "../CustomComponents/CustomError/CustomError";
 import BackButton from "./BackButton";
 import InfoBox from "./InfoBox";
 import { useLocation, useNavigate } from "react-router-dom";
+import ServerRequest from "../../utils/ServerRequest";
+const { isEmpty, validateEmail, checkLength } = require("../../utils/Validation");
 
 const Signup = () => {
   const location = useLocation();
@@ -47,25 +49,45 @@ const SignupMain = () => {
   const [textVisible, setTextVisible] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/404");
+    }
+  }, [error]);
+
   const handleInputChange = (name, value) => {
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
-  const ValidateEmail = () => {
+  const ValidateEmail = async () => {
     const email = formValues["email"];
 
-    const emailRegex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,4}$/;
-
-    if (email.trim() === "") {
+    if(isEmpty(email)){
       return "Email can not be empty";
     }
-    if (!emailRegex.test(email)) {
-      return "Email is not Valid";
+
+    if(!validateEmail(email)){
+      return "Email is not valid";
+    }
+
+    const data = await ServerRequest({
+      method: "post",
+      URL: `/access/signup/email-validation`,
+      data: { email_id: formValues["email"] },
+    });
+
+    if (data.server_error) {
+      setError(true);
+    }
+    if (data.error) {
+      return data.message;
     }
   };
 
-  const handleGenerateOtp = () => {
-    const error = ValidateEmail();
+  const handleGenerateOtp = async () => {
+    const error = await ValidateEmail();
     if (!error) {
       setEmailError("error");
       setOtpVisible(true);
@@ -73,6 +95,20 @@ const SignupMain = () => {
       setTextVisible(true);
       setIsButtonDisabled(true);
       setIsNextButtonDisabled(false);
+
+      const data1 = await ServerRequest({
+        method: "post",
+        URL: `/access/generate-otp`,
+        data: { email_id: formValues["email"] },
+      });
+      // console.log(data1);
+      if (data1.server_error) {
+        setError(true);
+      }
+
+      if (data1.error) {
+        alert(data1.message);
+      }
 
       const countdownInterval = setInterval(() => {
         setCountdown((prevCountdown) => prevCountdown - 1);
@@ -93,12 +129,26 @@ const SignupMain = () => {
     }
   }, [countdown]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (isNextButtonDisabled) return;
     setOtpError("error");
-    if (formValues["otp"] && formValues["otp"].length == 6) {
-      if (formValues["otp"] == "123456") navigate("/signup/pin");
-      else setOtpError("OTP is not correct");
+    if (formValues["otp"] && checkLength(formValues["otp"],6)) {
+      const data1 = await ServerRequest({
+        method: "post",
+        URL: `/access/validate-otp`,
+        data: { email_id: formValues["email"], otp: formValues["otp"] },
+      });
+      console.log(data1);
+      if (data1.server_error) {
+        setError(true);
+      }
+      if (data1.error) {
+        setOtpError(data1.message);
+      }
+      if (data1.error == false)
+        navigate("/signup/pin", {
+          state: { email: formValues["email"] },
+        });
     } else {
       setOtpError("OTP should be 6 length");
     }
@@ -184,21 +234,51 @@ const SignupPin = () => {
   const [pinerror, setPinError] = useState("error");
   const [confirmpinerror, setConfirmPinError] = useState("error");
 
+  const location = useLocation();
+  const { email } = location.state;
+
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/404");
+    }
+  }, [error]);
+
   const handleInputChange = (name, value) => {
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     setPinError("error");
     setConfirmPinError("error");
-    if (formValues["pin"] && formValues["pin"].length == 4) {
+    if (formValues["pin"] && checkLength(formValues["pin"],4)) {
       setPinError("error");
-      if (formValues["confirmpin"] && formValues["confirmpin"].length == 4) {
+      if (formValues["confirmpin"] && checkLength(formValues["confirmpin"],4)) {
         setConfirmPinError("error");
         if (formValues["confirmpin"] != formValues["pin"]) {
           setConfirmPinError("PIN does not match ");
         } else {
-          navigate("/signup/status");
+          const data1 = await ServerRequest({
+            method: "get",
+            URL: `/access/signup/set-pin?email_id=${email}&pin=${formValues["pin"]}`,
+          });
+
+          console.log(data1);
+          if (data1.server_error) {
+            setError(true);
+          }
+          if (data1.error) {
+            setConfirmPinError(data1.message);
+          }
+          if (data1.error == false) {
+            formValues["user_data"] = data1.data;
+            console.log(formValues["user_data"]);
+            navigate("/signup/status", {
+              state: { user_data: formValues["user_data"] },
+            });
+          }
+          // navigate("/signup/status");
         }
       } else {
         setConfirmPinError("PIN should be atleast 4 digits");
@@ -207,7 +287,7 @@ const SignupPin = () => {
       setPinError("PIN should be atleast 4 digits");
     }
 
-    console.log(formValues);
+    // console.log(formValues);
   };
 
   return (
@@ -233,7 +313,6 @@ const SignupPin = () => {
           errorText={pinerror}
           style={{
             visibility: pinerror != "error" ? "visible" : "hidden",
-            // visibility: pinerror ? "visible" : "hidden",
           }}
         />
         <CustomInput
