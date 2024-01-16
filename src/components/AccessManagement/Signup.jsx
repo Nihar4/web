@@ -7,7 +7,11 @@ import BackButton from "./BackButton";
 import InfoBox from "./InfoBox";
 import { useLocation, useNavigate } from "react-router-dom";
 import ServerRequest from "../../utils/ServerRequest";
-const { isEmpty, validateEmail, checkLength } = require("../../utils/Validation");
+const {
+  isEmpty,
+  validateEmail,
+  checkLength,
+} = require("../../utils/Validation");
 
 const Signup = () => {
   const location = useLocation();
@@ -20,14 +24,8 @@ const Signup = () => {
       {location.pathname === "/signup/status" && <SignupStatus />}
       {location.pathname !== "/signup/status" && (
         <div className="swift-login-main">
-          <BackButton />
-          <div className="swift-login">
-            <div className="swift-signup-main-info">
-              <InfoBox />
-            </div>
-            {location.pathname === "/signup" && <SignupMain />}
-            {location.pathname === "/signup/pin" && <SignupPin />}
-          </div>
+          {location.pathname === "/signup" && <SignupMain />}
+          {location.pathname === "/signup/pin" && <SignupPin />}
         </div>
       )}
     </>
@@ -64,11 +62,11 @@ const SignupMain = () => {
   const ValidateEmail = async () => {
     const email = formValues["email"];
 
-    if(isEmpty(email)){
+    if (isEmpty(email)) {
       return "Email can not be empty";
     }
 
-    if(!validateEmail(email)){
+    if (!validateEmail(email)) {
       return "Email is not valid";
     }
 
@@ -132,7 +130,7 @@ const SignupMain = () => {
   const handleSubmit = async (e) => {
     if (isNextButtonDisabled) return;
     setOtpError("error");
-    if (formValues["otp"] && checkLength(formValues["otp"],6)) {
+    if (formValues["otp"] && checkLength(formValues["otp"], 6)) {
       const data1 = await ServerRequest({
         method: "post",
         URL: `/access/validate-otp`,
@@ -164,6 +162,7 @@ const SignupMain = () => {
             <i style={{ fontWeight: 300 }}>swift</i>
             folios
           </p>
+          <BackButton />
         </div>
 
         <CustomInput
@@ -220,7 +219,10 @@ const SignupMain = () => {
         classname="swift-login-form-btn"
         onClick={handleSubmit}
         disabled={isNextButtonDisabled}
-        style={{ cursor: isNextButtonDisabled ? "not-allowed" : "default" }}
+        style={{
+          cursor: isNextButtonDisabled ? "not-allowed" : "pointer",
+          background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
+        }}
       />
     </div>
   );
@@ -252,9 +254,12 @@ const SignupPin = () => {
   const handleSubmit = async (e) => {
     setPinError("error");
     setConfirmPinError("error");
-    if (formValues["pin"] && checkLength(formValues["pin"],4)) {
+    if (formValues["pin"] && checkLength(formValues["pin"], 4)) {
       setPinError("error");
-      if (formValues["confirmpin"] && checkLength(formValues["confirmpin"],4)) {
+      if (
+        formValues["confirmpin"] &&
+        checkLength(formValues["confirmpin"], 4)
+      ) {
         setConfirmPinError("error");
         if (formValues["confirmpin"] != formValues["pin"]) {
           setConfirmPinError("PIN does not match ");
@@ -298,6 +303,7 @@ const SignupPin = () => {
             <i style={{ fontWeight: 300 }}>swift</i>
             folios
           </p>
+          <BackButton />
         </div>
 
         <CustomInput
@@ -347,7 +353,7 @@ const SignupPin = () => {
 const SignupStatus = () => {
   const navigate = useNavigate();
   const clickHandler = () => {
-    navigate("/dashboard");
+    navigate("/accounts/dashboard");
   };
   return (
     <div className="swift-signup-status-main">

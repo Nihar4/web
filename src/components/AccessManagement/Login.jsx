@@ -18,18 +18,12 @@ const Login = () => {
 
   return (
     <div className="swift-login-main">
-      <BackButton />
-      <div className="swift-login">
-        <div className="swift-signup-main-info">
-          <InfoBox />
-        </div>
-        {location.pathname === "/login" && <LoginMain />}
-        {location.pathname === "/login/pin" && <LoginPin />}
-        {location.pathname === "/login/reset" && <LoginReset />}
-        {location.pathname === "/login/resetsuccessful" && (
-          <LoginResetSuccessful />
-        )}
-      </div>
+      {location.pathname === "/login" && <LoginMain />}
+      {location.pathname === "/login/pin" && <LoginPin />}
+      {location.pathname === "/login/reset" && <LoginReset />}
+      {location.pathname === "/login/resetsuccessful" && (
+        <LoginResetSuccessful />
+      )}
     </div>
   );
 };
@@ -158,6 +152,7 @@ const LoginMain = () => {
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+            <BackButton />
           </div>
 
           <CustomInput
@@ -217,7 +212,11 @@ const LoginMain = () => {
           classname="swift-login-form-btn"
           onClick={handleSubmit}
           disabled={isNextButtonDisabled}
-          style={{ cursor: isNextButtonDisabled ? "not-allowed" : "default" }}
+          style={{
+            cursor: isNextButtonDisabled ? "not-allowed" : "pointer",
+            background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
+            // color: isNextButtonDisabled ? "#011627" : "#fff",
+          }}
         />
       </div>
     </>
@@ -259,7 +258,7 @@ const LoginPin = () => {
       if (data1.server_error) {
         setError(true);
       }
-      if (data1.error == false) navigate("/");
+      if (data1.error == false) navigate("/accounts/dashboard");
     } else {
       setPinError("Pin should be 4 digit");
     }
@@ -274,6 +273,7 @@ const LoginPin = () => {
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+            <BackButton />
           </div>
 
           <CustomInput
@@ -451,13 +451,14 @@ const LoginReset = () => {
 
   return (
     <>
-      <div className="swift-login-form">
-        <div className="swift-login-form-div-1">
+      <div className="swift-login-form swift-reset-form">
+        <div className="swift-reset-form-div-1">
           <div className="swift-login-form-heading">
             <p>
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+            <BackButton />
           </div>
           <div className="swift-login-form-reset">
             <p>Reset PIN</p>
@@ -545,7 +546,8 @@ const LoginReset = () => {
           onClick={handleSubmit}
           disabled={isResetButtonDisabled}
           style={{
-            cursor: isResetButtonDisabled ? "not-allowed" : "default",
+            cursor: isResetButtonDisabled ? "not-allowed" : "pointer",
+            background: isResetButtonDisabled ? "#F1F1F1" : "#000fff",
           }}
         />
       </div>
@@ -554,6 +556,10 @@ const LoginReset = () => {
 };
 
 const LoginResetSuccessful = () => {
+  const navigate = useNavigate();
+  const handlerSubmit = () => {
+    navigate("/login");
+  };
   return (
     <>
       <div className="swift-login-form">
@@ -563,6 +569,7 @@ const LoginResetSuccessful = () => {
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+            <BackButton />
           </div>
         </div>
         <div className="swift-login-form-svg">
@@ -591,9 +598,13 @@ const LoginResetSuccessful = () => {
           <p>PIN reset has been successful</p>
         </div>
 
-        <Link to="/login">
-          <CustomButton text="Login Again" classname="swift-login-form-btn" />
-        </Link>
+        {/* <Link to="/login" classname="swift-login-form-btn"> */}
+        <CustomButton
+          text="Login Again"
+          classname="swift-login-form-btn"
+          onClick={handlerSubmit}
+        />
+        {/* </Link> */}
       </div>
     </>
   );

@@ -13,16 +13,16 @@ const BackButton = () => {
       <div className="swift-backbutton">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="25"
-          viewBox="0 0 15 25"
+          width="11"
+          height="18"
+          viewBox="0 0 11 18"
           fill="none"
           onClick={goBack}
         >
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"
-            d="M14.1497 23.3493L12.5012 25L0 12.5011L12.5012 0L14.1519 1.65072L3.30159 12.5011L14.1497 23.3493Z"
+            d="M10.1484 16.7465L8.96607 17.9304L0 8.96597L8.96607 0L10.15 1.18393L2.36796 8.96597L10.1484 16.7465Z"
             fill="#011627"
             fill-opacity="0.5"
           />

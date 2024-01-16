@@ -64,7 +64,7 @@
   margin: auto;
 }
 
-@media only screen and (max-width: 900px) {
+/* @media only screen and (max-width: 900px) {
   body {
     height: 100% !important;
   }
@@ -81,4 +81,4 @@
   .swift-signup-status-main {
     row-gap: 10px;
   }
-}
+} */
