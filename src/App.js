@@ -6,6 +6,7 @@ import Signup from './components/AccessManagement/Signup';
 import Home from './components/Home/Home';
 import DashBoard from './components/DashBoard/DashBoard';
 import Error from './components/Error';
+import AssetAllocation from './components/Accounts/AssetAllocation';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/signup/*' element={<Signup />} />
         <Route path='/accounts/*' element={<DashBoard />} />
         <Route path='/404' element={<Error />} />
+        <Route path='/assetallocation' element={<AssetAllocation />} />
       </Routes>
     </Router>
   );
