@@ -16,6 +16,7 @@ const CustomInput = ({
   styleDiv = {},
   styleInput = {},
   styleLabel = {},
+  onKeyUp
 }) => {
   const [value, setValue] = useState("");
 
@@ -45,6 +46,7 @@ const CustomInput = ({
         onChange={handleChange}
         maxLength={maxLength}
         style={styleInput}
+        onKeyUp={onKeyUp}
       />
     </div>
   );

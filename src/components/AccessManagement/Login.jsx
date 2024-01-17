@@ -54,7 +54,7 @@ const LoginMain = () => {
   const ValidateEmail = async () => {
     const email = formValues["email"];
     if (!validateEmail(email)) {
-      return "Enter Valid Email";
+      return "Enter valid email";
     }
 
     const data = await ServerRequest({
@@ -143,18 +143,34 @@ const LoginMain = () => {
     }
   };
 
+  function KeyUp1(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleGenerateOtp();
+    }
+  }
+  function KeyUp2(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleSubmit();
+    }
+  }
   return (
     <>
       <div className="swift-login-form">
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
-          <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
-          </div>
+            <div className="swift-login-form-logo">
+              <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
+            </div>
             <BackButton />
           </div>
 
@@ -165,6 +181,7 @@ const LoginMain = () => {
             name="email"
             placeholder="abc@gmail.com"
             onInputChange={handleInputChange}
+            onKeyUp={KeyUp1}
           />
           <CustomError
             errorText={emailerror}
@@ -203,6 +220,7 @@ const LoginMain = () => {
               visibility: otpVisible ? "visible" : "hidden",
               paddingTop: "16px",
             }}
+            onKeyUp={KeyUp2}
           />
           <CustomError
             errorText={otperror}
@@ -267,19 +285,29 @@ const LoginPin = () => {
       setPinError("Pin should be 4 digit");
     }
   };
+  function KeyUp1(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleSubmit();
+    }
+  }
 
   return (
     <>
       <div className="swift-login-form">
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
-          <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
-          </div>
+            <div className="swift-login-form-logo">
+            <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
+            </div>
             <BackButton />
           </div>
 
@@ -291,6 +319,7 @@ const LoginPin = () => {
             maxLength={4}
             placeholder="1234"
             onInputChange={handleInputChange}
+            onKeyUp={KeyUp1}
           />
 
           <div className="swift-login-form-error">
@@ -410,7 +439,7 @@ const LoginReset = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (isResetButtonDisabled) return;
 
     const pin = formValues["pin"];
@@ -456,18 +485,34 @@ const LoginReset = () => {
     }
   };
 
+  function KeyUp1(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleValidate();
+    }
+  }
+  function KeyUp2(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleSubmit();
+    }
+  }
   return (
     <>
       <div className="swift-login-form swift-reset-form">
         <div className="swift-reset-form-div-1">
           <div className="swift-login-form-heading">
-          <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
-          </div>
+            <div className="swift-login-form-logo">
+            <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
+            </div>
             <BackButton />
           </div>
           <div className="swift-login-form-reset">
@@ -498,6 +543,7 @@ const LoginReset = () => {
             maxLength="6"
             onInputChange={handleInputChange}
             styleDiv={{ visibility: otpVisible ? "visible" : "hidden" }}
+            onKeyUp={KeyUp1}
           />
           <CustomError
             errorText={otperror}
@@ -522,6 +568,7 @@ const LoginReset = () => {
             maxLength="4"
             onInputChange={handleInputChange}
             styleDiv={{ visibility: pinVisible ? "visible" : "hidden" }}
+            onKeyUp={KeyUp2}
           />
           <CustomError
             errorText={pinerror}
@@ -541,6 +588,7 @@ const LoginReset = () => {
               marginTop: "9px",
               visibility: pinVisible ? "visible" : "hidden",
             }}
+            onKeyUp={KeyUp2}
           />
           <CustomError
             errorText={confirmpinerror}
@@ -576,13 +624,17 @@ const LoginResetSuccessful = () => {
       <div className="swift-login-form">
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
-          <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
-          </div>
+            <div className="swift-login-form-logo">
+            <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
+            </div>
             <BackButton />
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import "../CustomButton/CustomButton.css";
 
-const CustomButton = ({ style, text, classname, onClick }) => {
+const CustomButton = ({ style, text, classname, onClick,disabled }) => {
   // const defaultStyle = {
   //   borderRadius: "45px",
   //   background: "#000FFF",
@@ -14,6 +14,7 @@ const CustomButton = ({ style, text, classname, onClick }) => {
   //   letterSpacing: "-1px",
   //   border: "none",
   // };
+  
 
   return (
     <button

@@ -153,17 +153,33 @@ const SignupMain = () => {
 
     console.log(formValues);
   };
+  function KeyUp1(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleGenerateOtp();
+    }
+  }
+  function KeyUp2(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleSubmit();
+    }
+  }
 
   return (
     <div className="swift-login-form">
       <div className="swift-login-form-div-1">
         <div className="swift-login-loginform-heading">
           <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
+          <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
           </div>
 
           <BackButton />
@@ -176,6 +192,7 @@ const SignupMain = () => {
           name="email"
           placeholder="abc@gmail.com"
           onInputChange={handleInputChange}
+          onKeyUp={KeyUp1}
         />
         <CustomError
           errorText={emailerror}
@@ -211,6 +228,7 @@ const SignupMain = () => {
           errormsg="OTP should be atleast 6 digits "
           onInputChange={handleInputChange}
           styleDiv={{ visibility: otpVisible ? "visible" : "hidden" }}
+          onKeyUp={KeyUp2}
         />
         <CustomError
           errorText={otperror}
@@ -298,18 +316,29 @@ const SignupPin = () => {
     }
 
     // console.log(formValues);
+    
   };
+  function KeyUp1(e) {
+    if (e.key === "Enter") {
+      // console.log("hello")
+      handleSubmit();
+    }
+  }
 
   return (
     <div className="swift-login-form">
       <div className="swift-login-form-div-1">
         <div className="swift-login-loginform-heading">
         <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
+        <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
           </div>
           <BackButton />
         </div>
@@ -322,6 +351,7 @@ const SignupPin = () => {
           placeholder="1235"
           maxLength="4"
           onInputChange={handleInputChange}
+          onKeyUp={KeyUp1}
         />
         <CustomError
           errorText={pinerror}
@@ -340,6 +370,7 @@ const SignupPin = () => {
           styleDiv={{
             marginTop: "15px",
           }}
+          onKeyUp={KeyUp1}
         />
         <CustomError
           errorText={confirmpinerror}
@@ -367,15 +398,19 @@ const SignupStatus = () => {
     <div className="swift-signup-status-main">
       <div className="swift-signup-status-heading">
         {/* <p>
-          <i style={{ fontWeight: 300 }}>swift</i>
+          <i style={{ fontWeight: 400 }}>swift</i>
           folios
         </p> */}
         <div className="swift-login-form-logo">
-            <div className="logo"></div>
-            <p>
-              <i style={{ fontWeight: 300 }}>swift</i>
-              folios
-            </p>
+        <a href="/" className="logo">
+                <div className="logo"></div>
+              </a>
+              <p>
+                <a href="/">
+                  <i style={{ fontWeight: 400 }}>swift</i>
+                  folios
+                </a>
+              </p>
           </div>
       </div>
       <div className="swift-signup-status-info">

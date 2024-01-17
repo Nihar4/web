@@ -10,6 +10,7 @@ const CustomInputBox = ({
   name,
   maxLength,
   classname,
+  onKeyUp
 }) => {
   return (
     <input
@@ -21,6 +22,7 @@ const CustomInputBox = ({
       placeholder={placeholder}
       maxLength={maxLength}
       className={"swift-custom-input-box " + classname}
+      onKeyUp={onKeyUp}
     />
   );
 };
