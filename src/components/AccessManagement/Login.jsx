@@ -148,10 +148,13 @@ const LoginMain = () => {
       <div className="swift-login-form">
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
+          <div className="swift-login-form-logo">
+            <div className="logo"></div>
             <p>
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+          </div>
             <BackButton />
           </div>
 
@@ -214,7 +217,8 @@ const LoginMain = () => {
           disabled={isNextButtonDisabled}
           style={{
             cursor: isNextButtonDisabled ? "not-allowed" : "pointer",
-            background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
+            background: isNextButtonDisabled ? "#000fff59" : "#000fff",
+            // background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
             // color: isNextButtonDisabled ? "#011627" : "#fff",
           }}
         />
@@ -269,10 +273,13 @@ const LoginPin = () => {
       <div className="swift-login-form">
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
+          <div className="swift-login-form-logo">
+            <div className="logo"></div>
             <p>
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+          </div>
             <BackButton />
           </div>
 
@@ -454,10 +461,13 @@ const LoginReset = () => {
       <div className="swift-login-form swift-reset-form">
         <div className="swift-reset-form-div-1">
           <div className="swift-login-form-heading">
+          <div className="swift-login-form-logo">
+            <div className="logo"></div>
             <p>
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+          </div>
             <BackButton />
           </div>
           <div className="swift-login-form-reset">
@@ -547,7 +557,8 @@ const LoginReset = () => {
           disabled={isResetButtonDisabled}
           style={{
             cursor: isResetButtonDisabled ? "not-allowed" : "pointer",
-            background: isResetButtonDisabled ? "#F1F1F1" : "#000fff",
+            background: isResetButtonDisabled ? "#000fff59" : "#000fff",
+            // background: isResetButtonDisabled ? "#F1F1F1" : "#000fff",
           }}
         />
       </div>
@@ -565,10 +576,13 @@ const LoginResetSuccessful = () => {
       <div className="swift-login-form">
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
+          <div className="swift-login-form-logo">
+            <div className="logo"></div>
             <p>
               <i style={{ fontWeight: 300 }}>swift</i>
               folios
             </p>
+          </div>
             <BackButton />
           </div>
         </div>

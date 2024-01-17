@@ -1,18 +1,17 @@
+
 .swift-custom-input-box {
-  font-size: var(--font-medium);
-  /* border: 1.5px solid var(--text-color); */
-  /* border-radius: 49px; */
-  background-color: transparent;
-  padding: 16px;
+  background-color: initial;
+  border: 1px solid #F0F0F0;
+  border-radius: 5px;
   display: block;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  /* margin-left: -19px; */
   flex-shrink: 0;
-  letter-spacing: -0.8px;
+  font-size: var(--font-btn);
   font-style: normal;
   font-weight: var(--font-weight-light);
-  border-radius: 10px;
-  border: 1.5px solid #e8e8e8;
+  letter-spacing: -.8px;
+  margin-bottom: 5px;
+  margin-top: 5px;
   outline: none;
+  padding: 16px;
 }
+

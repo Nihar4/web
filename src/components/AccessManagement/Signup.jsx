@@ -158,10 +158,14 @@ const SignupMain = () => {
     <div className="swift-login-form">
       <div className="swift-login-form-div-1">
         <div className="swift-login-loginform-heading">
-          <p>
-            <i style={{ fontWeight: 300 }}>swift</i>
-            folios
-          </p>
+          <div className="swift-login-form-logo">
+            <div className="logo"></div>
+            <p>
+              <i style={{ fontWeight: 300 }}>swift</i>
+              folios
+            </p>
+          </div>
+
           <BackButton />
         </div>
 
@@ -221,7 +225,8 @@ const SignupMain = () => {
         disabled={isNextButtonDisabled}
         style={{
           cursor: isNextButtonDisabled ? "not-allowed" : "pointer",
-          background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
+          background: isNextButtonDisabled ? "#000fff59" : "#000fff",
+          // background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
         }}
       />
     </div>
@@ -299,10 +304,13 @@ const SignupPin = () => {
     <div className="swift-login-form">
       <div className="swift-login-form-div-1">
         <div className="swift-login-loginform-heading">
-          <p>
-            <i style={{ fontWeight: 300 }}>swift</i>
-            folios
-          </p>
+        <div className="swift-login-form-logo">
+            <div className="logo"></div>
+            <p>
+              <i style={{ fontWeight: 300 }}>swift</i>
+              folios
+            </p>
+          </div>
           <BackButton />
         </div>
 
@@ -351,17 +359,24 @@ const SignupPin = () => {
 };
 
 const SignupStatus = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const clickHandler = () => {
-    navigate("/accounts/dashboard");
+    window.location.href = 'https://www.swiftfolios.co.uk/';
   };
   return (
     <div className="swift-signup-status-main">
       <div className="swift-signup-status-heading">
-        <p>
+        {/* <p>
           <i style={{ fontWeight: 300 }}>swift</i>
           folios
-        </p>
+        </p> */}
+        <div className="swift-login-form-logo">
+            <div className="logo"></div>
+            <p>
+              <i style={{ fontWeight: 300 }}>swift</i>
+              folios
+            </p>
+          </div>
       </div>
       <div className="swift-signup-status-info">
         <div className="swift-signup-status-info-1">
@@ -384,7 +399,7 @@ const SignupStatus = () => {
         </div>
         <div className="swift-signup-status-info-2">
           <button className="swift-signup-status-button" onClick={clickHandler}>
-            Open Dashboard
+            Logout
           </button>
         </div>
       </div>

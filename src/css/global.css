@@ -17,16 +17,21 @@ body {
   height: 100vh;
 }
 #root {
-  width: 100%;
   height: 100%;
+  width: 100%;
+  background: #fafafa;
 }
 
 :root {
-  --text-color: #011627;
-  --font-btn: 16px;
-  --font-large: 20px;
-  --font-medium: 16px;
+  --text-color: #011627b3;
+  /* --text-color: #011627; */
+  --font-btn: 14px;
+  --font-heading:13px;
+  /* --font-large: 20px; */
+  /* --font-medium: 14px; */
+  /* --font-medium: 16px; */
   --font-small: 12px;
   --font-weight-light: 400;
   --font-weight-heavy: 700;
 }
+
