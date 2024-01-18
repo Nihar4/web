@@ -255,6 +255,7 @@ color: inherit;
   }
   .swift-login-main .swift-login-form {
     padding: 25px;
+    border: none;
   }
 }
 
@@ -279,13 +280,17 @@ color: inherit;
   }
 
   .swift-login-main .swift-login-form {
-    height: 95vh;
+    height: 90vh;
+    max-height: none;
     /* height: 100vh; */
     /* box-shadow: 0px 0px 0px 0px #ccc; */
-    box-shadow: none;
+    border: none;
   }
 
   .swift-login-main .swift-login-form-btn {
     margin: auto;
+  }
+  .swift-login-main .swift-login-loginform-heading p{
+    font-size: 16px;
   }
 }

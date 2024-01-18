@@ -1,0 +1,90 @@
+.swift-accounts-header {
+  display: flex;
+  flex-direction: row;
+  /* border: 2px solid red; */
+  padding-top: 18px;
+  padding-left: 72px;
+  padding-right: 72px;
+  justify-content: space-between;
+}
+
+.swift-accounts-header-left {
+  display: flex;
+  /* border: 2px solid black; */
+  width: 18%;
+  justify-content: space-between;
+  align-items: center;
+}
+.swift-accounts-header-right {
+  display: flex;
+  /* border: 2px solid blue; */
+  /* width: 50%; */
+  column-gap: 158px;
+  align-items: center;
+}
+
+.swift-accounts-heading {
+  color: var(--text-color);
+  font-size: var(--font-btn);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.7px;
+}
+
+.swift-accounts-heading-right {
+  color: rgba(1, 22, 39, 0.7);
+  font-size: var(--font-heading);
+  font-style: normal;
+  font-weight: var(--font-weight-light);
+  line-height: normal;
+  letter-spacing: -0.65px;
+
+  display: flex;
+  column-gap: 15px;
+}
+
+.swift-accounts-header-details-1 {
+  color: rgba(1, 22, 39, 0.9);
+  font-size: var(--font-heading);
+  font-style: normal;
+  font-weight: var(--font-weight-light);
+  line-height: normal;
+  letter-spacing: -0.65px;
+
+  display: flex;
+  column-gap: 15px;
+}
+
+.swift-accounts-header-details-2 {
+  display: flex;
+  column-gap: 41px;
+  align-items: center;
+}
+
+.swift-accounts-header-user{
+    color: rgba(1, 22, 39, 0.70);
+font-size: var(--font-heading);
+font-style: normal;
+font-weight: var(--font-weight-heavy);
+line-height: normal;
+letter-spacing: -0.65px;
+}
+
+.swift-accounts-header-logos{
+    display: flex;
+    column-gap: 18px;
+}
+
+.notification {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+}
+
+.faq {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  background: url("../../assets/Faq.png"), lightgray 50% / cover no-repeat;
+}
