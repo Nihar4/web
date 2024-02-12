@@ -26,12 +26,12 @@ body {
   --text-color: #011627b3;
   /* --text-color: #011627; */
   --font-btn: 14px;
-  --font-heading:13px;
-  /* --font-large: 20px; */
-  /* --font-medium: 14px; */
-  /* --font-medium: 16px; */
+  --font-large:16px;
+  --font-heading: 13px;
+  --font-extra-small: 11px;
   --font-small: 12px;
   --font-weight-light: 400;
+  --font-weight-medium: 600;
   --font-weight-heavy: 700;
 }
 
@@ -39,6 +39,5 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 5000s ease-in-out 0s;
 }
-

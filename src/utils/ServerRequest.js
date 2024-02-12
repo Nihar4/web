@@ -4,7 +4,8 @@ const ServerRequest = async ({
     method = "get",
     URL,
     data,
-    headers = {}
+    headers = {},
+    signal
 }) => {
     const base_url = process.env.REACT_APP_REQUEST_BASE_URL;
     let url = base_url + URL
@@ -14,7 +15,8 @@ const ServerRequest = async ({
             method,
             url,
             data,
-            headers
+            headers,
+            signal
         });
         return result.data;
     } catch (error) {
