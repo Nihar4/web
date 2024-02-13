@@ -6,7 +6,8 @@ import Signup from './components/AccessManagement/Signup';
 import Home from './components/Home/Home';
 import DashBoard from './components/DashBoard/DashBoard';
 import Error from './components/Error';
-import AssetAllocation from './components/Accounts/AssetAllocation';
+import Searchbar from './components/Accounts/Searchbar';
+import SearchLive from './components/Accounts/SearchLive';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <Route path='/signup/*' element={<Signup />} />
         <Route path='/accounts/*' element={<DashBoard />} />
         <Route path='/404' element={<Error />} />
-        <Route path='/assetallocation' element={<AssetAllocation />} />
+        <Route path='/search' element={<Searchbar />} />
+        <Route path='/searchlive' element={<SearchLive />} />
       </Routes>
     </Router>
   );

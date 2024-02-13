@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/AccessManagement/BackButton.css";
 
-const BackButton = () => {
+const BackButton = ({customFunction}) => {
   const navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
@@ -17,7 +17,7 @@ const BackButton = () => {
           height="18"
           viewBox="0 0 11 18"
           fill="none"
-          onClick={goBack}
+          onClick={customFunction ? customFunction : goBack}
         >
           <path
             fill-rule="evenodd"

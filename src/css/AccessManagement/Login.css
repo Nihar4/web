@@ -62,7 +62,7 @@
 .swift-login-main .swift-login-loginform-heading p {
   display: inline;
   color: var(--text-color);
-  font-size: var(--font-heading);
+  font-size: var(--font-large);
   font-style: normal;
   font-weight: var(--font-weight-heavy);
   line-height: normal;
@@ -161,7 +161,7 @@ color: inherit;
 .swift-login-main .swift-login-form-heading p {
   display: inline;
   color: var(--text-color);
-  font-size: var(--font-heading);
+  font-size: var(--font-large);
   font-style: normal;
   font-weight: var(--font-weight-heavy);
   line-height: normal;

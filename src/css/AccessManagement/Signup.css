@@ -12,7 +12,7 @@
 
 .swift-signup-status-main .swift-signup-status-heading p {
   color: var(--text-color);
-  font-size: var(--font-heading);
+  font-size: var(--font-large);
   font-style: normal;
   font-weight: var(--font-weight-heavy);
   line-height: normal;
