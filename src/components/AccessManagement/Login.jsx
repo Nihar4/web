@@ -280,7 +280,7 @@ const LoginPin = () => {
       if (data1.server_error) {
         setError(true);
       }
-      if (data1.error == false) navigate("accounts/dashboard/asset");
+      if (data1.error == false) navigate("/accounts/dashboard/asset");
     } else {
       setPinError("Pin should be 4 digit");
     }
