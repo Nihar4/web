@@ -3,11 +3,12 @@
 }
 
 .search-input {
-  width: 300px;
+  width: 12vw;
   padding: 10px;
   box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  /* border: none !important; */
+  /* border: 1px solid #ddd; */
+  border-radius: 0px !important;
 }
 
 .results-list {
@@ -15,27 +16,31 @@
   padding: 0;
   margin: 0;
   position: absolute;
-  width: 300px;
+  width: 410px;
   max-height: 150px;
   overflow-y: auto;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   border-top: none; /* Remove border-top to prevent double borders */
-  border-radius: 0 0 4px 4px;
+  /* border-radius: 0 0 4px 4px; */
   background-color: #fff; /* Set background color */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  border-radius: 5px;
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .results-list li {
-  padding: 10px;
+  padding: 20px 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  border-bottom: 1px solid #ddd; /* Add a border between list items */
+  border-bottom: 1px solid #f1f1f1; /* Add a border between list items */
 }
-
+.results-list::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
+}
 .results-list li:last-child {
   border-bottom: none; /* Remove border for the last list item */
 }
 
 .results-list li:hover {
-  background-color: #f0f0f0;
+  background-color: #f1f1f1;
 }

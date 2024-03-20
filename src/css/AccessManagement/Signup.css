@@ -58,10 +58,19 @@
   justify-content: center;
   padding-top: 23px;
 }
-
+.swift-signup-status-main .open-dashboard-btn {
+  /* padding-top: 115px; */
+  width: 100%;
+  justify-content: left;
+  margin: 0 !important;
+  
+}
 .swift-signup-status-main .swift-signup-status-info {
   width: 50%;
   margin: auto;
+}
+.swift-strategy-created-main{
+  overflow-x: hidden !important;
 }
 
 /* @media only screen and (max-width: 900px) {

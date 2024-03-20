@@ -1,0 +1,142 @@
+.swift-signup-main-info {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 40%;
+  height: 100%;
+  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.swift-signup-main-info-wrapper {
+  background: #f1f1f1;
+  border-radius: 40px;
+  box-shadow: 0px 0px 10px 0px rgba(1, 22, 39, 0.1);
+  padding: 30px 45px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-end; */
+  row-gap: 15px;
+  /* overflow: hidden; */
+}
+
+.swift-signup-main-info-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  column-gap: 30px;
+  /* overflow: hidden; */
+}
+
+.swift-signup-main-info-1 {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.swift-signup-main-info p {
+  color: rgba(1, 22, 39, 0.7);
+  font-family: "Open Sans";
+  font-size: var(--font-small);
+  font-style: normal;
+  font-weight: var(--font-weight-light);
+  line-height: normal;
+  letter-spacing: -0.7px;
+}
+
+.swift-signup-main-info-1 b {
+  color: rgba(1, 22, 39, 0.7);
+  font-family: Open Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.7px;
+}
+
+.swift-signup-main-info-heading {
+  width: 100%;
+  color: var(--text-color);
+  font-family: Open Sans;
+  font-size: var(--font-large);
+  font-style: normal;
+  font-weight: var(--font-weight-light);
+  line-height: normal;
+  letter-spacing: -1.2px;
+}
+
+.swift-signup-main-info-2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* width: 154px; */
+  width: 30%;
+  flex-shrink: 0;
+  color: rgba(1, 22, 39, 0.7);
+  font-family: Open Sans;
+  font-style: normal;
+  line-height: normal;
+  row-gap: 15px;
+}
+
+.swift-signup-main-info-2 p {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.7px;
+}
+
+.safe {
+  font-size: var(--font-large);
+  font-weight: var(--font-weight-heavy);
+  letter-spacing: -1px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .swift-signup-main-info {
+    width: 50%;
+    margin: auto;
+  }
+
+  .swift-signup-main-info-wrapper {
+    width: 100%;
+  }
+
+  .swift-signup-main-form {
+    width: 40%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .swift-signup-main-info {
+    width: 80%;
+    margin: auto;
+    justify-content: center;
+    height: 100%;
+  }
+  .swift-signup-main-info {
+    width: 100%;
+  }
+  .swift-signup-main-info-wrapper {
+    flex-direction: column;
+  }
+
+  .swift-signup-main-info-content {
+    flex-direction: column;
+    row-gap: 20px;
+  }
+  .swift-signup-main-info-2 {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .swift-signup-main-info {
+    order: 1;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .swift-signup-main-info {
+    width: 100%;
+  }
+}

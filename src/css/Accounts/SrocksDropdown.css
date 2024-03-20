@@ -50,8 +50,8 @@
 
 .stocks-dropdown-options {
   list-style: none;
-  position: relative;
-  height: 156px;
+  position:relative;
+  max-height: 156px;
   /* overflow-y: auto; */
 }
 
@@ -59,7 +59,7 @@
   padding: 6px 0px 6px 6px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 0.5px solid rgba(1, 22, 39, 0.1);
+  /* border-bottom: 0.5px solid rgba(1, 22, 39, 0.1); */
 }
 
 .stocks-dropdown-option-left {
@@ -137,7 +137,7 @@
 .stocks-dropdown-main {
   position: relative;
   overflow: auto;
-  max-height: 135px; 
+  max-height: 145px; 
 }
 
 .stocks-dropdown-options-container {
@@ -181,6 +181,7 @@
   display: grid;
   grid-template-columns: repeat(3, 50px); 
   column-gap: 8px; 
+  /* place-items: center; */
 }
 
 .stocks-dropdown-option-info p {
@@ -215,11 +216,20 @@
   margin: 0;
 }
 
+.green-text {
+  color: #00EC6D !important;
+}
+
+.red-text {
+  color: #FF003D!important;
+}
+
+
 
 @media screen and (max-width: 1325px) {
   .stocks-dropdown-option-info,
   .stocks-dropdown-header-right {
-    grid-template-columns: repeat(3, 40px);
+    /* grid-template-columns: repeat(3, 40px); */
     column-gap: 0;
   }
   .swift-accounts-content-stocks-checkbox {
@@ -227,23 +237,25 @@
   }
   .swift-accounts-content-stocks-text {
     column-gap: 0;
-    grid-template-columns: repeat( 3, 42px );
+    /* grid-template-columns: repeat( 3, 42px ); */
   }
   .swift-accounts-content-stocks-right{
     grid-template-columns: repeat( 2, 40px );
 
   }
+  .stocks-dropdown-option-left{
+    width: 35%;
+  }
 }
 
 
 @media screen and (max-width: 1134px) {
-  .stocks-dropdown-option-info,
-  .stocks-dropdown-header-right {
-    grid-template-columns: repeat(3, 35px);
+  .swift-accounts-content-div-2 {
+    width: 44%;
   }
-  .swift-accounts-content-stocks-text {
-    grid-template-columns: repeat( 3, 40px );
-  }
+  .swift-accounts-content-div-1{
+    width: 55%;
+  } 
 }
 
 @media screen and (max-width: 768px) {

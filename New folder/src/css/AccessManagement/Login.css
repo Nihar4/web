@@ -1,0 +1,296 @@
+/* ====================================================================Login Page CSS =========================================================================*/
+
+.swift-login-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  /* padding-top: 25px; */
+  justify-content: center;
+  align-items: center;
+  /* overflow: auto; */
+}
+
+/* .swift-login-main .swift-login {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 5px 55px 50px 55px;
+} */
+
+.swift-login-main .swift-login-form {
+  background: #fff;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 80%;
+  justify-content: space-between;
+  padding: 30px;
+  border: 1px solid #e8e8e8;
+  max-height: 650px;
+}
+
+.swift-login-main .swift-reset-form {
+  height: 90%;
+}
+
+.swift-login-main .swift-login-form-div-1 {
+  flex-grow: 1;
+}
+.swift-login-main .swift-reset-form-div-1 {
+  flex-grow: 1;
+  /* border: 2px solid; */
+  /* overflow-y: scroll; */
+  /* height: fit-content; */
+  overflow-y: auto;
+}
+
+.swift-login-main .swift-reset-form-div-1::-webkit-scrollbar {
+  display: none;
+}
+.swift-login-main .swift-login-loginform-heading {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-bottom: 30px;
+}
+
+.swift-login-main .swift-login-loginform-heading p {
+  display: inline;
+  color: var(--text-color);
+  font-size: var(--font-large);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.8px;
+}
+
+.swift-login-main .swift-login-loginform-otp {
+  padding-top: 35px;
+}
+.swift-login-main .swift-login-form-generate {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: var(--font-btn);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  letter-spacing: -0.8px;
+  line-height: normal;
+  margin-bottom: 0;
+}
+.swift-login-main .swift-login-form-wait {
+  color: var(--text-color);
+
+  font-size: var(--font-small);
+  font-style: italic;
+  font-weight: var(--font-weight-light);
+  line-height: normal;
+  letter-spacing: -0.65px;
+  padding-bottom: 17px;
+}
+
+.swift-login-main .swift-login-form-btn {
+  cursor: pointer;
+  height: 50px;
+  margin: 30px 10px 0;
+  width: 260px;
+}
+
+.swift-login-main .swift-login-form-otp-input {
+  width: 160px;
+  height: 50px;
+  font-weight: 600;
+}
+
+.swift-login-main .swift-login-form-email-input {
+  width: 100%;
+  /* height: 60px; */
+  height: 50px;
+  font-weight: 600;
+}
+
+.swift-login-form-logo a{
+text-decoration: none;
+color: inherit; 
+}
+
+/* ====================================================================Pin Page CSS =========================================================================*/
+
+.swift-login-main .swift-login-form-error {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.swift-login-main .swift-login-form-reset-pin {
+  color: var(--text-color);
+  font-size: var(--font-small);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.65px;
+  margin-bottom: 0px;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+/* ====================================================================Reset Page CSS =========================================================================*/
+/* .swift-login-main .swift-login-form-heading {
+  color: var(--text-color);
+  font-size: var(--font-large);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -1.2px;
+} */
+
+.swift-login-main .swift-login-form-heading {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  /* padding-bottom: 30px; */
+}
+
+.swift-login-main .swift-login-form-heading p {
+  display: inline;
+  color: var(--text-color);
+  font-size: var(--font-large);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.8px;
+}
+
+.swift-login-main .swift-login-form-reset {
+  color: var(--text-color);
+  font-size: var(--font-small);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.65px;
+  padding-top: 12px;
+  padding-bottom: 20px;
+}
+
+.swift-login-main .swift-login-form-confirmpin-input,
+.swift-login-main .swift-login-form-pin-input,
+.swift-login-main .swift-login-form-pin-input1,
+.swift-login-main .swift-login-form-otp-input {
+  width: 160px;
+  height: 50px;
+  font-weight: 600;
+}
+
+.swift-login-main .swift-login-form-validate-btn {
+  width: 90px;
+  padding: 10px 20px;
+  margin: 15px 0px;
+  font-size: 14px !important;
+  letter-spacing: -0.7px !important;
+}
+
+/* ====================================================================Reset Successful Page CSS =========================================================================*/
+
+.swift-login-main .swift-login-form-svg {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin: auto;
+  height: 100%;
+  flex-grow: 50;
+}
+
+.swift-login-main .swift-login-form-svg p {
+  font-size: var(--font-small);
+}
+
+/*------------------------------------------------------------------------------------------------------------*/
+
+.logo {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  background: url("../../assets/logox\ 1.png"), lightgray 50% / cover no-repeat;
+  /* display: inline; */
+}
+.swift-login-form-logo {
+  display: flex;
+  flex-direction: row;
+  column-gap: 6px;
+  align-items: center;
+}
+
+/* ======================================================================Login Page CSS =========================================================================*/
+
+@media screen and (max-height: 695px) {
+  .swift-login-main .swift-reset-form {
+    padding: 25px 35px;
+  }
+}
+
+@media screen and (max-height: 675px) {
+  .swift-login-main .swift-login-form-btn {
+    margin: 20px 10px 0px 10px;
+  }
+  .swift-login-main .swift-login-form-reset {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .swift-login-main .swift-login-form-btn {
+    width: 280px;
+    height: 50px;
+  }
+  .swift-login-main .swift-login-form {
+    padding: 25px;
+    border: none;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .swift-login-main .swift-login-form-btn {
+    width: 250px;
+    height: 50px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .swift-login-main .swift-login-form-btn {
+    width: 200px;
+    height: 50px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .swift-login-main {
+    justify-content: normal;
+    align-items: normal;
+  }
+
+  .swift-login-main .swift-login-form {
+    height: 90vh;
+    max-height: none;
+    /* height: 100vh; */
+    /* box-shadow: 0px 0px 0px 0px #ccc; */
+    border: none;
+  }
+
+  .swift-login-main .swift-login-form-btn {
+    margin: auto;
+  }
+  .swift-login-main .swift-login-loginform-heading p{
+    font-size: 16px;
+  }
+}

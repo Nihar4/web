@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+#root {
+  background: #ffffff;
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  --text-color: #011627b3;
+  /* --text-color: #011627; */
+  --font-btn: 14px;
+  --font-large:16px;
+  --font-heading: 13px;
+  --font-extra-small: 11px;
+  --font-small: 12px;
+  --font-weight-light: 400;
+  --font-weight-medium: 600;
+  --font-weight-heavy: 700;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}

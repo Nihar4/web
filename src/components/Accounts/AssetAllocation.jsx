@@ -3,127 +3,219 @@ import Header from "./Header";
 import "../../css/Accounts/AssetAllocation.css";
 import Strategy from "./Strategy";
 import CustomButton from "../CustomComponents/CustomButton/CustomButton";
-import CustomDropdown from "../CustomComponents/CustomDropdown/CustomDropdown";
-import CustomCheckbox from "../CustomComponents/CustomCheckbox/CustomCheckbox";
 import StockesDropdown from "./StockesDropdown";
-import {
-  Chart,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  RadialLinearScale,
-  Legend,
-} from "chart.js";
-import { Radar } from "react-chartjs-2";
 import BackButton from "../AccessManagement/BackButton";
+import ServerRequest from "../../utils/ServerRequest";
+import { useNavigate } from "react-router-dom";
+import LineChart from "./LineChart";
+import { useLocation } from "react-router-dom";
+import Pulse from "../Loader/Pulse";
 
 const AssetAllocation = () => {
-  const initialStrategies = [
-    {
-      heading: "TA Advanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds.",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-    {
-      heading: "TA Balanced",
-      content:
-        "Mixed-asset portfolio in the portfolio manager range. Primarily consists of ETFs, tracker funds, and alternative funds. Lower risk than TA Advanced",
-    },
-  ];
+  const [initialStrategies, setInitialStrategies] = useState([]);
 
   const [selectedStrategy, setSelectedStrategy] = useState(0);
   const [clickedStrategy, setClickedStrategy] = useState(initialStrategies[0]);
   const [optionSelect, setOptionSelect] = useState(null);
-  const [cnt,setCnt] = useState(0);
-
+  const [cnt, setCnt] = useState(0);
 
   const [isLeftVisible, setIsLeftVisible] = useState(true);
-const [isRightVisible, setIsRightVisible] = useState(false);
+  const [isRightVisible, setIsRightVisible] = useState(false);
+  const [change, setChange] = useState(0);
+  const [ischartvisible, setIschartvisible] = useState(true);
+  const [strategyID, setStrategyid] = useState(null);
+  const [lastupdated, setLastupdated] = useState();
+  const navigate = useNavigate();
 
+  const [stockArray, setStockArray] = useState([]);
+  const [reRenderKey, setReRenderKey] = useState(0);
+  const [loading, setloading] = useState(true);
+  const [loading1, setloading1] = useState(true);
+  const [loading2, setloading2] = useState(true);
+  const [duration, setDuration] = useState("1M");
+
+  const [selectedStock, setSelectedStock] = useState(null);
+
+  const location = useLocation();
+  const email_id = location.state ? location.state.email_id : null;
+  // console.log(email_id);
+
+  const handleStockSelect = (stock) => {
+    // console.log(stock, "stock");
+    setSelectedStock(stock);
+  };
+
+  const fetchdata = async () => {
+    // setloading(true);
+    const data = await ServerRequest({
+      method: "get",
+      URL: `/strategy/get?email=${email_id}`,
+    });
+
+    if (data.server_error) {
+      alert("error");
+    }
+
+    if (data.error) {
+      alert("error1");
+    }
+
+    if (data) {
+      const uniqueIds = new Set();
+
+      const filteredData = data.data.filter((item) => {
+        if (uniqueIds.has(item.id)) {
+          return false;
+        } else {
+          uniqueIds.add(item.id);
+          return true;
+        }
+      });
+
+      const strategiesArray = data.data.map((item) => ({
+        id: item.id,
+        strategyname: item.name,
+        description: item.description,
+        assetclass: [
+          {
+            name: item.asset_class_name,
+            stock: item.stock,
+            percentage: item.percentage,
+          },
+        ],
+      }));
+
+      const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
+        const existingStrategy = acc.find((item) => item.id === curr.id);
+
+        if (existingStrategy) {
+          curr.assetclass.forEach((asset) => {
+            const existingAsset = existingStrategy.assetclass.find(
+              (a) => a.name === asset.name
+            );
+            if (existingAsset) {
+              existingAsset.stock += `, ${asset.stock}`;
+              existingAsset.percentage += `, ${asset.percentage}`;
+            } else {
+              existingStrategy.assetclass.push(asset);
+            }
+          });
+        } else {
+          acc.push(curr);
+        }
+
+        return acc;
+      }, []);
+
+      setInitialStrategies(combinedStrategiesArray);
+      // console.log(combinedStrategiesArray);
+
+      if (combinedStrategiesArray.length > 0) {
+        setClickedStrategy(combinedStrategiesArray[0]);
+        setSelectedStrategy(0);
+        setStockArray(combinedStrategiesArray[0].assetclass);
+        setSelectedStock(
+          combinedStrategiesArray[0].assetclass[0].stock.split(",")[0]
+        );
+        setStrategyid(combinedStrategiesArray[0].id);
+        fetchDataAndUpdateState();
+      }
+      // setTimeout(() => {
+      // setloading(false);
+      // }, 1000);
+    }
+  };
+  useEffect(() => {
+    setloading(true);
+    fetchdata();
+    setTimeout(() => {
+      setloading(false);
+    }, 1000);
+  }, [change]);
 
   const handleStrategyClick = (index) => {
-    setCnt(cnt+1);
+    setCnt(cnt + 1);
     const strategyClicked = initialStrategies[index];
     setSelectedStrategy(index);
     setClickedStrategy(strategyClicked);
+    setStockArray(initialStrategies[index].assetclass);
+    setStrategyid(initialStrategies[index].id);
+    // console.log(initialStrategies[index].assetclass);
+
+    // setStockArray(initialStrategies[index])
+    // console.log(stockArray);
 
     if (window.innerWidth <= 768) {
-
       setIsLeftVisible(false);
       setIsRightVisible(true);
     }
   };
 
-  const backButoonFunction =() =>{
-    setIsLeftVisible(true);
-      setIsRightVisible(false);
-  }
+  const fetchDlData = async (id) => {
+    try {
+      const data = await ServerRequest({
+        method: "get",
+        URL: `/strategy/getdldta?id=${id}`,
+      });
 
-  const options = ["0%", "25%", "50%", "75%", "100%"];
-  const handleDropdownSelect = (selectedOption) => {
-    setOptionSelect(selectedOption);
-  };
+      if (data.server_error) {
+        alert("error");
+      }
 
-  const [checkbox1, setCheckbox1] = useState(false);
-  const handleCheckboxChange = (isChecked, value) => {
-    if (value === "checkbox1") {
-      setCheckbox1(isChecked);
+      if (data.error) {
+        alert("error1");
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const fetchDataAndUpdateState = async () => {
+    if (selectedStrategy !== null) {
+      try {
+        if (initialStrategies.length !== 0) {
+          setloading(true);
+          const data = await fetchDlData(
+            initialStrategies[selectedStrategy].id
+          );
+          // console.log(data);
+          const hasPendingStatus = data.some(
+            (item) => item.status === "Pending"
+          );
+          const dateCompletedArray = data.map((item) =>
+            new Date(item.date_completed).toLocaleDateString()
+          );
+          const filteredDates = dateCompletedArray.filter((date) => date);
+          const latestDate = new Date(
+            Math.max(...filteredDates.map((date) => new Date(date)))
+          );
+          setLastupdated(latestDate);
+          // console.log(hasPendingStatus);
+
+          setIschartvisible(!hasPendingStatus);
+
+          setTimeout(() => {
+            setloading(false);
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("Error fetching and setting data:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchDataAndUpdateState();
+  }, [selectedStrategy, reRenderKey, initialStrategies]);
+
+  const backButoonFunction = () => {
+    setIsLeftVisible(true);
+    setIsRightVisible(false);
+  };
+
+  const [openDropdown, setOpenDropdown] = useState(0);
 
   const handleDropdownToggle = (dropdownIndex) => {
     if (openDropdown === dropdownIndex) {
@@ -133,198 +225,26 @@ const [isRightVisible, setIsRightVisible] = useState(false);
     }
   };
 
-  const stocksArrays = [
-    [
-      {
-        title: "IVV",
-        company: "MTD",
-        change: "+3.23%",
-        saa: "40.0%",
-        taa: "45.5%",
-        actwt: "5.5%",
-        info: "iShares Core S&P 500 ETF Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "EWU",
-        company: "",
-        change: "6.23%",
-        saa: "5.0%",
-        taa: "4.5%",
-        actwt: "-0.5%",
-        info: "iShares MSCI United Kingdom ETF Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "IEEM",
-        company: "",
-        change: "1.23%",
-        saa: "6.0%",
-        taa: "7.5%",
-        actwt: "2.5%",
-        info: "iShares Emerging Markets Lorem ipsum dolor sit amet.",
-      },
-    ],
-    [
-      {
-        title: "IVV",
-        company: "MTD",
-        change: "+3.23%",
-        saa: "40.0%",
-        taa: "45.5%",
-        actwt: "5.5%",
-        info: "iShares Core S&P 500 ETF Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "EWU",
-        company: "",
-        change: "6.23%",
-        saa: "5.0%",
-        taa: "4.5%",
-        actwt: "-0.5%",
-        info: "iShares MSCI United Kingdom ETF Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "EWU",
-        company: "",
-        change: "6.23%",
-        saa: "5.0%",
-        taa: "4.5%",
-        actwt: "-0.5%",
-        info: "iShares MSCI United Kingdom ETF Lorem ipsum dolor sit amet.",
-      },
-    ],
-    [
-      {
-        title: "IVV",
-        company: "MTD",
-        change: "+3.23%",
-        saa: "40.0%",
-        taa: "45.5%",
-        actwt: "5.5%",
-        info: "iShares Core S&P 500 ETF Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "EWU",
-        company: "",
-        change: "6.23%",
-        saa: "5.0%",
-        taa: "4.5%",
-        actwt: "-0.5%",
-        info: "iShares MSCI United Kingdom ETF Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "IEEM",
-        company: "",
-        change: "1.23%",
-        saa: "6.0%",
-        taa: "7.5%",
-        actwt: "2.5%",
-        info: "iShares Emerging Markets Lorem ipsum dolor sit amet.",
-      },
-      {
-        title: "IEEM",
-        company: "",
-        change: "1.23%",
-        saa: "6.0%",
-        taa: "7.5%",
-        actwt: "2.5%",
-        info: "iShares Emerging Markets Lorem ipsum dolor sit amet.",
-      },
-    ],
-  ];
-
-  function sumPropertyForArrays(arrays, property) {
-    return arrays.map((array) =>
-      array.reduce((sum, obj) => sum + parseFloat(obj[property]), 0)
-    );
-  }
-
-  const allSaa = sumPropertyForArrays(stocksArrays, "saa");
-  const allTaa = sumPropertyForArrays(stocksArrays, "taa");
-
-  const data = {
-    labels: ["Equity", "Fixed Income", "Alternatives"],
-    datasets: [
-      {
-        label: "SAA",
-        data: allSaa,
-        // data: ['50','40','10'],
-        fill: false,
-        backgroundColor: "white",
-        borderColor: "gray",
-        pointBackgroundColor: "gray",
-        pointBorderColor: "#fff",
-        pointHoverBackgroundColor: "#fff",
-        pointHoverBorderColor: "gray",
-      },
-      {
-        label: "TAA",
-        data: allTaa,
-        // data: ['57.5','35','7.5'],
-        fill: false,
-        backgroundColor: "white",
-        borderColor: "#000fff",
-        pointBackgroundColor: "#000fff",
-        pointBorderColor: "#fff",
-        pointHoverBackgroundColor: "#fff",
-        pointHoverBorderColor: "#000fff",
-      },
-    ],
-  };
-
-  const radarOptions = {
-    maintainAspectRatio: false,
-    responsive: false,
-    scales: {
-      r: {
-        suggestedMin: 0,
-        suggestedMax: 60,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'right',
-        align: 'start',
-        labels: {
-          usePointStyle: true,   
-          // boxHeight: 0
-        },
-      },
-    },
-    layout: {
-      padding: 0, 
-    },
-  };
-
-  Chart.register(
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    RadialLinearScale,
-    Legend
-  );
-
-  const [radarKey, setRadarKey] = useState(0);
   const graphContainerRef = useRef(null);
   const [graphDimensions, setGraphDimensions] = useState({
     width: 0,
     height: 0,
   });
 
-
   const [reloadRequired, setReloadRequired] = useState(false);
+
   useEffect(() => {
     const updateDimensions = () => {
       const container = graphContainerRef.current;
+      // console.log("container",container);
 
       if (container) {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
+        // console.log("wh", containerHeight,containerWidth)
 
         setGraphDimensions({ width: containerWidth, height: containerHeight });
-        setRadarKey((prevKey) => prevKey + 1);
+        // setRadarKey((prevKey) => prevKey + 1);
       }
 
       if (window.innerWidth > 768 && reloadRequired) {
@@ -333,173 +253,341 @@ const [isRightVisible, setIsRightVisible] = useState(false);
       }
       setReloadRequired(window.innerWidth <= 768);
     };
-
-
-    updateDimensions();
+    if (!loading && !loading2) {
+      updateDimensions();
+    }
 
     window.addEventListener("resize", updateDimensions);
-
 
     return () => {
       window.removeEventListener("resize", updateDimensions);
     };
-  }, [cnt]);
+  }, [cnt, ischartvisible, loading, loading2]);
 
-  return (
-    // <div><Header /></div>
+  const insertStocks = async (stock, id) => {
+    try {
+      const data1 = await ServerRequest({
+        method: "post",
+        URL: `/strategy/insertdldata`,
+        data: {
+          stock: `${stock}.L`,
+          id: id,
+        },
+      });
+      if (data1.server_error) {
+        alert("error insert");
+      }
+
+      if (data1.error) {
+        alert("error1 insert");
+      }
+      // console.log(data1);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const run_analysis = async () => {
+    setloading(true);
+    for (const stock of stockArray) {
+      const stockList = stock.stock;
+      const trimmedStocks = stockList.split(",").map((stock) => stock.trim());
+      for (const value of trimmedStocks) {
+        // console.log(value);
+        // console.log(strategyID);
+        await insertStocks(value, strategyID);
+      }
+    }
+    setReRenderKey((prevKey) => prevKey + 1);
+    setloading(false);
+  };
+
+  const [chart_data, setChartData] = useState([]);
+
+  const handleDuraion = (item) => {
+    setDuration(item);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (
+          !selectedStock ||
+          !duration ||
+          !strategyID ||
+          initialStrategies.length == 0
+          || ischartvisible == false
+          || !ischartvisible
+          // || loading == true
+        ) {
+          console.log(selectedStock,duration,strategyID,initialStrategies.length,ischartvisible)
+          if(ischartvisible==false || initialStrategies.length==0){
+
+            setloading2(false);
+          }
+          return;
+        }
+
+        setloading2(true);
+        // console.log('hello');
+
+        const data1 = await ServerRequest({
+          method: "get",
+          URL: `/strategy/chartdata?stock=${selectedStock}&range=${duration}&id=${strategyID}`,
+        });
+        if (data1.server_error) {
+          alert("error chart");
+        }
+
+        if (data1.error) {
+          alert("error1 chart");
+        }
+
+        setChartData(data1.data);
+        // setTimeout(() => {
+
+        setloading2(false);
+        // }, 2000);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [selectedStock, strategyID, duration,ischartvisible]);
+
+  // console.log(loading, loading2);
+  // console.log("chart", ischartvisible, chart_data.length);
+
+  return !loading && (chart_data.length > 0 || loading2 == false) ? (
     <div className="swift-accounts-main">
-      <Header />
+      <Header email_id={email_id} />
       <div className="swift-accounts-content">
-        <div className={`swift-accounts-content-left ${isLeftVisible ? '' : 'hideleft'}`} id="left">
+        <div
+          className={`swift-accounts-content-left ${
+            isLeftVisible ? "" : "hideleft"
+          }`}
+          id="left"
+        >
           <div className="swift-accounts-content-strategy">
-            {initialStrategies.map((strategy, index) => (
-              <Strategy
-                key={index}
-                heading={strategy.heading}
-                content={strategy.content}
-                isClicked={index === selectedStrategy}
-                // isClicked={true}
-                style={
-                  index !== selectedStrategy
-                    ? { color: "rgba(1, 22, 39, 0.30)" }
-                    : {}
-                }
-                onClick={() => handleStrategyClick(index)}
-              />
-            ))}
+            {initialStrategies.length == 0 && (
+              <div className="analysis-pending">
+                <p className="analysis-pending-heading">No Strategy Avaliable</p>
+              </div>
+            )}
+            {initialStrategies.length > 0 &&
+              initialStrategies.map((strategy, index) => (
+                <Strategy
+                  key={index}
+                  setChange={setChange}
+                  id={strategy.id}
+                  email_id={email_id}
+                  heading={strategy.strategyname}
+                  content={strategy.description}
+                  isClicked={index === selectedStrategy}
+                  style={
+                    index !== selectedStrategy
+                      ? { color: "rgba(1, 22, 39, 0.30)" }
+                      : {}
+                  }
+                  onClick={() => handleStrategyClick(index)}
+                />
+              ))}
           </div>
           <div className="swift-accounts-content-btn">
             <CustomButton
               text="Add another strategy"
               classname="swift-accounts-content-button"
+              onClick={() => {
+                navigate("/accounts/dashboard/addstrategy", {
+                  state: { email_id: email_id },
+                });
+              }}
             />
           </div>
         </div>
 
-        <div className={`swift-accounts-content-right ${isRightVisible ? 'showright' : ''}`} id="right">
-          <div className={`back-button ${isRightVisible ? 'showbackbutton' : ''}`}>
-          <BackButton  customFunction={backButoonFunction}/>
+        {initialStrategies.length == 0 ? (
+          <div className="analysis-pending">
+            <p className="analysis-pending-heading">Add Strategy First</p>
           </div>
-          <div className={`swift-accounts-content-div-1 ${isRightVisible ? 'showdiv-1' : ''}`}>
-            <div className="swift-accounts-content-details">
-              <p className="swift-account-content-heading">
-                {clickedStrategy != null && clickedStrategy.heading}
-              </p>
-              <p className="swift-account-content-content">
-                {clickedStrategy != null && clickedStrategy.content}
-              </p>
+        ) : ischartvisible ? (
+          <div
+            className={`swift-accounts-content-right ${
+              isRightVisible ? "showright" : ""
+            }`}
+            id="right"
+          >
+            <div
+              className={`back-button ${
+                isRightVisible ? "showbackbutton" : ""
+              }`}
+            >
+              <BackButton customFunction={backButoonFunction} />
             </div>
-            <div className={`swift-account-content-graph ${isRightVisible ? 'showgraph' : ''}`}>
-              <div className="swift-account-graph" ref={graphContainerRef}>
-                {graphDimensions.width > 0 && graphDimensions.height > 0 && (
-                  <Radar
-                    key={radarKey}
-                    data={data}
-                    options={radarOptions}
-                    height={graphDimensions.height}
-                    width={graphDimensions.width}
-                  />
-                )}
-              </div>
-              <div className="swift-account-download">
-                <CustomButton
-                  classname="swift-account-download-btn"
-                  text="Download Report"
-                />
-              </div>
-            </div>
-          </div>
-          <div className={`swift-accounts-content-div-2 ${isRightVisible ? 'showdiv-1' : ''}`}>
-            <div className="swift-accounts-content-info">
-              <p className="swift-accounts-content-info-1">Parameter</p>
-              <div className="swift-accounts-content-info-2">
-                <div className="swift-accounts-content-dropdown">
-                  <p className="swift-accounts-content-dropdoen-heading">
-                    Total Active Weight
-                  </p>
-                  <CustomDropdown
-                    options={options}
-                    onSelect={handleDropdownSelect}
-                  />
-                  <p className="swift-accounts-content-dropdown-details">
-                    Select weight
-                  </p>
-                </div>
-                <p className="swift-accounts-content-information">
-                  This parameter decides on how aggressive you need the deep
-                  learning model to be. Volatility weighting is used assuming
-                  all assets are orthogonal.
+            <div
+              className={`swift-accounts-content-div-1 ${
+                isRightVisible ? "showdiv-1" : ""
+              }`}
+            >
+              <div className="swift-accounts-content-details">
+                <p className="swift-account-content-heading">
+                  {clickedStrategy != null && clickedStrategy.strategyname}
+                </p>
+                <p className="swift-account-content-content">
+                  {clickedStrategy != null && clickedStrategy.description}
                 </p>
               </div>
-            </div>
-            <div className="swift-accounts-content-stocks-info">
-              <div className="swift-accounts-content-stocks-details">
-                <div className="swift-accounts-content-stocks-header">
-                  <div className="swift-accounts-content-stocks-left">
-                    <p>Portfolio</p>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="15"
-                      height="15"
-                      viewBox="0 0 15 15"
-                      fill="none"
-                    >
-                      <path
-                        d="M8.125 1.25C7.95924 1.25 7.80027 1.31585 7.68306 1.43306C7.56585 1.55027 7.5 1.70924 7.5 1.875V6.875C7.5 7.04076 7.56585 7.19973 7.68306 7.31694C7.80027 7.43415 7.95924 7.5 8.125 7.5H13.125C13.2908 7.5 13.4497 7.43415 13.5669 7.31694C13.6842 7.19973 13.75 7.04076 13.75 6.875C13.75 5.38316 13.1574 3.95242 12.1025 2.89752C11.0476 1.84263 9.61684 1.25 8.125 1.25ZM8.75 6.25V2.54375C9.68513 2.67851 10.5515 3.11236 11.2196 3.78043C11.8876 4.44849 12.3215 5.31487 12.4563 6.25H8.75Z"
-                        fill="#011627"
-                        fill-opacity="0.7"
-                      />
-                      <path
-                        d="M13.0125 8.78752C12.935 8.7598 12.8527 8.74768 12.7705 8.75185C12.6882 8.75602 12.6076 8.77641 12.5333 8.81184C12.4589 8.84727 12.3923 8.89704 12.3373 8.95829C12.2822 9.01955 12.2398 9.09107 12.2125 9.16877C11.9309 9.96497 11.4521 10.6768 10.8209 11.238C10.1898 11.7991 9.42675 12.1913 8.60306 12.3778C7.77936 12.5643 6.92184 12.5392 6.1105 12.3047C5.29915 12.0702 4.56043 11.634 3.96324 11.0368C3.36605 10.4396 2.92987 9.70089 2.69537 8.88954C2.46088 8.0782 2.43572 7.22068 2.62224 6.39699C2.80877 5.57329 3.2009 4.81026 3.76204 4.17909C4.32319 3.54792 5.03508 3.06917 5.83128 2.78752C5.98792 2.73281 6.11642 2.61813 6.1885 2.46868C6.26059 2.31924 6.27035 2.14728 6.21565 1.99064C6.16095 1.834 6.04626 1.7055 5.89682 1.63342C5.74738 1.56133 5.57542 1.55156 5.41878 1.60627C4.42318 1.958 3.53292 2.55624 2.8311 3.34515C2.12927 4.13406 1.63877 5.08792 1.40535 6.11771C1.17194 7.14749 1.20323 8.21962 1.4963 9.23404C1.78937 10.2485 2.33468 11.1721 3.08132 11.9187C3.82795 12.6654 4.75158 13.2107 5.766 13.5037C6.78042 13.7968 7.85255 13.8281 8.88233 13.5947C9.91212 13.3613 10.866 12.8708 11.6549 12.1689C12.4438 11.4671 13.042 10.5769 13.3938 9.58127C13.4478 9.42543 13.4381 9.25454 13.3667 9.10585C13.2953 8.95716 13.168 8.84274 13.0125 8.78752Z"
-                        fill="#011627"
-                        fill-opacity="0.7"
-                      />
-                    </svg>
-                  </div>
-                  <div className="swift-accounts-content-stocks-right">
-                    <p>Export</p>
-                    <p>Change</p>
-                  </div>
+              <div
+                className={`swift-account-content-graph ${
+                  isRightVisible ? "showgraph" : ""
+                }`}
+              >
+                <div className="swift-asset-range-buttons">
+                  <p
+                    onClick={() => handleDuraion("1M")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "1M" ? "selected_duration" : ""}
+                  >
+                    1m
+                  </p>
+                  <p
+                    onClick={() => handleDuraion("3M")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "3M" ? "selected_duration" : ""}
+                  >
+                    3m
+                  </p>
+                  <p
+                    onClick={() => handleDuraion("6M")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "6M" ? "selected_duration" : ""}
+                  >
+                    6m
+                  </p>
+                  <p
+                    onClick={() => handleDuraion("YTD")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "YTD" ? "selected_duration" : ""}
+                  >
+                    YTD
+                  </p>
+                  <p
+                    onClick={() => handleDuraion("1Y")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "1Y" ? "selected_duration" : ""}
+                  >
+                    1y
+                  </p>
+                  <p
+                    onClick={() => handleDuraion("5Y")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "5Y" ? "selected_duration" : ""}
+                  >
+                    5y
+                  </p>
+                  <p
+                    onClick={() => handleDuraion("MAX")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "MAX" ? "selected_duration" : ""}
+                  >
+                    Max
+                  </p>
                 </div>
-                <div className="swift-accounts-content-stocks-checkbox">
-                  <CustomCheckbox
-                    label="Maintain Asset Class  Weighting"
-                    value="checkbox1"
-                    onChange={handleCheckboxChange}
-                  />
-
+                <div className="swift-account-graph" ref={graphContainerRef}>
+                  {graphDimensions.width > 0 && graphDimensions.height > 0 && (
+                    <LineChart
+                      data={chart_data}
+                      width={graphDimensions.width}
+                      height={graphDimensions.height}
+                      duration={duration}
+                      loading2={loading2}
+                    />
+                  )}
+                </div>
+               
+              </div>
+            </div>
+            <div
+              className={`swift-accounts-content-div-2 ${
+                isRightVisible ? "showdiv-1" : ""
+              }`}
+            >
+              
+              <div className="swift-accounts-content-stocks-info">
+                <div className="swift-accounts-content-stocks-details">
+                  <div className="swift-accounts-content-stocks-header">
+                    <div className="swift-accounts-content-stocks-left">
+                      <p>Portfolio</p>
+                    </div>
+                    <div className="swift-accounts-content-stocks-right">
+                      <p>Change</p>
+                    </div>
+                  </div>
+                  <div className="swift-accounts-content-stocks-checkbox">
+                    {lastupdated && (
+                      <p>
+                        Last Run date:{" "}
+                        {lastupdated.toLocaleDateString(undefined, {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </p>
+                    )}
+                    <p className="run-analysis-btn" onClick={run_analysis}>
+                      Run Analysis
+                    </p>
+                   
+                  </div>
                   <div className="swift-accounts-content-stocks-text">
                     <p>SAA</p>
-                    <p>TAA</p>
-                    <p>Act.Wt.</p>
+                    <p>Prediction</p>
+                    <p>Confidence</p>
                   </div>
-                </div>
-              </div>
 
-              <div className="swift-accounts-content-stocks-show">
-                <StockesDropdown
-                  heading="Equity"
-                  options={stocksArrays[0]}
-                  isOpen={openDropdown === 0}
-                  onToggle={() => handleDropdownToggle(0)}
-                />
-                <StockesDropdown
-                  heading="Fixed Income"
-                  options={stocksArrays[1]}
-                  isOpen={openDropdown === 1}
-                  onToggle={() => handleDropdownToggle(1)}
-                />
-                <StockesDropdown
-                  heading="Alternatives"
-                  options={stocksArrays[2]}
-                  isOpen={openDropdown === 2}
-                  onToggle={() => handleDropdownToggle(2)}
-                />
+                </div>
+                <div
+                  className="swift-accounts-content-stocks-show"
+                  key={reRenderKey}
+                >
+                  {stockArray.map((asset, index) => (
+                    <StockesDropdown
+                      key={index}
+                      heading={asset.name}
+                      options={[asset]}
+                      id={strategyID}
+                      isOpen={openDropdown === index}
+                      onToggle={() => handleDropdownToggle(index)}
+                      onStockSelect={handleStockSelect}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div
+            className={`swift-accounts-content-right ${
+              isRightVisible ? "showright" : ""
+            }`}
+            id="right"
+          >
+            <div className="analysis-pending">
+              <p className="analysis-pending-heading">Analysis pending</p>
+              <p className="analysis-pending-content">
+                We will be running the securities via our ML algorithims every
+                10 minutes. You should see results of of our models in 1-2
+                hours.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
+    </div>
+  ) : (
+    <div className="swift-aseet-loader">
+      <p>Loading</p>
+      <Pulse />
     </div>
   );
 };

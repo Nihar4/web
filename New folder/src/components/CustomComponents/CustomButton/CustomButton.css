@@ -1,0 +1,12 @@
+.swift-custom-btn {
+  border-radius: 45px;
+  background: #000fff;
+  color: #fff;
+  font-family: "Open Sans";
+  font-size: var(--font-btn);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.8px;
+  border: none;
+}
