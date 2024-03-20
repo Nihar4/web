@@ -248,6 +248,11 @@ const AddStrategyMain = () => {
     }
 
     let totalPercentageError = false;
+    if(formValues.assetClasses.length == 0){
+      settotalError("Add asset to strategy");
+      hasError=true;
+      return hasError;
+    }
 
     formValues.assetClasses.forEach((assetClass, index) => {
       if (isEmpty(assetClass.name)) {

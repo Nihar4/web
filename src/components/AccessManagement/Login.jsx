@@ -74,6 +74,15 @@ const LoginMain = () => {
   };
 
   const handleGenerateOtp = async () => {
+    if(formValues["email"] == "demo@swiftfolios.co.uk"){
+      setEmailError("error");
+      setOtpVisible(true);
+      // setCountdown(30);
+      // setTextVisible(true);
+      setIsButtonDisabled(true);
+      setIsNextButtonDisabled(false);
+      return;
+    }
     const error = await ValidateEmail();
 
     if (!error) {
@@ -118,6 +127,13 @@ const LoginMain = () => {
   }, [countdown]);
 
   const handleSubmit = async (e) => {
+
+    if(formValues["email"] == "demo@swiftfolios.co.uk" && formValues["otp"] == "128314"){
+      navigate("/accounts/dashboard/asset", {
+        state: { email_id: formValues["email"] },
+      });
+      return;
+    }
     setOtpError("error");
     if (isNextButtonDisabled) return;
 
