@@ -7,9 +7,11 @@ const ServerRequest = async ({
     headers = {},
     signal
 }) => {
+    // console.log(process.env.REACT_APP_REQUEST_BASE_URL)
+
     const base_url = process.env.REACT_APP_REQUEST_BASE_URL;
     let url = base_url + URL
-    console.log(url)
+    // console.log(url)
     try {
         const result = await axios({
             method,

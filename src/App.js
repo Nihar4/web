@@ -17,7 +17,9 @@ function App() {
         <Route path="/login/*" element={<Login />} />
         <Route path='/signup/*' element={<Signup />} />
         <Route path='/accounts/*' element={<DashBoard />} />
+        {/* <Route path='/addstrategy/:id' element={<AddStrategy />} /> Modify the route to include :id parameter */}
         <Route path='/404' element={<Error />} />
+        {/* <Route path='/addstrategy' element={<AddStrategy />} /> */}
         <Route path='/search' element={<Searchbar />} />
         <Route path='/searchlive' element={<SearchLive />} />
       </Routes>

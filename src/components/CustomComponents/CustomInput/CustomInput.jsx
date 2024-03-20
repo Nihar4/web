@@ -8,6 +8,7 @@ const CustomInput = ({
   type,
   name,
   placeholder,
+  value,
   maxLength = 100,
   onInputChange,
   classnameDiv,
@@ -16,10 +17,12 @@ const CustomInput = ({
   styleDiv = {},
   styleInput = {},
   styleLabel = {},
-  onKeyUp
+  onKeyUp,
 }) => {
-  const [value, setValue] = useState("");
-
+  // console.log(value, name);
+  const [value1, setValue1] = useState(value);
+  // setValue1(value);
+  // console.log(value1);
   const handleChange = (e) => {
     let inputValue = e.target.value;
 
@@ -27,7 +30,7 @@ const CustomInput = ({
       inputValue = inputValue.slice(0, maxLength);
     }
     onInputChange && onInputChange(name, inputValue);
-    setValue(inputValue);
+    setValue1(inputValue);
   };
 
   return (
@@ -39,7 +42,7 @@ const CustomInput = ({
       />
       <CustomInputBox
         type={type}
-        value={value}
+        value={value1}
         name={name}
         classname={classnameInput}
         placeholder={placeholder}

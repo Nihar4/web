@@ -23,15 +23,15 @@
 
 .swift-login-main .swift-login-form {
   background: #fff;
+  border: 1px solid #e8e8e8;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   height: 80%;
   justify-content: space-between;
-  padding: 30px;
-  border: 1px solid #e8e8e8;
   max-height: 650px;
+  padding: 15px;
 }
 
 .swift-login-main .swift-reset-form {

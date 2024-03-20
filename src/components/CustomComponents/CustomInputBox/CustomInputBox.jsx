@@ -10,11 +10,12 @@ const CustomInputBox = ({
   name,
   maxLength,
   classname,
-  onKeyUp
+  onKeyUp,
 }) => {
   return (
     <input
       style={style}
+      id={name}
       type={type}
       value={value}
       name={name}

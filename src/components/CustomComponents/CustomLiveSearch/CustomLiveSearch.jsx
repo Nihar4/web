@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import ServerRequest from "../../../utils/ServerRequest";
 
-const CustomLiveSearch = ({ onItemClick }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
+  const [searchQuery, setSearchQuery] = useState(prevvalue);
   const [filteredResults, setFilteredResults] = useState([]);
   const abortControllerRef = useRef(null);
 
@@ -39,10 +39,17 @@ const CustomLiveSearch = ({ onItemClick }) => {
   };
 
   const handleItemClick = (result) => {
-    console.log(result.code);
+    // console.log(result.code);
     onItemClick(`${result.code}`);
-    setSearchQuery(`${result.code}-${result.name}`);
+    setSearchQuery(`${result.code}`);
     setFilteredResults([]);
+  };
+
+  const handleInputBlur = () => {
+    // Clear the filtered results when input box loses focus
+    setTimeout(() => {
+      setFilteredResults([]);
+    }, 200);
   };
 
   return (
@@ -51,8 +58,9 @@ const CustomLiveSearch = ({ onItemClick }) => {
         type="text"
         value={searchQuery}
         onChange={handleInputChange}
+        onBlur={handleInputBlur}
         placeholder="Search..."
-        className="search-input"
+        className="search-input swift-custom-input-box swift-addstrategy-underlying-input"
       />
       {searchQuery && filteredResults && filteredResults.length > 0 && (
         <ul className="results-list">

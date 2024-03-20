@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import CustomLiveSearch from "../CustomComponents/CustomLiveSearch/CustomLiveSearch";
 import ServerRequest from "../../utils/ServerRequest";
 
-const SearchLive = () => {
-
+const SearchLive = ({ name, onInputChange, value }) => {
   const [selectedValue, setSelectedValue] = useState("");
-
+  // console.log("value", selectedValue);
   useEffect(() => {
     const setData = async () => {
       try {
@@ -32,10 +31,11 @@ const SearchLive = () => {
   }, [selectedValue]);
 
   const handleItemClick = (value) => {
-    console.log(value);
+    // console.log("dropdown value",value);
     setSelectedValue(value);
+    onInputChange(name, value);
   };
-  return <CustomLiveSearch onItemClick={handleItemClick}/>;
+  return <CustomLiveSearch onItemClick={handleItemClick} prevvalue={value} />;
 };
 
 export default SearchLive;

@@ -13,6 +13,9 @@
   font-weight: var(--font-weight-light);
   line-height: normal;
   letter-spacing: -0.6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .swift-accounts-strategy-content.isClicked {
@@ -28,6 +31,7 @@
   letter-spacing: -0.7px;
   display: flex;
   justify-content: flex-end;
+  column-gap: 25px;
 }
 
 .swift-accounts-strategy-delete p:hover {
