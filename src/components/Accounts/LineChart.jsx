@@ -83,7 +83,7 @@ const LineChart = ({
  
     const lastDate = new Date(initialData[initialData.length - 1]?.date);
     const lastDatePlusFiveDays = new Date(lastDate);
-    lastDatePlusFiveDays.setDate(lastDatePlusFiveDays.getDate() + 5);
+    lastDatePlusFiveDays.setDate(lastDatePlusFiveDays.getDate() + 15);
     if (duration === "1M") {
       setXevents([
         new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -138,7 +138,7 @@ const LineChart = ({
 
   const lastDate = new Date(initialData[initialData.length - 1]?.date);
   const newData = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 15; i++) {
     const nextDate = new Date(lastDate);
     nextDate.setDate(lastDate.getDate() + i);
     const newDataItem = {
@@ -226,35 +226,35 @@ const LineChart = ({
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 40%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 40%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 40%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 40%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 40%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
@@ -262,7 +262,7 @@ const LineChart = ({
             new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
           }
           stroke="rgb(0 15 255 / 80%)"
-          strokeWidth={2}
+          // strokeWidth={2}
           // strokeDasharray={"Dash"}
           highlightOnHover
         />
@@ -287,7 +287,7 @@ const LineChart = ({
           lastDate = {lastDate.toISOString()}
         />
 
-        <PriceEdgeIndicator
+        {/* <PriceEdgeIndicator
           orient="left"
           edgeAt="right"
           itemType="last"
@@ -306,12 +306,12 @@ const LineChart = ({
           rectRadius={14}
           fontWeight="700"
           dx={1}
-        />
+        /> */}
 
         
       </Chart>
 
-      <CrossHairCursor />
+      {/* <CrossHairCursor /> */}
     </ChartCanvas>
   ) : (
     <div className="swift-aseet-loader">

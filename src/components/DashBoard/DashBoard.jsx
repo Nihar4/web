@@ -3,6 +3,7 @@ import CustomButton from "../CustomComponents/CustomButton/CustomButton";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import AssetAllocation from "../Accounts/AssetAllocation";
 import {AddStrategy,AddStrategyMain,StrategyCreated} from "../Accounts/AddStrategy";
+import Jobqueu from "../Accounts/Jobqueu";
 
 const Dashboard = () => {
   return (
@@ -12,6 +13,7 @@ const Dashboard = () => {
       <Route path="/dashboard/addstrategy/:id" element={<AddStrategyMain />} />
       <Route path="/dashboard/addstrategy/" element={<AddStrategyMain />} />
       <Route path="/dashboard/strategy" element={<StrategyCreated/>} />
+      <Route path="/dashboard/jobqueue" element={<Jobqueu/>} />
     </Routes>
   );
 };

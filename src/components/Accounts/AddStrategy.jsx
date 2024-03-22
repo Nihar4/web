@@ -17,6 +17,8 @@ import {
 import { Alert } from "../CustomComponents/CustomAlert/CustomAlert";
 import BackButton from "../AccessManagement/BackButton";
 import CustomLabel from "../CustomComponents/CustomLabel/CustomLabel";
+import Pulse from "../Loader/Pulse";
+import moment from "moment-timezone";
 
 const AddStrategyMain = () => {
   const location = useLocation();
@@ -50,7 +52,9 @@ const AddStrategyMain = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
       }
     };
     fetchdata();
@@ -70,7 +74,7 @@ const AddStrategyMain = () => {
   const [showalert, setShowalert] = useState(false);
   const handleInputChange = async (name, value) => {
     // console.log(1);
-    console.log("addstraegy", name, value);
+    // console.log("addstraegy", name, value);
 
     const updateNestedProperty = (obj, path, newValue) => {
       const keys = path.split(".");
@@ -248,9 +252,9 @@ const AddStrategyMain = () => {
     }
 
     let totalPercentageError = false;
-    if(formValues.assetClasses.length == 0){
+    if (formValues.assetClasses.length == 0) {
       settotalError("Add asset to strategy");
-      hasError=true;
+      hasError = true;
       return hasError;
     }
 
@@ -314,36 +318,10 @@ const AddStrategyMain = () => {
     // return hasError;
   };
 
-  // const insertStocks = async (id) => {
-  //   for (const assetClass of formValues.assetClasses) {
-  //     for (const stock of assetClass.underlyings) {
-  //       try {
-  //         const data1 = await ServerRequest({
-  //           method: "post",
-  //           URL: `/strategy/insertdldata`,
-  //           data: {
-  //             stock: `${stock.stock}.L`,
-  //             id: id
-  //           },
-  //         });
-  //         if (data1.server_error) {
-  //           alert("error insert");
-  //         }
-
-  //         if (data1.error) {
-  //           alert("error1 insert");
-  //         }
-  //         // console.log(data1);
-  //       } catch (error) {
-  //         console.error( error);
-  //       }
-  //     }
-  //   }
-  // };
   const handleSubmit = async () => {
     if (ValidateAll()) return;
 
-    console.log("Submitting form data:", formValues);
+    // console.log("Submitting form data:", formValues);
 
     const data = await ServerRequest({
       method: "post",
@@ -407,15 +385,23 @@ const AddStrategyMain = () => {
   // setValue1(value);
   // console.log(value1);
   const handleChange = (e) => {
-    let inputValue = e.target.value;
+    let inputValue;
+    if (e.target.value.length > 500) {
+      inputValue = e.target.value.slice(0, 500);
+    } else {
+      inputValue = e.target.value;
+    }
 
-   handleInputChange("description", inputValue);
+    handleInputChange("description", inputValue);
     setValue1(inputValue);
   };
 
-  console.log(formValues.description)
+  console.log(formValues);
   return loading ? (
-    <>Loading</>
+    <div className="swift-aseet-loader">
+      <p>Loading</p>
+      <Pulse />
+    </div>
   ) : (
     <div className="swift-addstrategy-main">
       <Header email_id={email_id} />
@@ -465,7 +451,7 @@ const AddStrategyMain = () => {
               placeholder="Add a little description to what this strategy is all about"
               onChange={handleChange}
               value={formValues.description}
-              style={{height:"100px"}}
+              style={{ height: "146px" }}
             ></textarea>
             <CustomError
               errorText={descError}
@@ -475,11 +461,14 @@ const AddStrategyMain = () => {
             />
           </div>
 
-          <CustomButton
+          {/* <CustomButton
             text="Add Asset Class"
             classname="swift-addstrategy-btn"
             onClick={handleAddAssetClass}
-          />
+          /> */}
+          <div className="swift-custom-btn swift-addstrategy-btn" onClick={handleAddAssetClass}>
+          Add Asset Class
+          </div>
           <div className="swift-addstrategy-assetclassdiv">
             {formValues.assetClasses.map((assetClass, classIndex) => (
               <div key={classIndex} className="swift-addstrategy-asset">
@@ -567,10 +556,12 @@ const AddStrategyMain = () => {
           </div>
         </div>
         <div className="swift-addstrategy-submit-btn">
-          { formValues.assetClasses.length>0 && <div className="swift-addstrategy-total-div">
-            <p>Total</p>
-            <p>{totalPercentage}</p>
-          </div>}
+          {formValues.assetClasses.length > 0 && (
+            <div className="swift-addstrategy-total-div">
+              <p>Total</p>
+              <p>{totalPercentage}</p>
+            </div>
+          )}
           <div className="swift-addstrategy-error-btn">
             <CustomError
               errorText={totalError}
@@ -582,7 +573,7 @@ const AddStrategyMain = () => {
               text="Submit"
               classname="swift-addstrategy-btn submitbtn"
               onClick={() => {
-                console.log(id);
+                // console.log(id);
                 if (id) handleUpdate();
                 else handleSubmit();
               }}
@@ -600,7 +591,7 @@ const StrategyCreated = () => {
   const id = location.state ? location.state.id : null;
   const email_id = location.state ? location.state.email_id : null;
   const [dl_data, setDlData] = useState(null);
-  console.log("strategy", email_id);
+  // console.log("strategy", email_id);
 
   const fetchData = async (id) => {
     try {
@@ -629,8 +620,15 @@ const StrategyCreated = () => {
       try {
         const data = await fetchData(id);
         const sortedData = data.data.slice().sort((a, b) => {
+          if (a.status === "Pending" && b.status !== "Pending") {
+            return -1;
+          } else if (a.status !== "Pending" && b.status === "Pending") {
+            return 1;
+          }
+
           const dateA = a.date_completed ? new Date(a.date_completed) : null;
           const dateB = b.date_completed ? new Date(b.date_completed) : null;
+
           if (dateA && dateB) {
             return dateB - dateA;
           } else if (dateA) {
@@ -643,7 +641,7 @@ const StrategyCreated = () => {
         });
         setDlData(sortedData);
         // setDlData(data.data);
-        console.log(data.data);
+        // console.log(data.data);
       } catch (error) {
         console.error("Error fetching and setting data:", error);
       }
@@ -660,7 +658,7 @@ const StrategyCreated = () => {
     });
   };
 
-  console.log(dl_data);
+  // console.log(dl_data);
 
   return (
     <div className="swift-addstrategy-main">
@@ -677,12 +675,13 @@ const StrategyCreated = () => {
                     Strategy created/updated
                   </div>
                 </div>
-                <div style={{ fontSize: "14px" }}>
-                  We are adding the securities to our database and will be
-                  running them through our deep learning models. The strategy
-                  might take 24 hours to get activated.
+                <div style={{ fontSize: "13px" }}>
+                  We are adding the securities to our queue and will be running
+                  them through our deep learning models. The status of each is
+                  as below For anything else, kindly reach out to us on
+                  help@swiftfolios.co.uk
                 </div>
-                <div style={{ fontSize: "14px" }}>
+                <div style={{ fontSize: "13px" }}>
                   For anything else, kindly reach out to us on
                   <span style={{ fontWeight: 700 }}>
                     {" "}
@@ -693,6 +692,7 @@ const StrategyCreated = () => {
                   <table className="swift-strategy-created-table">
                     <thead>
                       <tr>
+                        {/* <th>Strategy ID</th> */}
                         <th>Security</th>
                         <th>Date added</th>
                         <th>Status</th>
@@ -701,40 +701,37 @@ const StrategyCreated = () => {
                     </thead>
                     <tbody>
                       {dl_data &&
-                        dl_data
-                          .slice()
-                          .sort((a, b) => {
-                            if (a.date_completed && b.date_completed) {
-                              return (
-                                new Date(b.date_completed) -
-                                new Date(a.date_completed)
-                              );
-                            } else if (a.date_completed) {
-                              return -1;
-                            } else if (b.date_completed) {
-                              return 1;
-                            } else {
-                              return 0;
-                            }
-                          })
-                          .map((item, index) => (
-                            <tr key={index}>
-                              <td>{item.security}</td>
-                              <td>{item.date_created}</td>
-                              <td>{item.status}</td>
-                              <td>
-                                {!item.date_completed
-                                  ? ""
-                                  : new Date(
-                                      item.date_completed
-                                    ).toLocaleDateString("en-US", {
-                                      day: "numeric",
-                                      month: "long",
-                                      year: "numeric",
-                                    })}
-                              </td>
-                            </tr>
-                          ))}
+                        dl_data.map((item, index) => (
+                          <tr key={index}>
+                            {/* <td>{item.strategy_id}</td> */}
+                            <td>{item.security}</td>
+                            <td>
+                            {!item.date_created
+                                ? ""
+                                : moment
+                                    .tz(
+                                      new Date(item.date_created).toISOString(),
+                                      moment.tz.guess() 
+                                    )
+                                    .add(5, "hours")
+                                    .add(30, "minutes")
+                                    .format("DD-MM-YYYY HH:mm:ss")}
+                            </td>
+                            <td>{item.status}</td>
+                            <td>
+                            {!item.date_completed
+                                ? ""
+                                : moment
+                                    .tz(
+                                      new Date(item.date_completed).toISOString(),
+                                      moment.tz.guess() 
+                                    )
+                                    .add(5, "hours")
+                                    .add(30, "minutes")
+                                    .format("DD-MM-YYYY HH:mm:ss")}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

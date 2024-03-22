@@ -40,8 +40,8 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
 
   const handleItemClick = (result) => {
     // console.log(result.code);
-    onItemClick(`${result.code}`);
-    setSearchQuery(`${result.code}`);
+    onItemClick(`${result.symbol}`);
+    setSearchQuery(`${result.symbol}`);
     setFilteredResults([]);
   };
 
@@ -63,12 +63,22 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
         className="search-input swift-custom-input-box swift-addstrategy-underlying-input"
       />
       {searchQuery && filteredResults && filteredResults.length > 0 && (
-        <ul className="results-list">
+        <ul className={`results-list above`}>
           {filteredResults.map((result) => (
-            <li
-              key={result.code}
-              onClick={() => handleItemClick(result)}
-            >{`${result.code}-${result.name}`}</li>
+            <li key={result.code} onClick={() => handleItemClick(result)}>
+              <p style={{width:"40px"}}>{result.symbol && result.symbol.split(".")[0]}</p>
+
+              <p className="result-list-name" style={{width:"200px"}}>
+                {result.longname && result.longname.length > 30
+                  ? result.longname.slice(0, 30) + "..."
+                  : result.longname
+                  ? result.longname
+                  : result.shortname && result.shortname.length > 30
+                  ? result.shortname.slice(0, 30) + "..."
+                  : result.shortname}
+              </p>
+              <p style={{width:"40px"}}>{result.exchange}</p>
+            </li>
           ))}
         </ul>
       )}
@@ -77,3 +87,5 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
 };
 
 export default CustomLiveSearch;
+
+

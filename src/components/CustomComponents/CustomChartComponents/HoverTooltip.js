@@ -55,7 +55,7 @@ export class HoverTooltip extends Component {
         ? { width: bgwidth, height: bgheight, rx: bgrx }
         : { ...bgSize, rx: bgrx };
 
-    console.log("con", content, pointer);
+    // console.log("con", content, pointer);
     if (date <= lastDate) {
       return (
         <g>

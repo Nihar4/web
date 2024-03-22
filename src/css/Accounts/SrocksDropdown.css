@@ -56,7 +56,7 @@
 }
 
 .stocks-dropdown-option-details {
-  padding: 6px 0px 6px 6px;
+  padding: 6px 0px 6px 0px;
   display: flex;
   justify-content: space-between;
   /* border-bottom: 0.5px solid rgba(1, 22, 39, 0.1); */
@@ -180,7 +180,7 @@
 
   display: grid;
   grid-template-columns: repeat(3, 50px); 
-  column-gap: 8px; 
+  column-gap: 30px; 
   /* place-items: center; */
 }
 
@@ -200,7 +200,7 @@
 .stocks-dropdown-header-right {
   display: grid;
   grid-template-columns: repeat(3, 50px); 
-  column-gap: 8px; 
+  column-gap: 30px; 
   padding-right: 5px;
 }
 
