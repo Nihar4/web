@@ -54,9 +54,13 @@ const Strategy = ({
         <p>{content}</p>
       </div>
       {isClicked && (
+        
         <div className="swift-accounts-strategy-delete">
+          <p>Strategy ID: {id}</p>
+          <div>
           <p onClick={handleEdit}>Edit</p>
           <p onClick={handleDelete}>Delete</p>
+          </div>
         </div>
       )}
     </div>

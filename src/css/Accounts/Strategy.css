@@ -23,14 +23,19 @@
 }
 
 .swift-accounts-strategy-delete {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: var(--font-btn);
-  font-style: italic;
-  font-weight: var(--font-weight-light);
-  line-height: normal;
-  letter-spacing: -0.7px;
+  color: #011627b3;
+  column-gap: 25px;
   display: flex;
-  justify-content: flex-end;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  justify-content: space-between;
+  letter-spacing: -0.7px;
+  line-height: normal;
+  margin-top: 5px;
+}
+.swift-accounts-strategy-delete div {
+  display: flex;
   column-gap: 25px;
 }
 

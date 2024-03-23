@@ -33,6 +33,16 @@
   letter-spacing: -0.7px;
 }
 
+.swift-accounts-heading-2{
+  color: var(--text-color);
+  font-size: var(--font-heading);
+  font-style: normal;
+  font-weight: var(--font-weight-heavy);
+  line-height: normal;
+  letter-spacing: -0.7px;
+  cursor: pointer;
+}
+
 .swift-accounts-heading-right {
   color: rgba(1, 22, 39, 0.7);
   font-size: var(--font-small);
@@ -93,4 +103,18 @@
   background: url("../../assets/Faq.png"),
     rgb(255, 255, 255) 50% / cover no-repeat;
     cursor: pointer;;
+}
+
+.swift-accounts-header-logout{
+
+    color: rgba(1, 22, 39, 0.7);
+    font-size: var(--font-small);
+    font-style: normal;
+    font-weight: var(--font-weight-heavy);
+    line-height: normal;
+    letter-spacing: -0.65px;
+    /* background-color: #e8e8e8; */
+    padding: 5px 15px;
+    border-radius: 35px;
+    cursor: pointer;
 }

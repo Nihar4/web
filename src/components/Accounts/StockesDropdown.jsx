@@ -70,7 +70,7 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
 
   const fetchStockData = async (stock) => {
     // console.log("stock name", stock);
-    let stock_name = stock + ".L";
+    let stock_name = stock;
     // console.log(stock_name);
     try {
       const data = await ServerRequest({

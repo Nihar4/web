@@ -22,7 +22,7 @@ const AssetAllocation = () => {
   const [isLeftVisible, setIsLeftVisible] = useState(true);
   const [isRightVisible, setIsRightVisible] = useState(false);
   const [change, setChange] = useState(0);
-  const [ischartvisible, setIschartvisible] = useState(true);
+  const [ischartvisible, setIschartvisible] = useState();
   const [strategyID, setStrategyid] = useState(null);
   const [lastupdated, setLastupdated] = useState();
   const navigate = useNavigate();
@@ -33,6 +33,8 @@ const AssetAllocation = () => {
   const [loading1, setloading1] = useState(true);
   const [loading2, setloading2] = useState(true);
   const [duration, setDuration] = useState("1M");
+  const [openDropdown, setOpenDropdown] = useState();
+
 
   const [selectedStock, setSelectedStock] = useState(null);
 
@@ -119,6 +121,7 @@ const AssetAllocation = () => {
         );
         setStrategyid(combinedStrategiesArray[0].id);
         fetchDataAndUpdateState();
+        
       }
       // setTimeout(() => {
       // setloading(false);
@@ -140,7 +143,10 @@ const AssetAllocation = () => {
     setClickedStrategy(strategyClicked);
     setStockArray(initialStrategies[index].assetclass);
     setStrategyid(initialStrategies[index].id);
-    // console.log(initialStrategies[index].assetclass);
+    setSelectedStock(initialStrategies[index].assetclass[0].stock.split(",")[0]);
+    setIschartvisible(false);
+    setDuration("1M")
+        // console.log(initialStrategies[index].assetclass);
 
     // setStockArray(initialStrategies[index])
     // console.log(stockArray);
@@ -177,6 +183,7 @@ const AssetAllocation = () => {
       try {
         if (initialStrategies.length !== 0) {
           setloading(true);
+          // setIschartvisible(false);
           const data = await fetchDlData(
             initialStrategies[selectedStrategy].id
           );
@@ -184,6 +191,7 @@ const AssetAllocation = () => {
           const hasPendingStatus = data.some(
             (item) => item.status === "Pending"
           );
+          setIschartvisible(!hasPendingStatus);
           const dateCompletedArray = data.map((item) =>
             new Date(item.date_completed).toLocaleDateString()
           );
@@ -194,7 +202,6 @@ const AssetAllocation = () => {
           setLastupdated(latestDate);
           // console.log(hasPendingStatus);
 
-          setIschartvisible(!hasPendingStatus);
 
           setTimeout(() => {
             setloading(false);
@@ -215,14 +222,23 @@ const AssetAllocation = () => {
     setIsRightVisible(false);
   };
 
-  const [openDropdown, setOpenDropdown] = useState(0);
+  useEffect(() => {
+    if (stockArray.length > 0) {
+        setOpenDropdown(new Array(stockArray.length).fill(true));
+    }
+}, [stockArray]);
 
   const handleDropdownToggle = (dropdownIndex) => {
-    if (openDropdown === dropdownIndex) {
-      setOpenDropdown(null);
-    } else {
-      setOpenDropdown(dropdownIndex);
-    }
+    // if (openDropdown === dropdownIndex) {
+    //   setOpenDropdown(null);
+    // } else {
+    //   setOpenDropdown(dropdownIndex);
+    // }
+    setOpenDropdown((prevOpenDropdown) => {
+      const newOpenDropdown = [...prevOpenDropdown];
+      newOpenDropdown[dropdownIndex] = !newOpenDropdown[dropdownIndex];
+      return newOpenDropdown;
+  });
   };
 
   const graphContainerRef = useRef(null);
@@ -264,22 +280,23 @@ const AssetAllocation = () => {
     };
   }, [cnt, ischartvisible, loading, loading2]);
 
-  const insertStocks = async (stock, id) => {
+  const insertStocks = async (stock, id, email_id) => {
     try {
       const data1 = await ServerRequest({
         method: "post",
-        URL: `/strategy/insertdldata`,
+        URL: `/strategy/jobqueue`,
         data: {
-          stock: `${stock}.L`,
+          stock: `${stock}`,
           id: id,
+          email_id : email_id
         },
       });
       if (data1.server_error) {
-        alert("error insert");
+        alert("error jobqueue");
       }
 
       if (data1.error) {
-        alert("error1 insert");
+        alert("error1 jobqueue");
       }
       // console.log(data1);
     } catch (error) {
@@ -288,18 +305,20 @@ const AssetAllocation = () => {
   };
 
   const run_analysis = async () => {
-    setloading(true);
+    // setloading(true);
     for (const stock of stockArray) {
       const stockList = stock.stock;
       const trimmedStocks = stockList.split(",").map((stock) => stock.trim());
       for (const value of trimmedStocks) {
-        // console.log(value);
-        // console.log(strategyID);
-        await insertStocks(value, strategyID);
+        await insertStocks(value, strategyID,email_id);
       }
     }
-    setReRenderKey((prevKey) => prevKey + 1);
-    setloading(false);
+    navigate("/accounts/dashboard/jobqueue", {
+      state: { email_id: email_id },
+    });
+    // setReRenderKey((prevKey) => prevKey + 1);
+    // setloading(false);
+
   };
 
   const [chart_data, setChartData] = useState([]);
@@ -320,27 +339,28 @@ const AssetAllocation = () => {
           || !ischartvisible
           // || loading == true
         ) {
-          console.log(selectedStock,duration,strategyID,initialStrategies.length,ischartvisible)
-          if(ischartvisible==false || initialStrategies.length==0){
-
-            setloading2(false);
+          console.log(selectedStock,duration,strategyID,initialStrategies.length,ischartvisible,loading)
+          if((ischartvisible==false || initialStrategies.length==0)){
+              console.log("not hit api")
+              setloading2(false);
+            }
+            return;
           }
-          return;
-        }
-
-        setloading2(true);
-        // console.log('hello');
-
+          
+          setloading2(true);
+          // console.log('hello');
+          console.log(selectedStock,duration,strategyID,initialStrategies.length,ischartvisible,loading)
+          console.log(" hit api")
         const data1 = await ServerRequest({
           method: "get",
           URL: `/strategy/chartdata?stock=${selectedStock}&range=${duration}&id=${strategyID}`,
         });
         if (data1.server_error) {
-          alert("error chart");
+          // alert("error chart");
         }
 
         if (data1.error) {
-          alert("error1 chart");
+          // alert("error1 chart");
         }
 
         setChartData(data1.data);
@@ -355,8 +375,17 @@ const AssetAllocation = () => {
     fetchData();
   }, [selectedStock, strategyID, duration,ischartvisible]);
 
+  const handleEdit = async () => {
+
+    navigate(`/accounts/dashboard/addstrategy/${strategyID}`,{
+      state: {email_id: email_id},
+    });
+
+  };
+
   // console.log(loading, loading2);
   // console.log("chart", ischartvisible, chart_data.length);
+  console.log(openDropdown);
 
   return !loading && (chart_data.length > 0 || loading2 == false) ? (
     <div className="swift-accounts-main">
@@ -395,7 +424,7 @@ const AssetAllocation = () => {
           </div>
           <div className="swift-accounts-content-btn">
             <CustomButton
-              text="Add another strategy"
+              text="Add Strategy"
               classname="swift-accounts-content-button"
               onClick={() => {
                 navigate("/accounts/dashboard/addstrategy", {
@@ -520,7 +549,7 @@ const AssetAllocation = () => {
                       <p>Portfolio</p>
                     </div>
                     <div className="swift-accounts-content-stocks-right">
-                      <p>Change</p>
+                      <p onClick={handleEdit} >Change</p>
                     </div>
                   </div>
                   <div className="swift-accounts-content-stocks-checkbox">
@@ -541,7 +570,7 @@ const AssetAllocation = () => {
                   </div>
                   <div className="swift-accounts-content-stocks-text">
                     <p>SAA</p>
-                    <p>Prediction</p>
+                    <p>Prediction (3 mth)</p>
                     <p>Confidence</p>
                   </div>
 
@@ -556,7 +585,8 @@ const AssetAllocation = () => {
                       heading={asset.name}
                       options={[asset]}
                       id={strategyID}
-                      isOpen={openDropdown === index}
+                      // isOpen={openDropdown === index}
+                      isOpen={openDropdown[index]}
                       onToggle={() => handleDropdownToggle(index)}
                       onStockSelect={handleStockSelect}
                     />
