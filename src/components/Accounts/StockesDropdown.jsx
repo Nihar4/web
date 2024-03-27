@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "../../css/Accounts/SrocksDropdown.css";
+import "../../css/Accounts/StocksDropdown.css";
 import ServerRequest from "../../utils/ServerRequest";
 import Pulse from "../Loader/Pulse";
 
-const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect  }) => {
+const StockesDropdown = ({
+  heading,
+  options,
+  isOpen,
+  onToggle,
+  id,
+  onStockSelect,
+  getsum
+}) => {
   const [dl_data, setDlData] = useState(null);
   const [stockDetailsArray, setStockDetailsArray] = useState({});
   const [loading, setloading] = useState(true);
@@ -26,7 +34,6 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
   );
   const fetchData = async (id) => {
     try {
-
       const data = await ServerRequest({
         method: "get",
         URL: `/strategy/getdldta?id=${id}`,
@@ -39,9 +46,8 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
       if (data.error) {
         alert("error1");
       }
-      
+
       return data;
-      
     } catch (error) {
       console.error("Error fetching data:", error);
       // throw error;
@@ -54,10 +60,10 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
         setloading(true);
         const data = await fetchData(id);
         setDlData(data.data);
-        // setTimeout(() => {
-          
-          setloading(false);
-        // }, 1000);
+        setTimeout(() => {
+
+        setloading(false);
+        }, 1000);
       } catch (error) {
         console.error("Error fetching and setting data:", error);
       }
@@ -95,9 +101,9 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
   const fetchStockDetails = async () => {
     for (const stock of Object.keys(stock_saa_array)) {
       try {
-        const latestData =
-          dl_data && dl_data.find((datum) => datum.security === stock);
-        setloading1(true);
+        // const latestData =
+        //   dl_data && dl_data.find((datum) => datum.security === stock);
+        // setloading1(true);
         const stock_data = await fetchStockData(stock);
         // console.log(stock_data);
 
@@ -109,10 +115,10 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
           },
         }));
 
-        setTimeout(() => {
-          
-          setloading1(false);
-        }, 1000);
+        // setTimeout(() => {
+
+        //   setloading1(false);
+        // }, 1000);
       } catch (error) {
         console.error("Error fetching stock data:", error);
       }
@@ -120,9 +126,13 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
   };
 
   useEffect(() => {
+    setloading1(true);
     const fetchData = async () => {
       await fetchStockDetails();
     };
+    setTimeout(() => {
+      setloading1(false);
+    }, 2000);
 
     fetchData();
   }, [id]);
@@ -145,6 +155,20 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
     }
   });
 
+
+  
+  useEffect(() => {
+    let total = 0;
+    Object.keys(stock_saa_array).forEach((stock) => {
+      total +=
+        (stock_saa_array[stock] * latestValuesArray[stock].predict_percentage) /
+        100;
+    });
+    getsum({heading,total});
+
+  }, [stock_saa_array, latestValuesArray]);
+
+
   const map_corr = (correlation) => {
     if (correlation > 0.9) {
       return "High";
@@ -155,7 +179,7 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
     }
   };
 
-  return  !loading && !loading1 ? (
+  return !loading && !loading1 ? (
     <div className="stocks-dropdown-main">
       <div className="stocks-dropdown-header">
         <div className="stocks-dropdown-header-left">
@@ -183,7 +207,6 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
               stroke-linejoin="round"
             />
           </svg>
-         
         </div>
         <div className="stocks-dropdown-header-right">
           <p>{totalPercentage}%</p>
@@ -193,7 +216,11 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
         <div className="stocks-dropdown-options-container">
           <ul className="stocks-dropdown-options">
             {Object.keys(stock_saa_array).map((stock, index) => (
-              <li key={index} onClick={()=>onStockSelect(stock)} style={{cursor:"pointer"}}>
+              <li
+                key={index}
+                onClick={() => onStockSelect(stock)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className="stocks-dropdown-option-details">
                   <div className="stocks-dropdown-option-left">
                     <div className="stocks-dropdown-option-up">
@@ -213,7 +240,11 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
                               : "red-text")
                           }
                         >
-                          {stockDetailsArray[stock] ? stockDetailsArray[stock].percentage_change.toFixed(2) + "%": ""}
+                          {stockDetailsArray[stock]
+                            ? stockDetailsArray[
+                                stock
+                              ].percentage_change.toFixed(2) + "%"
+                            : ""}
                         </p>
                       </div>
                     </div>
@@ -246,13 +277,12 @@ const StockesDropdown = ({ heading, options, isOpen, onToggle, id,onStockSelect 
         </div>
       )}
     </div>
-  ):(
+  ) : (
     <div className="swift-aseet-loader">
-    {/* <p>Loading</p> */}
-    <Pulse />
-  </div>
-  )
-  
+      {/* <p>Loading</p> */}
+      <Pulse />
+    </div>
+  );
 };
 
 export default StockesDropdown;

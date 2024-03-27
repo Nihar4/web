@@ -4,6 +4,7 @@ import ServerRequest from "../../../utils/ServerRequest";
 const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
   const [searchQuery, setSearchQuery] = useState(prevvalue);
   const [filteredResults, setFilteredResults] = useState([]);
+  // const [name, setName] = useState("name");
   const abortControllerRef = useRef(null);
 
   const handleInputChange = async (e) => {
@@ -40,7 +41,8 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
 
   const handleItemClick = (result) => {
     // console.log(result.code);
-    onItemClick(`${result.symbol}`);
+    onItemClick(`${result.symbol},${result.longname}`);
+    // setName(`${result.longname}`)
     setSearchQuery(`${result.symbol}`);
     setFilteredResults([]);
   };
@@ -82,6 +84,7 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
           ))}
         </ul>
       )}
+      
     </div>
   );
 };

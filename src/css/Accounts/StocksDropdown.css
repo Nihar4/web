@@ -136,8 +136,8 @@
 
 .stocks-dropdown-main {
   position: relative;
-  overflow: auto;
-  max-height: 145px; 
+  /* overflow: auto;
+  max-height: 145px;  */
 }
 
 .stocks-dropdown-options-container {

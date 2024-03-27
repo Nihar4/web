@@ -290,13 +290,12 @@ width: 400px !important;
 
 
 .swift-accounts-content-stocks-right p {
-  color: rgba(0, 0, 0, 0.7);
-  font-size: var(--font-heading);
-  font-style: normal;
-  font-weight: var(--font-weight-light);
-  line-height: normal;
-  letter-spacing: -0.65px;
-  cursor: pointer;
+  font-size: var(--font-small);
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.65px;
+    cursor: pointer;
+    color: #011627b3;
 }
 
 .swift-accounts-content-stocks-header {
@@ -367,11 +366,12 @@ width: 400px !important;
   display: flex;
   flex-direction: column;
   row-gap: 30px;
-  overflow: auto;
+  height: 100%;
+    overflow: auto;
 }
 
 .swift-accounts-content-stocks-show::-webkit-scrollbar {
-  width: 11px;
+  width: 5px;
 }
 
 .swift-accounts-content-stocks-show::-webkit-scrollbar-thumb {
@@ -400,8 +400,13 @@ width: 400px !important;
   display: flex;
   font-size: 12px;
   justify-content: space-between;
-  padding: 20px 20px;
+  padding: 6px 20px;
   width: 80%;
+}
+
+.swift-asset-range-buttons > p {
+  padding: 3px 10px;
+  border-radius: 35px;
 }
 
 .selected_duration {
@@ -458,6 +463,16 @@ width: 400px !important;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.5px;
+}
+
+.x-axis-label{
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  color: #011627;
+  font-size: 12px;
+  padding: 5px 10px;
 }
 
 @media screen and (max-width: 1240px) {
