@@ -35,6 +35,7 @@ const AssetAllocation = () => {
   const [duration, setDuration] = useState("1M");
   const [openDropdown, setOpenDropdown] = useState();
 
+  const [sum, setTotalsum] = useState(null);
 
   const [selectedStock, setSelectedStock] = useState(null);
 
@@ -43,8 +44,12 @@ const AssetAllocation = () => {
   // console.log(email_id);
 
   const handleStockSelect = (stock) => {
-    // console.log(stock, "stock");
+    // console.log(stock, "stock"); 
+    setloading2(true);
     setSelectedStock(stock);
+    setTimeout(() => {
+      setloading2(false);
+    }, 1000);
   };
 
   const fetchdata = async () => {
@@ -121,7 +126,6 @@ const AssetAllocation = () => {
         );
         setStrategyid(combinedStrategiesArray[0].id);
         fetchDataAndUpdateState();
-        
       }
       // setTimeout(() => {
       // setloading(false);
@@ -143,10 +147,12 @@ const AssetAllocation = () => {
     setClickedStrategy(strategyClicked);
     setStockArray(initialStrategies[index].assetclass);
     setStrategyid(initialStrategies[index].id);
-    setSelectedStock(initialStrategies[index].assetclass[0].stock.split(",")[0]);
+    setSelectedStock(
+      initialStrategies[index].assetclass[0].stock.split(",")[0]
+    );
     setIschartvisible(false);
-    setDuration("1M")
-        // console.log(initialStrategies[index].assetclass);
+    setDuration("1M");
+    // console.log(initialStrategies[index].assetclass);
 
     // setStockArray(initialStrategies[index])
     // console.log(stockArray);
@@ -202,7 +208,6 @@ const AssetAllocation = () => {
           setLastupdated(latestDate);
           // console.log(hasPendingStatus);
 
-
           setTimeout(() => {
             setloading(false);
           }, 1000);
@@ -224,9 +229,9 @@ const AssetAllocation = () => {
 
   useEffect(() => {
     if (stockArray.length > 0) {
-        setOpenDropdown(new Array(stockArray.length).fill(true));
+      setOpenDropdown(new Array(stockArray.length).fill(true));
     }
-}, [stockArray]);
+  }, [stockArray]);
 
   const handleDropdownToggle = (dropdownIndex) => {
     // if (openDropdown === dropdownIndex) {
@@ -238,7 +243,7 @@ const AssetAllocation = () => {
       const newOpenDropdown = [...prevOpenDropdown];
       newOpenDropdown[dropdownIndex] = !newOpenDropdown[dropdownIndex];
       return newOpenDropdown;
-  });
+    });
   };
 
   const graphContainerRef = useRef(null);
@@ -288,7 +293,7 @@ const AssetAllocation = () => {
         data: {
           stock: `${stock}`,
           id: id,
-          email_id : email_id
+          email_id: email_id,
         },
       });
       if (data1.server_error) {
@@ -310,7 +315,7 @@ const AssetAllocation = () => {
       const stockList = stock.stock;
       const trimmedStocks = stockList.split(",").map((stock) => stock.trim());
       for (const value of trimmedStocks) {
-        await insertStocks(value, strategyID,email_id);
+        await insertStocks(value, strategyID, email_id);
       }
     }
     navigate("/accounts/dashboard/jobqueue", {
@@ -318,7 +323,6 @@ const AssetAllocation = () => {
     });
     // setReRenderKey((prevKey) => prevKey + 1);
     // setloading(false);
-
   };
 
   const [chart_data, setChartData] = useState([]);
@@ -334,23 +338,19 @@ const AssetAllocation = () => {
           !selectedStock ||
           !duration ||
           !strategyID ||
-          initialStrategies.length == 0
-          || ischartvisible == false
-          || !ischartvisible
+          initialStrategies.length == 0 ||
+          ischartvisible == false ||
+          !ischartvisible 
           // || loading == true
         ) {
-          console.log(selectedStock,duration,strategyID,initialStrategies.length,ischartvisible,loading)
-          if((ischartvisible==false || initialStrategies.length==0)){
-              console.log("not hit api")
-              setloading2(false);
-            }
-            return;
+          if (ischartvisible == false || initialStrategies.length == 0 ) {
+            setloading2(false);
           }
-          
-          setloading2(true);
-          // console.log('hello');
-          console.log(selectedStock,duration,strategyID,initialStrategies.length,ischartvisible,loading)
-          console.log(" hit api")
+          return;
+        }
+
+        setloading2(true);
+       
         const data1 = await ServerRequest({
           method: "get",
           URL: `/strategy/chartdata?stock=${selectedStock}&range=${duration}&id=${strategyID}`,
@@ -364,30 +364,61 @@ const AssetAllocation = () => {
         }
 
         setChartData(data1.data);
-        // setTimeout(() => {
+        setTimeout(() => {
 
         setloading2(false);
-        // }, 2000);
+        }, 1000);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [selectedStock, strategyID, duration,ischartvisible]);
+  }, [selectedStock, strategyID, duration, ischartvisible]);
 
   const handleEdit = async () => {
-
-    navigate(`/accounts/dashboard/addstrategy/${strategyID}`,{
-      state: {email_id: email_id},
+    navigate(`/accounts/dashboard/addstrategy/${strategyID}`, {
+      state: { email_id: email_id },
     });
-
   };
+
+  const protfolio = [];
+  const handleGetSum = (value) => {
+    const existingItem = protfolio.find(item => item.heading === value.heading);
+  
+    if (existingItem) {
+      existingItem.total = value.total;
+    } else {
+      protfolio.push(value);
+    }
+    setTotalsum(protfolio.reduce((sum, item) => sum + item.total, 0));
+  };
+
+    const [animatedValue, setAnimatedValue] = useState(0);
+    const animationDuration = 2000; 
+    const animateValue = (finalValue) => {
+      let start = 0;
+      const increment = (finalValue / animationDuration) * 5;
+    
+      const intervalId = setInterval(() => {
+        start += increment;
+        setAnimatedValue(start);
+    
+        if (start >= finalValue) {
+          clearInterval(intervalId);
+        }
+      }, 5);
+    };
+
+    useEffect(() => {
+      animateValue(sum * 100);
+    }, [sum]);
+
 
   // console.log(loading, loading2);
   // console.log("chart", ischartvisible, chart_data.length);
-  console.log(openDropdown);
+  // console.log(openDropdown);
 
-  return !loading && (chart_data.length > 0 || loading2 == false) ? (
+  return !loading &&(chart_data.length > 0 || loading2 == false) ? (
     <div className="swift-accounts-main">
       <Header email_id={email_id} />
       <div className="swift-accounts-content">
@@ -400,7 +431,9 @@ const AssetAllocation = () => {
           <div className="swift-accounts-content-strategy">
             {initialStrategies.length == 0 && (
               <div className="analysis-pending">
-                <p className="analysis-pending-heading">No Strategy Avaliable</p>
+                <p className="analysis-pending-heading">
+                  No Strategy Avaliable
+                </p>
               </div>
             )}
             {initialStrategies.length > 0 &&
@@ -530,10 +563,11 @@ const AssetAllocation = () => {
                       height={graphDimensions.height}
                       duration={duration}
                       loading2={loading2}
+                      name={selectedStock}
                     />
-                  )}
+                    )
+                    }
                 </div>
-               
               </div>
             </div>
             <div
@@ -541,15 +575,14 @@ const AssetAllocation = () => {
                 isRightVisible ? "showdiv-1" : ""
               }`}
             >
-              
               <div className="swift-accounts-content-stocks-info">
                 <div className="swift-accounts-content-stocks-details">
                   <div className="swift-accounts-content-stocks-header">
                     <div className="swift-accounts-content-stocks-left">
-                      <p>Portfolio</p>
+                    <p>{`Portfolio (3m exp. ret ${animatedValue.toFixed(2)}%)`}</p>
                     </div>
                     <div className="swift-accounts-content-stocks-right">
-                      <p onClick={handleEdit} >Change</p>
+                      <p onClick={handleEdit}>Change</p>
                     </div>
                   </div>
                   <div className="swift-accounts-content-stocks-checkbox">
@@ -566,14 +599,12 @@ const AssetAllocation = () => {
                     <p className="run-analysis-btn" onClick={run_analysis}>
                       Run Analysis
                     </p>
-                   
                   </div>
                   <div className="swift-accounts-content-stocks-text">
                     <p>SAA</p>
                     <p>Prediction (3 mth)</p>
                     <p>Confidence</p>
                   </div>
-
                 </div>
                 <div
                   className="swift-accounts-content-stocks-show"
@@ -589,6 +620,7 @@ const AssetAllocation = () => {
                       isOpen={openDropdown[index]}
                       onToggle={() => handleDropdownToggle(index)}
                       onStockSelect={handleStockSelect}
+                      getsum={handleGetSum}
                     />
                   ))}
                 </div>

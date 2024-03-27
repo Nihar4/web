@@ -80,7 +80,7 @@ const Jobqueu = () => {
     (<div className="swift-addstrategy-main">
       <Header email_id={email_id} />
       <div className="swift-addstrategy-content">
-        <div className="swift-addstrategy-content-wrap">
+        <div className="swift-addstrategy-content-wrap job-queue-wrap">
           {/* <BackButton /> */}
           <div className="swift-signup-status-main swift-strategy-created-main">
             <div className="swift-signup-status-info swift-strategy-info">

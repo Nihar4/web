@@ -40,8 +40,7 @@
   row-gap: 10px;
   height: 80%;
   overflow-y: auto;
-  /* box-shadow: 0px 0px 10px 0px rgba(1, 22, 39, 0.1); */
-  /* width: 50%; */
+
 }
 .swift-addstrategy-input {
   display: flex;
@@ -91,6 +90,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 .swift-addstrategy-assetclassdiv {
   /* overflow-y: auto; */
@@ -101,13 +101,12 @@
 }
 .swift-addstrategy-content-wrap::-webkit-scrollbar {
   width: 11px;
-  padding-top: 10px;
 }
 
 .swift-addstrategy-content-wrap::-webkit-scrollbar-thumb {
   background-color: #e8e8e8;
   border-radius: 34px;
-  /* height: 98px; */
+  height: 98px;
 }
 
 .swift-addstrategy-content-wrap::-webkit-scrollbar-track {
@@ -118,6 +117,30 @@
   background-color: #ccc;
 }
 
+.job-queue-wrap{
+  height: 100% !important;
+}
+
+
+.job-queue-wrap ::-webkit-scrollbar {
+  width: 11px;
+}
+
+.job-queue-wrap ::-webkit-scrollbar-thumb {
+  background-color: #e8e8e8;
+  border-radius: 34px;
+  height: 98px;
+}
+
+.job-queue-wrap ::-webkit-scrollbar-track {
+  background-color: #eee;
+}
+
+.job-queue-wrap ::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+
+
 .swift-addstrategy-asset {
   display: flex;
   flex-direction: column;
@@ -126,6 +149,11 @@
   /* border-bottom: 0.5px solid #d0cfcf; */
   /* overflow-y: auto; */
   /* align-items: center; */
+}
+
+.swift-addstrategy-longname{
+  font-size: 11px;
+  color: rgba(1, 22, 39, 0.5)
 }
 
 .swift-addstrategy-asset-1 {
@@ -158,25 +186,15 @@
 
 .swift-addstrategy-underlying-input {
   border: none!important;
-
   border-bottom: 0.5px solid #0116271a!important;
-
   color: #011627b3;
-
   font-family: Open Sans;
-
   font-size: 13px;
-
   font-style: normal;
-
   font-weight: 600;
-
   letter-spacing: -0.5px;
-
   line-height: 16px;
-
   padding: 8px!important;
-
   /* margin-bottom: 2px; */
 }
 
@@ -332,7 +350,7 @@
 }
 .table-wrapper {
   max-height: 480px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   width: 100%;
 }
 

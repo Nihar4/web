@@ -16,6 +16,7 @@ import { tooltipContent } from "../../exports/ChartProps";
 import PriceMarkerCoordinate from "../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
 import PriceEdgeIndicator from "../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
 import Pulse from "../Loader/Pulse";
+import { LabelAnnotation, Label, Annotate } from "react-stockcharts/lib/annotation";
 
 const LineChart = ({
   data: initialData,
@@ -24,6 +25,8 @@ const LineChart = ({
   height,
   duration,
   loading2,
+  loading1,
+  name
 }) => {
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -80,7 +83,7 @@ const LineChart = ({
 
   useEffect(() => {
     setloading(true);
- 
+
     const lastDate = new Date(initialData[initialData.length - 1]?.date);
     const lastDatePlusFiveDays = new Date(lastDate);
     lastDatePlusFiveDays.setDate(lastDatePlusFiveDays.getDate() + 15);
@@ -117,12 +120,9 @@ const LineChart = ({
     }
 
     setTimeout(() => {
-
       setloading(false);
-    }, 1000);
+    }, 2000);
   }, [duration, initialData]);
-
-  
 
   const today = new Date();
   const oneDayAgo = new Date(today);
@@ -148,21 +148,23 @@ const LineChart = ({
       close3: 0,
       close4: 0,
       close5: 0,
-      close6: 0
+      close6: 0,
     };
     newData.push(newDataItem);
   }
-  initialData = [...initialData,...newData];
+  initialData = [...initialData, ...newData];
   // console.log(initialData);
 
   // console.log(xevents);
 
   return initialData.length > 0 && !loading2 && !loading ? (
+    <>
+    
     <ChartCanvas
       width={width}
-      height={height}
+      height={height - 20}
       ratio={ratio}
-      margin={{ left: 0, right: 70, top: 10, bottom: 30 }}
+      margin={{ left: 20, right: 70, top: 10, bottom: 30 }}
       seriesName="MSFT"
       data={initialData}
       clamp={"both"}
@@ -174,35 +176,50 @@ const LineChart = ({
       <Chart
         id={1}
         yExtents={(d) => {
-          const filteredData = initialData.filter(data => new Date(data.date) <= lastDate);
-        
-          const closeValues = filteredData.map(data => [
-            data.close,
-            data.close1,
-            data.close2,
-            data.close3,
-            data.close4,
-            data.close5,
-            data.close6,
-          ]).flat().filter(close => close !== undefined);
-        
+          const filteredData = initialData.filter(
+            (data) => new Date(data.date) <= lastDate
+          );
+
+          const closeValues = filteredData
+            .map((data) => [
+              data.close,
+              data.close1,
+              data.close2,
+              data.close3,
+              data.close4,
+              data.close5,
+              data.close6,
+            ])
+            .flat()
+            .filter((close) => close !== undefined);
+
           if (closeValues.length === 0) {
             return [0, 0];
           }
-        
+
           const minClose = Math.min(...closeValues);
           const maxClose = Math.max(...closeValues);
-        
+
           const minY = 0.8 * minClose;
           const maxY = 1.2 * maxClose;
-        
+
           return [minY, maxY];
         }}
       >
-        <XAxis axisAt="bottom" orient="bottom" tickLabelAngle={-45} ticks={6} stroke="#f1f1f1" />
-        <YAxis axisAt="right" orient="right" ticks={5}  stroke="#f1f1f1" />
-
-       
+        <XAxis
+          axisAt="bottom"
+          orient="bottom"
+          tickLabelAngle={-45}
+          ticks={6}
+          stroke="#f1f1f1"
+        />
+        {/* <Label
+          x={(width - 15 - 70) / 2}
+          y={height - 45 }
+          fontSize="12"
+          text={`${name}`}
+        /> */}
+        <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
 
         {/* <PriceMarkerCoordinate
             at="left"
@@ -262,7 +279,7 @@ const LineChart = ({
             new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
           }
           stroke="rgb(0 15 255 / 80%)"
-          // strokeWidth={2}
+          strokeWidth={2}
           // strokeDasharray={"Dash"}
           highlightOnHover
         />
@@ -271,6 +288,7 @@ const LineChart = ({
           yAccessor={(d) =>
             new Date(d.date) <= new Date() ? d.close : undefined
           }
+          strokeWidth={2}
           stroke="#000fff"
         />
 
@@ -284,7 +302,7 @@ const LineChart = ({
           stroke="none"
           isLabled={false}
           isInline={true}
-          lastDate = {lastDate.toISOString()}
+          lastDate={lastDate.toISOString()}
         />
 
         {/* <PriceEdgeIndicator
@@ -307,12 +325,12 @@ const LineChart = ({
           fontWeight="700"
           dx={1}
         /> */}
-
-        
       </Chart>
 
       {/* <CrossHairCursor /> */}
     </ChartCanvas>
+    <div className="x-axis-label">{name}</div>
+    </>
   ) : (
     <div className="swift-aseet-loader">
       <Pulse />
