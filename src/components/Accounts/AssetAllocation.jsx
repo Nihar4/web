@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import LineChart from "./LineChart";
 import { useLocation } from "react-router-dom";
 import Pulse from "../Loader/Pulse";
+import moment from "moment-timezone";
 
 const AssetAllocation = () => {
   const [initialStrategies, setInitialStrategies] = useState([]);
@@ -44,7 +45,7 @@ const AssetAllocation = () => {
   // console.log(email_id);
 
   const handleStockSelect = (stock) => {
-    // console.log(stock, "stock"); 
+    // console.log(stock, "stock");
     setloading2(true);
     setSelectedStock(stock);
     setTimeout(() => {
@@ -340,17 +341,17 @@ const AssetAllocation = () => {
           !strategyID ||
           initialStrategies.length == 0 ||
           ischartvisible == false ||
-          !ischartvisible 
+          !ischartvisible
           // || loading == true
         ) {
-          if (ischartvisible == false || initialStrategies.length == 0 ) {
+          if (ischartvisible == false || initialStrategies.length == 0) {
             setloading2(false);
           }
           return;
         }
 
         setloading2(true);
-       
+
         const data1 = await ServerRequest({
           method: "get",
           URL: `/strategy/chartdata?stock=${selectedStock}&range=${duration}&id=${strategyID}`,
@@ -365,8 +366,7 @@ const AssetAllocation = () => {
 
         setChartData(data1.data);
         setTimeout(() => {
-
-        setloading2(false);
+          setloading2(false);
         }, 1000);
       } catch (error) {
         console.error(error);
@@ -383,8 +383,10 @@ const AssetAllocation = () => {
 
   const protfolio = [];
   const handleGetSum = (value) => {
-    const existingItem = protfolio.find(item => item.heading === value.heading);
-  
+    const existingItem = protfolio.find(
+      (item) => item.heading === value.heading
+    );
+
     if (existingItem) {
       existingItem.total = value.total;
     } else {
@@ -393,32 +395,31 @@ const AssetAllocation = () => {
     setTotalsum(protfolio.reduce((sum, item) => sum + item.total, 0));
   };
 
-    const [animatedValue, setAnimatedValue] = useState(0);
-    const animationDuration = 2000; 
-    const animateValue = (finalValue) => {
-      let start = 0;
-      const increment = (finalValue / animationDuration) * 5;
-    
-      const intervalId = setInterval(() => {
-        start += increment;
-        setAnimatedValue(start);
-    
-        if (start >= finalValue) {
-          clearInterval(intervalId);
-        }
-      }, 5);
-    };
+  const [animatedValue, setAnimatedValue] = useState(0);
+  const animationDuration = 2000;
+  const animateValue = (finalValue) => {
+    let start = 0;
+    const increment = (finalValue / animationDuration) * 5;
 
-    useEffect(() => {
-      animateValue(sum * 100);
-    }, [sum]);
+    const intervalId = setInterval(() => {
+      start += increment;
+      setAnimatedValue(start);
 
+      if (start >= finalValue) {
+        clearInterval(intervalId);
+      }
+    }, 5);
+  };
+
+  useEffect(() => {
+    animateValue(sum * 100);
+  }, [sum]);
 
   // console.log(loading, loading2);
   // console.log("chart", ischartvisible, chart_data.length);
   // console.log(openDropdown);
 
-  return !loading &&(chart_data.length > 0 || loading2 == false) ? (
+  return !loading && (chart_data.length > 0 || loading2 == false) ? (
     <div className="swift-accounts-main">
       <Header email_id={email_id} />
       <div className="swift-accounts-content">
@@ -565,8 +566,7 @@ const AssetAllocation = () => {
                       loading2={loading2}
                       name={selectedStock}
                     />
-                    )
-                    }
+                  )}
                 </div>
               </div>
             </div>
@@ -579,7 +579,17 @@ const AssetAllocation = () => {
                 <div className="swift-accounts-content-stocks-details">
                   <div className="swift-accounts-content-stocks-header">
                     <div className="swift-accounts-content-stocks-left">
-                    <p>{`Portfolio (3m exp. ret ${animatedValue.toFixed(2)}%)`}</p>
+                      <p>
+                        Portfolio (3m exp. ret{" "}
+                        <span
+                          className={
+                            animatedValue >= 0 ? "green-text" : "red-text"
+                          }
+                        >
+                          {animatedValue.toFixed(2)}%
+                        </span>
+                        )
+                      </p>
                     </div>
                     <div className="swift-accounts-content-stocks-right">
                       <p onClick={handleEdit}>Change</p>
@@ -589,11 +599,14 @@ const AssetAllocation = () => {
                     {lastupdated && (
                       <p>
                         Last Run date:{" "}
-                        {lastupdated.toLocaleDateString(undefined, {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}
+                        {moment
+                          .tz(
+                            new Date(lastupdated).toISOString(),
+                            moment.tz.guess()
+                          )
+                          .add(5, "hours")
+                          .add(30, "minutes")
+                          .format("MMMM DD, YYYY")}
                       </p>
                     )}
                     <p className="run-analysis-btn" onClick={run_analysis}>
