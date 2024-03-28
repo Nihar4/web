@@ -213,12 +213,12 @@ const LineChart = ({
           ticks={6}
           stroke="#f1f1f1"
         />
-        {/* <Label
+        <Label
           x={(width - 15 - 70) / 2}
           y={height - 45 }
           fontSize="12"
           text={`${name}`}
-        /> */}
+        />
         <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
 
         {/* <PriceMarkerCoordinate
@@ -338,4 +338,4 @@ const LineChart = ({
   );
 };
 
-export default fitWidth(LineChart);
+export default LineChart;
