@@ -207,6 +207,7 @@ const AssetAllocation = () => {
             Math.max(...filteredDates.map((date) => new Date(date)))
           );
           setLastupdated(latestDate);
+          // setLastupdated("abc");
           // console.log(hasPendingStatus);
 
           setTimeout(() => {
@@ -414,12 +415,13 @@ const AssetAllocation = () => {
   useEffect(() => {
     animateValue(sum * 100);
   }, [sum]);
+  // console.log(lastupdated);
 
   // console.log(loading, loading2);
   // console.log("chart", ischartvisible, chart_data.length);
   // console.log(openDropdown);
 
-  return !loading && (chart_data.length > 0 || loading2 == false) ? (
+  return !loading && (chart_data.length > 0 || loading2 == false) && lastupdated ? (
     <div className="swift-accounts-main">
       <Header email_id={email_id} />
       <div className="swift-accounts-content">
@@ -566,6 +568,7 @@ const AssetAllocation = () => {
                       loading2={loading2}
                       name={selectedStock}
                     />
+                    // <p> {graphDimensions.width }</p>
                   )}
                 </div>
               </div>
@@ -601,7 +604,7 @@ const AssetAllocation = () => {
                         Last Run date:{" "}
                         {moment
                           .tz(
-                            new Date(lastupdated).toISOString(),
+                            moment(lastupdated),
                             moment.tz.guess()
                           )
                           .add(5, "hours")
