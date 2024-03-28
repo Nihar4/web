@@ -70,7 +70,7 @@
 
 .stocks-dropdown-option-up {
   display: flex;
-  column-gap: 30px;
+  /* column-gap: 30px; */
   justify-content: space-between;
 }
 
@@ -217,13 +217,17 @@
 }
 
 .green-text {
-  color: #00EC6D !important;
+  color: #00EC6D  !important;
 }
 
 .red-text {
-  color: #FF003D!important;
+  color: #FF003D !important;
 }
 
+.gray-text{
+  color: #011627b3  ;
+  font-weight: var(--font-weight-light);
+}
 
 
 @media screen and (max-width: 1325px) {

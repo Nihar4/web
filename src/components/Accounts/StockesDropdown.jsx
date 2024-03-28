@@ -10,7 +10,7 @@ const StockesDropdown = ({
   onToggle,
   id,
   onStockSelect,
-  getsum
+  getsum,
 }) => {
   const [dl_data, setDlData] = useState(null);
   const [stockDetailsArray, setStockDetailsArray] = useState({});
@@ -61,8 +61,7 @@ const StockesDropdown = ({
         const data = await fetchData(id);
         setDlData(data.data);
         setTimeout(() => {
-
-        setloading(false);
+          setloading(false);
         }, 1000);
       } catch (error) {
         console.error("Error fetching and setting data:", error);
@@ -155,8 +154,6 @@ const StockesDropdown = ({
     }
   });
 
-
-  
   useEffect(() => {
     let total = 0;
     Object.keys(stock_saa_array).forEach((stock) => {
@@ -164,10 +161,8 @@ const StockesDropdown = ({
         (stock_saa_array[stock] * latestValuesArray[stock].predict_percentage) /
         100;
     });
-    getsum({heading,total});
-
+    getsum({ heading, total });
   }, [stock_saa_array, latestValuesArray]);
-
 
   const map_corr = (correlation) => {
     if (correlation > 0.9) {
@@ -240,11 +235,21 @@ const StockesDropdown = ({
                               : "red-text")
                           }
                         >
-                          {stockDetailsArray[stock]
-                            ? stockDetailsArray[
+                          {stockDetailsArray[stock] ? (
+                            <p>
+                              {index === 0 ? (
+                                <span className="gray-text">(MTD)</span>
+                              ) : (
+                                ""
+                              )}
+                              {stockDetailsArray[
                                 stock
-                              ].percentage_change.toFixed(2) + "%"
-                            : ""}
+                              ].percentage_change.toFixed(2)}
+                              %
+                            </p>
+                          ) : (
+                            ""
+                          )}
                         </p>
                       </div>
                     </div>
@@ -255,7 +260,7 @@ const StockesDropdown = ({
                     </div>
                   </div>
                   <div className="stocks-dropdown-option-info">
-                    <p>{stock_saa_array[stock]}%</p>
+                    <p>{stock_saa_array[stock].toFixed(1)}%</p>
                     <p
                       className={
                         latestValuesArray[stock].predict_percentage * 100 > 0
