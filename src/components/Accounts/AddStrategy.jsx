@@ -39,6 +39,15 @@ const AddStrategyMain = () => {
   const [loading, setLoading] = useState(true);
   const [longName, setLongName] = useState({});
 
+  const fetchLongName = async (stock) => {
+    const result = await ServerRequest({
+      method: "get",
+      URL: `/strategy/getlongname?stock=${stock}`,
+    });
+    // console.log(result.data);
+    return result.data.longname;
+  }
+
   useEffect(() => {
     const fetchdata = async () => {
       setLoading(true);
@@ -49,10 +58,27 @@ const AddStrategyMain = () => {
             URL: `/strategy/getone/?id=${id}`,
           });
           setFormValues(data.data);
+          // console.log("form daa",data.data);
+          const formData = data.data;
+
+          for (const [assetIndex, asset] of formData.assetClasses.entries()) {
+            for (const [underlyingIndex, underlying] of asset.underlyings.entries()) {
+                // console.log("Stock:", underlying.stock);
+                const longNameValue = await fetchLongName(underlying.stock);
+                const name = `assetClasses[${assetIndex}].underlyings[${underlyingIndex}].stock`
+                setLongName((prevLongName) => ({
+                  ...prevLongName,
+                  [name]: longNameValue,
+                }));
+
+            }
+        }
+          
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
+
         setTimeout(() => {
           setLoading(false);
         }, 3000);
@@ -510,7 +536,7 @@ const AddStrategyMain = () => {
     setValue1(inputValue);
   };
 
-  console.log(formValues);
+  console.log(longName);
   return loading ? (
     <div className="swift-aseet-loader">
       <p>Loading</p>
