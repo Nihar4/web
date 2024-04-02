@@ -164,7 +164,7 @@ const LineChart = ({
   initialData = [...initialData, ...newData];
 
 
-console.log(newestDate);
+// console.log(newestDate);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
     
