@@ -150,9 +150,14 @@ const AssetAllocation = () => {
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0]
         );
         setStrategyid(combinedStrategiesArray[0].id);
-        // if(selectedStock){
+        let stock =
+          combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
+        if (stock == stock.split(".")[0]) {
+          setDuration("1Y");
+        } else {
+          setDuration("1M");
 
-        // }
+        }
         fetchDataAndUpdateState();
       }
       // setTimeout(() => {
@@ -179,15 +184,12 @@ const AssetAllocation = () => {
       initialStrategies[index].assetclass[0].stock.split(",")[0]
     );
     setIschartvisible(false);
-    let stock  = initialStrategies[index].assetclass[0].stock.split(",")[0];
-    if(stock == stock.split(".")[0]){
+    let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
+    if (stock == stock.split(".")[0]) {
       setDuration("1Y");
-    }
-    else{
+    } else {
       setDuration("1M");
-
     }
-
 
     // console.log(initialStrategies[index].assetclass);
 

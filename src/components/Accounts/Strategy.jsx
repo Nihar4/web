@@ -40,9 +40,8 @@ const Strategy = ({
       state: {email_id: email_id},
     });
     // setChange(Math.random());
-  };
-
-  // console.log("Rendering Strategy:", heading, isClicked);
+  }
+  
   return (
     <div className="swift-accounts-strategy">
       <div

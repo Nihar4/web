@@ -356,10 +356,11 @@ width: 400px !important;
 .swift-accounts-content-stocks-text-left {
   grid-column-gap: 40px;
   width: 50%;
- column-gap: 10px;
+ column-gap: 12px;
   display: grid;
   grid-template-columns: repeat(2,60px);
  justify-content: flex-end;
+ text-align: left;
 
 }
 
