@@ -98,11 +98,11 @@ const StockesDropdown = ({
   };
 
   const fetchStockDetails = async () => {
+    setloading1(true);
     for (const stock of Object.keys(stock_saa_array)) {
       try {
         // const latestData =
         //   dl_data && dl_data.find((datum) => datum.security === stock);
-        // setloading1(true);
         const stock_data = await fetchStockData(stock);
         // console.log(stock_data);
 
@@ -111,17 +111,20 @@ const StockesDropdown = ({
           [stock]: {
             percentage_change: stock_data.percentage_change,
             detailed_name: stock_data.detailed_name,
+            regularMarketPrice: stock_data.regularMarketPrice,
+            regularMarketChangePercent: stock_data.regularMarketChangePercent,
           },
         }));
 
-        // setTimeout(() => {
-
-        //   setloading1(false);
-        // }, 1000);
+       
       } catch (error) {
         console.error("Error fetching stock data:", error);
       }
     }
+    setTimeout(() => {
+
+      setloading1(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -213,7 +216,9 @@ const StockesDropdown = ({
             {Object.keys(stock_saa_array).map((stock, index) => (
               <li
                 key={index}
-                onClick={() => onStockSelect(stock)}
+                onClick={() =>
+                  onStockSelect(stock, stockDetailsArray[stock].detailed_name)
+                }
                 style={{ cursor: "pointer" }}
               >
                 <div className="stocks-dropdown-option-details">
@@ -223,30 +228,40 @@ const StockesDropdown = ({
                         {stock}
                       </div>
                       <div className="stocks-dropdown-option-change">
-                        <p className="stocks-dropdown-option-change-1">
-                          {stock.company === ""}
-                        </p>
                         <p
                           className={
                             "stocks-dropdown-option-change-2 " +
-                            (stockDetailsArray[stock] &&
+                            ( stockDetailsArray[stock]  &&
                             stockDetailsArray[stock].percentage_change >= 0
                               ? "green-text"
-                              : "red-text")
+                              : "red-text") + (stock.split(".")[0] == stock ? "normal-text":"")
                           }
                         >
-                          {stockDetailsArray[stock] ? (
+                          {stockDetailsArray[stock]  && stockDetailsArray[stock].percentage_change !== "-" ? (
                             <p>
-                              {index === 0 ? (
-                                <span className="gray-text">(MTD)</span>
-                              ) : (
-                                ""
-                              )}
                               {stockDetailsArray[
                                 stock
                               ].percentage_change.toFixed(2)}
                               %
                             </p>
+                          ) : (
+                            "--"
+                          )}
+                        </p>
+
+                        <p className="stocks-dropdown-option-change-1">
+                          {stockDetailsArray[stock] ? (
+                            <>
+                              {stockDetailsArray[stock].regularMarketPrice}
+                              <span className={stockDetailsArray[stock].regularMarketChangePercent >=0 ? "green-text" : "red-text"}>
+                                {" "}
+                                (
+                                {stockDetailsArray[
+                                  stock
+                                ].regularMarketChangePercent.toFixed(2)}
+                                %)
+                              </span>
+                            </>
                           ) : (
                             ""
                           )}

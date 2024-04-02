@@ -65,7 +65,7 @@
 .stocks-dropdown-option-left {
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 50%;
 }
 
 .stocks-dropdown-option-up {
@@ -96,23 +96,32 @@
 }
 
 .stocks-dropdown-option-change {
+  /* display: flex;
+  column-gap: 3px; */
+/* 
+  display: grid;
+  grid-template-columns: repeat(2, 40px); 
+  column-gap: 10px;
+  text-align: center; */
   display: flex;
-  column-gap: 3px;
+  width: 55%;
+  justify-content:space-between;
+
 }
 
 .stocks-dropdown-option-change-1 {
-  color: rgba(1, 22, 39, 0.3);
-  font-size: 11px;
+  color: var(--text-color);
+  font-size: 12px;
   font-style: normal;
-  font-weight: var(--font-weight-light);
+  /* font-weight: var(--font-weight-light); */
   line-height: 20px;
   letter-spacing: -0.55px;
 }
 .stocks-dropdown-option-change-2 {
-  color: #00ec6d;
+  /* color: #00ec6d; */
   font-size: var(--font-small);
   font-style: normal;
-  font-weight: var(--font-weight-medium);
+  /* font-weight: var(--font-weight-medium); */
   line-height: 20px;
   letter-spacing: -0.6px;
 }
@@ -222,6 +231,9 @@
 
 .red-text {
   color: #FF003D !important;
+}
+.normal-text{
+  color: var(--text-color) !important;
 }
 
 .gray-text{

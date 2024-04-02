@@ -68,18 +68,21 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
         <ul className={`results-list above`}>
           {filteredResults.map((result) => (
             <li key={result.code} onClick={() => handleItemClick(result)}>
-              <p style={{width:"40px"}}>{result.symbol && result.symbol.split(".")[0]}</p>
+              <p style={{width:"60px"}}>{result.symbol && result.symbol.split(".")[0]}</p>
 
               <p className="result-list-name" style={{width:"200px"}}>
-                {result.longname && result.longname.length > 30
+                {/* {result.longname && result.longname.length > 30
                   ? result.longname.slice(0, 30) + "..."
                   : result.longname
                   ? result.longname
                   : result.shortname && result.shortname.length > 30
                   ? result.shortname.slice(0, 30) + "..."
-                  : result.shortname}
+                  : result.shortname} */}
+                  {
+                    result.longname ?result.longname : result.shortname
+                  }
               </p>
-              <p style={{width:"40px"}}>{result.exchange}</p>
+              <p style={{width:"80px"}}>{result.exchange}</p>
             </li>
           ))}
         </ul>

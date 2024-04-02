@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../css/Accounts/Header.css";
 import { useNavigate } from "react-router-dom";
+import Pulse from "../Loader/Pulse";
 
 const Header = ({email_id}) => {
 
   const navigate = useNavigate();
+  const [loader,setloader] = useState(false);
+
   const handleclick = () => {
     window.location.href = `mailto:hello@swiftfolios.com`;
   }
   const logOutHandler = () => {
-    navigate("/login");
+    setloader(true);
+    setTimeout(() => {
+      
+      navigate("/login");
+    }, 3000);
   }
   const dashboardHandler = (email_id) => {
     navigate("/accounts/dashboard/asset", {
@@ -22,8 +29,7 @@ const Header = ({email_id}) => {
     });
   }
 
-  return (
-    <div className="swift-accounts-header">
+  return !loader ? (<div className="swift-accounts-header">
       <div className="swift-accounts-header-left">
         <p className="swift-accounts-heading">
           <i style={{ fontWeight: 400 }}>swift</i>
@@ -45,8 +51,12 @@ const Header = ({email_id}) => {
           </div>
         </div>
       </div>
+    </div>) : (
+      <div className="swift-aseet-loader">
+      <Pulse />
     </div>
-  );
+    )
+  
 };
 
 export default Header;
