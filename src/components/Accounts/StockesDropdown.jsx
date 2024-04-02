@@ -16,6 +16,7 @@ const StockesDropdown = ({
   const [stockDetailsArray, setStockDetailsArray] = useState({});
   const [loading, setloading] = useState(true);
   const [loading1, setloading1] = useState(true);
+  const [loading2, setloading2] = useState(true);
 
   const stock_saa_array = {};
 
@@ -98,7 +99,7 @@ const StockesDropdown = ({
   };
 
   const fetchStockDetails = async () => {
-    setloading1(true);
+    setloading2(true);
     for (const stock of Object.keys(stock_saa_array)) {
       try {
         // const latestData =
@@ -122,8 +123,7 @@ const StockesDropdown = ({
       }
     }
     setTimeout(() => {
-
-      setloading1(false);
+      setloading2(false);
     }, 1000);
   };
 
@@ -177,7 +177,9 @@ const StockesDropdown = ({
     }
   };
 
-  return !loading && !loading1 ? (
+  // console.log("lol",loading,loading1,loading2);
+
+  return !loading && !loading1  && !loading2 ? (
     <div className="stocks-dropdown-main">
       <div className="stocks-dropdown-header">
         <div className="stocks-dropdown-header-left">
