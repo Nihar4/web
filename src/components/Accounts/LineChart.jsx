@@ -251,42 +251,42 @@ const LineChart = ({
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 30%)"
+          stroke="rgb(252 243 0 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 30%)"
+          stroke="rgb(252 243 0 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 30%)"
+          stroke="rgb(252 243 0 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 30%)"
+          stroke="rgb(252 243 0 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 30%)"
+          stroke="rgb(252 243 0 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
           }
-          stroke="rgb(0 15 255 / 80%)"
+          stroke="rgb(252 243 0 / 80%)"
           strokeWidth={2}
           // strokeDasharray={"Dash"}
           highlightOnHover

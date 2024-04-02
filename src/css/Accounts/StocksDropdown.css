@@ -116,6 +116,7 @@
   /* font-weight: var(--font-weight-light); */
   line-height: 20px;
   letter-spacing: -0.55px;
+  width: 70%;
 }
 .stocks-dropdown-option-change-2 {
   /* color: #00ec6d; */
