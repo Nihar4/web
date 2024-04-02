@@ -677,8 +677,10 @@ const AssetAllocation = () => {
                   </div>
                   <div className="swift-accounts-content-stocks-text">
                     <div className="swift-accounts-content-stocks-text-left">
-                      <p>MTD</p>
-                      <p>Price</p>
+                      <div className="swift-accounts-content-stocks-text-left-sub-div">
+                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">MTD</p>
+                      <p className="swift-accounts-content-stocks-text-left-sub-div-p2">Price</p>
+                      </div>
                     </div>
 
                     <div className="swift-accounts-content-stocks-text-right">

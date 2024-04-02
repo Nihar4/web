@@ -816,11 +816,11 @@ const StrategyCreated = () => {
     <div className="swift-addstrategy-main">
       <Header email_id={email_id} />
       <div className="swift-addstrategy-content">
-        <div className="swift-addstrategy-content-wrap">
+        <div className="swift-addstrategy-content-wrap strategy-created-wrap">
           <BackButton />
           <div className="swift-signup-status-main swift-strategy-created-main">
-            <div className="swift-signup-status-info swift-strategy-info">
-              <div className="swift-signup-status-info-1 swift-strategy-created">
+            <div className="swift-signup-status-info swift-strategy-info strategy-created-info">
+              <div className="swift-signup-status-info-1 swift-strategy-created strategy-created-content">
                 <div className="swift-strategy-created-head-text">
                   {/* <div>Status</div> */}
                   <div style={{ fontWeight: 800 }}>
