@@ -44,12 +44,16 @@
   transition: background-color 0.3s ease;
   border-bottom: 1px solid #f1f1f1;
   background-color: #ffffff;
+
 }
 
 .results-list li > p {
-  text-align: center;
+  /* text-align: center; */
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .results-list::-webkit-scrollbar {
   display: none;
 }
@@ -61,3 +65,5 @@
 .results-list li:hover {
   background-color: #f1f1f1;
 }
+
+

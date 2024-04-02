@@ -26,7 +26,8 @@ const LineChart = ({
   duration,
   loading2,
   loading1,
-  name
+  name,
+
 }) => {
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -124,25 +125,33 @@ const LineChart = ({
     }, 2000);
   }, [duration, initialData]);
 
+
   const today = new Date();
   const oneDayAgo = new Date(today);
   oneDayAgo.setDate(today.getDate() - 1);
+  let newestDate;
 
-  const newestDate = initialData.reduce((acc, cur) => {
-    const currentDate = new Date(cur.date);
-    if (currentDate <= oneDayAgo && currentDate > acc) {
-      return currentDate;
-    }
-    return acc;
-  }, new Date(0));
+  if(name.startsWith("Eurekahedge")){
+    newestDate = new Date(initialData[initialData.length-4].date).setDate(0);
+  }
+  else{
+    newestDate = initialData.reduce((acc, cur) => {
+      const currentDate = new Date(cur.date);
+      if (currentDate <= oneDayAgo && currentDate > acc) {
+        return currentDate;
+      }
+      return acc;
+    }, new Date(0));
+  }
 
   const lastDate = new Date(initialData[initialData.length - 1]?.date);
+
   const newData = [];
   for (let i = 1; i <= 15; i++) {
     const nextDate = new Date(lastDate);
     nextDate.setDate(lastDate.getDate() + i);
     const newDataItem = {
-      date: nextDate.toISOString(), // Convert date to ISO string format
+      date: nextDate.toISOString(),
       close1: 0,
       close2: 0,
       close3: 0,
@@ -153,10 +162,9 @@ const LineChart = ({
     newData.push(newDataItem);
   }
   initialData = [...initialData, ...newData];
-  // console.log(initialData);
 
-  // console.log(xevents);
 
+console.log(newestDate);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
     

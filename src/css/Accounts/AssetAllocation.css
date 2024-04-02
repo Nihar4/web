@@ -22,7 +22,7 @@
 
 .swift-accounts-content-left {
   /* border: 2px solid black; */
-  width: 23%;
+  width: 20%;
   padding: 15px 13px;
   border-radius: 10px;
   background: #fff;
@@ -61,7 +61,7 @@
 .swift-accounts-content-right {
   /* border: 2px solid black; */
   width: 79%;
-  padding: 15px 35px 15px 17px;
+  padding: 15px;
   display: flex;
   column-gap: 12px;
   border-radius: 10px;
@@ -95,7 +95,7 @@
   border-radius: 10px;
   height: 100px;
   border: 1px solid rgba(1, 22, 39, 0.05);
-  padding: 10px 0 12px 18px;
+  padding: 10px 15px;
   display: flex;
   flex-direction: column;
   row-gap: 4px;
@@ -127,7 +127,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  width: 62%;
+  width: 55%;
   /* border: 2px solid black; */
 }
 
@@ -161,6 +161,7 @@
   /* row-gap: 9px; */
   height: 80%;
   width: 100%;
+  align-items: center;
   /* border: 2px solid black; */
 }
 .swift-account-graph {
@@ -179,7 +180,7 @@ width: 400px !important;
 } */
 
 .swift-accounts-content-div-2 {
-  width: 37%;
+  width : 44%;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
@@ -331,35 +332,35 @@ width: 400px !important;
   font-weight: 600;
 }
 
-.swift-accounts-content-stocks-text {
-  /* color: rgba(1, 22, 39, 0.7);
-  text-align: center;
-  font-size: var(--font-extra-small);
-  font-style: normal;
-  font-weight: var(--font-weight-light);
-  line-height: normal;
-  letter-spacing: -0.55px;
-  column-gap: 38px;
-
-  display: grid;
-  grid-template-columns: repeat(3, 50px);
-  column-gap: 8px;
-  justify-content: flex-end; */
-
-
-  grid-column-gap: 40px;
-  color: #011627b3;
-  column-gap: 38px;
- column-gap: 27px;
-  display: grid;
+.swift-accounts-content-stocks-text{
+  display: flex;
+  justify-content: space-between;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
-  grid-template-columns: repeat(3,50px);
- justify-content: flex-end;
   letter-spacing: -.55px;
   line-height: normal;
   text-align: center;
+  color: #011627b3;
+}
+
+.swift-accounts-content-stocks-text-right {
+  grid-column-gap: 40px;
+ column-gap: 27px;
+  display: grid;
+  grid-template-columns: repeat(3,50px);
+ justify-content: flex-end;
+ width: 50%;
+ 
+}
+.swift-accounts-content-stocks-text-left {
+  grid-column-gap: 40px;
+  width: 50%;
+ column-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2,60px);
+ justify-content: flex-end;
+
 }
 
 .swift-accounts-content-stocks-show {

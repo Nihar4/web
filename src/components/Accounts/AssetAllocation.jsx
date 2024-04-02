@@ -39,15 +39,39 @@ const AssetAllocation = () => {
   const [sum, setTotalsum] = useState(null);
 
   const [selectedStock, setSelectedStock] = useState(null);
+  const [selectStockName, setSelectedStockName] = useState(null);
 
   const location = useLocation();
   const email_id = location.state ? location.state.email_id : null;
   // console.log(email_id);
 
-  const handleStockSelect = (stock) => {
-    // console.log(stock, "stock");
+  const fetchStockData = async (stock) => {
+    let stock_name = stock;
+    try {
+      const data = await ServerRequest({
+        method: "get",
+        URL: `/strategy/getstockinfo?stock=${stock_name}`,
+      });
+
+      if (data.server_error) {
+        alert("error");
+      }
+
+      if (data.error) {
+        alert("error1");
+      }
+
+      return data.data.detailed_name;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleStockSelect = (stock, detailed_name) => {
+    // console.log(stock,detailed_name, "stock");
     setloading2(true);
     setSelectedStock(stock);
+    setSelectedStockName(detailed_name);
     setTimeout(() => {
       setloading2(false);
     }, 1000);
@@ -126,6 +150,9 @@ const AssetAllocation = () => {
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0]
         );
         setStrategyid(combinedStrategiesArray[0].id);
+        // if(selectedStock){
+
+        // }
         fetchDataAndUpdateState();
       }
       // setTimeout(() => {
@@ -152,7 +179,16 @@ const AssetAllocation = () => {
       initialStrategies[index].assetclass[0].stock.split(",")[0]
     );
     setIschartvisible(false);
-    setDuration("1M");
+    let stock  = initialStrategies[index].assetclass[0].stock.split(",")[0];
+    if(stock == stock.split(".")[0]){
+      setDuration("1Y");
+    }
+    else{
+      setDuration("1M");
+
+    }
+
+
     // console.log(initialStrategies[index].assetclass);
 
     // setStockArray(initialStrategies[index])
@@ -200,7 +236,7 @@ const AssetAllocation = () => {
           );
           setIschartvisible(!hasPendingStatus);
           const dateCompletedArray = data.map((item) =>
-            new Date(item.date_completed).toLocaleDateString()
+            new Date(item.date_completed).toISOString()
           );
           const filteredDates = dateCompletedArray.filter((date) => date);
           const latestDate = new Date(
@@ -353,6 +389,11 @@ const AssetAllocation = () => {
 
         setloading2(true);
 
+        const name = await fetchStockData(selectedStock);
+        console.log("name", name);
+        // const name = "abc";
+        setSelectedStockName(name);
+
         const data1 = await ServerRequest({
           method: "get",
           URL: `/strategy/chartdata?stock=${selectedStock}&range=${duration}&id=${strategyID}`,
@@ -421,7 +462,9 @@ const AssetAllocation = () => {
   // console.log("chart", ischartvisible, chart_data.length);
   // console.log(openDropdown);
 
-  return !loading && (chart_data.length > 0 || loading2 == false) && lastupdated ? (
+  return !loading &&
+    (chart_data.length > 0 || loading2 == false) &&
+    lastupdated ? (
     <div className="swift-accounts-main">
       <Header email_id={email_id} />
       <div className="swift-accounts-content">
@@ -508,34 +551,47 @@ const AssetAllocation = () => {
                 }`}
               >
                 <div className="swift-asset-range-buttons">
-                  <p
-                    onClick={() => handleDuraion("1M")}
-                    style={{ cursor: "pointer" }}
-                    className={duration == "1M" ? "selected_duration" : ""}
-                  >
-                    1m
-                  </p>
-                  <p
-                    onClick={() => handleDuraion("3M")}
-                    style={{ cursor: "pointer" }}
-                    className={duration == "3M" ? "selected_duration" : ""}
-                  >
-                    3m
-                  </p>
-                  <p
-                    onClick={() => handleDuraion("6M")}
-                    style={{ cursor: "pointer" }}
-                    className={duration == "6M" ? "selected_duration" : ""}
-                  >
-                    6m
-                  </p>
-                  <p
-                    onClick={() => handleDuraion("YTD")}
-                    style={{ cursor: "pointer" }}
-                    className={duration == "YTD" ? "selected_duration" : ""}
-                  >
-                    YTD
-                  </p>
+                  {selectedStock &&
+                    selectedStock.split(".")[0] !== selectedStock && (
+                      <>
+                        <p
+                          onClick={() => handleDuraion("1M")}
+                          style={{ cursor: "pointer" }}
+                          className={
+                            duration == "1M" ? "selected_duration" : ""
+                          }
+                        >
+                          1m
+                        </p>
+                        <p
+                          onClick={() => handleDuraion("3M")}
+                          style={{ cursor: "pointer" }}
+                          className={
+                            duration == "3M" ? "selected_duration" : ""
+                          }
+                        >
+                          3m
+                        </p>
+                        <p
+                          onClick={() => handleDuraion("6M")}
+                          style={{ cursor: "pointer" }}
+                          className={
+                            duration == "6M" ? "selected_duration" : ""
+                          }
+                        >
+                          6m
+                        </p>
+                        <p
+                          onClick={() => handleDuraion("YTD")}
+                          style={{ cursor: "pointer" }}
+                          className={
+                            duration == "YTD" ? "selected_duration" : ""
+                          }
+                        >
+                          YTD
+                        </p>
+                      </>
+                    )}
                   <p
                     onClick={() => handleDuraion("1Y")}
                     style={{ cursor: "pointer" }}
@@ -566,7 +622,7 @@ const AssetAllocation = () => {
                       height={graphDimensions.height}
                       duration={duration}
                       loading2={loading2}
-                      name={selectedStock}
+                      name={selectStockName}
                     />
                     // <p> {graphDimensions.width }</p>
                   )}
@@ -583,15 +639,19 @@ const AssetAllocation = () => {
                   <div className="swift-accounts-content-stocks-header">
                     <div className="swift-accounts-content-stocks-left">
                       <p>
-                        Portfolio (3m exp. ret{" "}
-                        <span
-                          className={
-                            animatedValue >= 0 ? "green-text" : "red-text"
-                          }
-                        >
-                          {animatedValue.toFixed(2)}%
+                        Portfolio
+                        <span style={{ fontSize: "12px" }}>
+                          {` (3m exp. re `}
+
+                          <span
+                            className={
+                              animatedValue >= 0 ? "green-text" : "red-text"
+                            }
+                          >
+                            {animatedValue.toFixed(2)}%
+                          </span>
+                          {")"}
                         </span>
-                        )
                       </p>
                     </div>
                     <div className="swift-accounts-content-stocks-right">
@@ -603,13 +663,10 @@ const AssetAllocation = () => {
                       <p>
                         Last Run date:{" "}
                         {moment
-                          .tz(
-                            moment(lastupdated),
-                            moment.tz.guess()
-                          )
+                          .tz(moment(lastupdated), moment.tz.guess())
                           .add(5, "hours")
                           .add(30, "minutes")
-                          .format("MMMM DD, YYYY")}
+                          .format("DD-MM-YYYY HH:mm:ss")}
                       </p>
                     )}
                     <p className="run-analysis-btn" onClick={run_analysis}>
@@ -617,9 +674,16 @@ const AssetAllocation = () => {
                     </p>
                   </div>
                   <div className="swift-accounts-content-stocks-text">
-                    <p>SAA</p>
-                    <p>Prediction (3 mth)</p>
-                    <p>Confidence</p>
+                    <div className="swift-accounts-content-stocks-text-left">
+                      <p>MTD</p>
+                      <p>Price</p>
+                    </div>
+
+                    <div className="swift-accounts-content-stocks-text-right">
+                      <p>SAA</p>
+                      <p>Prediction (3 mth)</p>
+                      <p>Confidence</p>
+                    </div>
                   </div>
                 </div>
                 <div
