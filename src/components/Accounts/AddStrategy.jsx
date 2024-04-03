@@ -544,7 +544,7 @@ const AddStrategyMain = () => {
     </div>
   ) : (
     <div className="swift-addstrategy-main">
-      <Header email_id={email_id} />
+      <Header email_id={email_id} setloading={setLoading}/>
       <div
         className={`swift-addstrategy-content ${
           showalert ? "blur-background" : ""
@@ -743,6 +743,7 @@ const StrategyCreated = () => {
   const id = location.state ? location.state.id : null;
   const email_id = location.state ? location.state.email_id : null;
   const [dl_data, setDlData] = useState(null);
+  const [loading,setloading] = useState(true)
   // console.log("strategy", email_id);
 
   const fetchData = async (id) => {
@@ -768,8 +769,10 @@ const StrategyCreated = () => {
   };
 
   useEffect(() => {
+
     const fetchDataAndSetState = async () => {
       try {
+        setloading(true);
         const data = await fetchData(id);
         const sortedData = data.data.slice().sort((a, b) => {
           if (a.status === "Pending" && b.status !== "Pending") {
@@ -794,6 +797,10 @@ const StrategyCreated = () => {
         setDlData(sortedData);
         // setDlData(data.data);
         // console.log(data.data);
+        setTimeout(() => {
+          
+          setloading(false);
+        }, 3000);
       } catch (error) {
         console.error("Error fetching and setting data:", error);
       }
@@ -812,9 +819,8 @@ const StrategyCreated = () => {
 
   // console.log(dl_data);
 
-  return (
-    <div className="swift-addstrategy-main">
-      <Header email_id={email_id} />
+  return !loading ? (<div className="swift-addstrategy-main">
+      <Header email_id={email_id} setloading={setloading}  />
       <div className="swift-addstrategy-content">
         <div className="swift-addstrategy-content-wrap strategy-created-wrap">
           <BackButton />
@@ -902,8 +908,13 @@ const StrategyCreated = () => {
           </div>
         </div>
       </div>
+    </div>) : (
+      <div className="swift-aseet-loader">
+      <p>Loading</p>
+      <Pulse />
     </div>
-  );
+    )
+  
 };
 
 export { AddStrategyMain, StrategyCreated };

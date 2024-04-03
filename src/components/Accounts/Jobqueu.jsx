@@ -64,7 +64,7 @@ const Jobqueu = () => {
         setDlData(sortedData);
         setTimeout(() => {
           setloading(false);
-        }, 1000);
+        }, 2000);
       } catch (error) {
         console.error("Error fetching and setting data:", error);
       }
@@ -78,7 +78,7 @@ const Jobqueu = () => {
 
   return !loading ? 
     (<div className="swift-addstrategy-main">
-      <Header email_id={email_id} />
+      <Header email_id={email_id} setloading={setloading}/>
       <div className="swift-addstrategy-content">
         <div className="swift-addstrategy-content-wrap job-queue-wrap">
           {/* <BackButton /> */}

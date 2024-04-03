@@ -476,7 +476,7 @@ const AssetAllocation = () => {
     (chart_data.length > 0 || loading2 == false) &&
     lastupdated ? (
     <div className="swift-accounts-main">
-      <Header email_id={email_id} />
+      <Header email_id={email_id} setloading={setloading}  />
       <div className="swift-accounts-content">
         <div
           className={`swift-accounts-content-left ${
