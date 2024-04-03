@@ -59,13 +59,15 @@
   padding: 6px 0px 6px 0px;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   /* border-bottom: 0.5px solid rgba(1, 22, 39, 0.1); */
 }
 
 .stocks-dropdown-option-left {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  /* width: 50%; */
+  width: 100%;
 }
 
 .stocks-dropdown-option-up {
@@ -93,6 +95,7 @@
   font-weight: var(--font-weight-heavy);
   line-height: 20px; /* 153.846% */
   letter-spacing: -0.65px;
+  width: 20%;
 }
 
 .stocks-dropdown-option-change {
@@ -103,11 +106,24 @@
   grid-template-columns: repeat(2, 40px); 
   column-gap: 10px;
   text-align: center; */
-  display: flex;
+  /* display: flex;
   width: 55%;
-  justify-content:space-between;
+  justify-content:space-between; */
+
+  display: flex;
+  width: 80%;
+  /* column-gap: 15px; */
+  justify-content: space-between;
+
+  color: var(--text-color);
+    font-size: 12px;
+    font-style: normal;
+    line-height: 20px;
+    letter-spacing: -0.55px;
 
 }
+
+
 
 .stocks-dropdown-option-change-1 {
   color: var(--text-color);
@@ -116,7 +132,7 @@
   /* font-weight: var(--font-weight-light); */
   line-height: 20px;
   letter-spacing: -0.55px;
-  width: 70%;
+  width: 25%;
 }
 .stocks-dropdown-option-change-2 {
   /* color: #00ec6d; */
@@ -125,12 +141,14 @@
   /* font-weight: var(--font-weight-medium); */
   line-height: 20px;
   letter-spacing: -0.6px;
+  width: 15%;
 }
 
 .stocks-dropdown-option-info {
   display: flex;
   column-gap: 26px;
   padding-right: 5px;
+  /* width: 100%; */
 }
 
 .stocks-dropdown-option-info p {
@@ -188,9 +206,10 @@
   justify-content: space-between;
   padding-right: 5px;
 
-  display: grid;
-  grid-template-columns: repeat(3, 50px); 
-  column-gap: 30px; 
+  /* display: grid; */
+  /* grid-template-columns: repeat(3, 50px);  */
+  /* column-gap: 30px;  */
+  /* column-gap: 15px; */
   /* place-items: center; */
 }
 
@@ -208,16 +227,15 @@
 
 
 .stocks-dropdown-header-right {
-  display: grid;
-  grid-template-columns: repeat(3, 50px); 
-  column-gap: 30px; 
+
   padding-right: 5px;
+  width: 42%;
 }
 
 .stocks-dropdown-header-right p {
-  flex: 1;
+  /* flex: 1; */
   color: var(--text-color);
-  text-align: right;
+  /* text-align: right; */
   font-size: var(--font-small);
   font-style: normal;
   font-weight: var(--font-weight-medium);

@@ -147,6 +147,7 @@ const LineChart = ({
   const lastDate = new Date(initialData[initialData.length - 1]?.date);
 
   const newData = [];
+  if(duration == "1M" || duration == "3M" || duration == "6M" || duration=="YTD"){
   for (let i = 1; i <= 15; i++) {
     const nextDate = new Date(lastDate);
     nextDate.setDate(lastDate.getDate() + i);
@@ -161,10 +162,27 @@ const LineChart = ({
     };
     newData.push(newDataItem);
   }
+}
+else{
+  for (let i = 5; i <= 75; i+=5) {
+    const nextDate = new Date(lastDate);
+    nextDate.setDate(lastDate.getDate() + i);
+    const newDataItem = {
+      date: nextDate.toISOString(),
+      close1: 0,
+      close2: 0,
+      close3: 0,
+      close4: 0,
+      close5: 0,
+      close6: 0,
+    };
+    newData.push(newDataItem);
+  }
+}
   initialData = [...initialData, ...newData];
 
 
-// console.log(newestDate);
+console.log(initialData);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
     
@@ -251,44 +269,44 @@ const LineChart = ({
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
           }
-          stroke="rgb(252 243 0 / 30%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
           }
-          stroke="rgb(252 243 0 / 30%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
           }
-          stroke="rgb(252 243 0 / 30%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
           }
-          stroke="rgb(252 243 0 / 30%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
           }
-          stroke="rgb(252 243 0 / 30%)"
+          stroke="rgb(0 15 255 / 30%)"
           highlightOnHover
         />
         <LineSeries
           yAccessor={(d) =>
             new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
           }
-          stroke="rgb(252 243 0 / 80%)"
+          stroke="rgb(0 15 255 / 80%)"
           strokeWidth={2}
-          // strokeDasharray={"Dash"}
+          strokeDasharray={"Dash"}
           highlightOnHover
         />
 

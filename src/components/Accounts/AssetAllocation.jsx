@@ -71,6 +71,12 @@ const AssetAllocation = () => {
     // console.log(stock,detailed_name, "stock");
     setloading2(true);
     setSelectedStock(stock);
+    if(stock == stock.split(".")[0]){
+      setDuration("1Y");
+    }
+    else{
+      setDuration("1M");
+    }
     setSelectedStockName(detailed_name);
     setTimeout(() => {
       setloading2(false);
@@ -152,6 +158,7 @@ const AssetAllocation = () => {
         setStrategyid(combinedStrategiesArray[0].id);
         let stock =
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
+          console.log(stock);
         if (stock == stock.split(".")[0]) {
           setDuration("1Y");
         } else {
@@ -185,6 +192,7 @@ const AssetAllocation = () => {
     );
     setIschartvisible(false);
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
+    console.log("click",stock);
     if (stock == stock.split(".")[0]) {
       setDuration("1Y");
     } else {
@@ -392,7 +400,7 @@ const AssetAllocation = () => {
         setloading2(true);
 
         const name = await fetchStockData(selectedStock);
-        console.log("name", name);
+        // console.log("name", name);
         // const name = "abc";
         setSelectedStockName(name);
 
@@ -468,7 +476,7 @@ const AssetAllocation = () => {
     (chart_data.length > 0 || loading2 == false) &&
     lastupdated ? (
     <div className="swift-accounts-main">
-      <Header email_id={email_id} />
+      <Header email_id={email_id} setloading={setloading}  />
       <div className="swift-accounts-content">
         <div
           className={`swift-accounts-content-left ${
@@ -680,14 +688,12 @@ const AssetAllocation = () => {
                       <div className="swift-accounts-content-stocks-text-left-sub-div">
                       <p className="swift-accounts-content-stocks-text-left-sub-div-p1">MTD</p>
                       <p className="swift-accounts-content-stocks-text-left-sub-div-p2">Price</p>
+                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">SAA</p>
+                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">Prediction (3 mth)</p>
+                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">Confidence</p>
                       </div>
                     </div>
 
-                    <div className="swift-accounts-content-stocks-text-right">
-                      <p>SAA</p>
-                      <p>Prediction (3 mth)</p>
-                      <p>Confidence</p>
-                    </div>
                   </div>
                 </div>
                 <div

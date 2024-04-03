@@ -3,7 +3,7 @@ import "../../css/Accounts/Header.css";
 import { useNavigate } from "react-router-dom";
 import Pulse from "../Loader/Pulse";
 
-const Header = ({email_id}) => {
+const Header = ({email_id,setloading}) => {
 
   const navigate = useNavigate();
   const [loader,setloader] = useState(false);
@@ -13,6 +13,7 @@ const Header = ({email_id}) => {
   }
   const logOutHandler = () => {
     setloader(true);
+    setloading(true);
     setTimeout(() => {
       
       navigate("/login");
