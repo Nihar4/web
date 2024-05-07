@@ -690,8 +690,8 @@ const EdurekaHedge = () => {
                         Last Run date:{" "}
                         {moment
                           .tz(moment(lastupdated), moment.tz.guess())
-                          .add(5, "hours")
-                          .add(30, "minutes")
+                          // .add(5, "hours")
+                          // .add(30, "minutes")
                           .format("DD-MM-YYYY HH:mm:ss")}
                       </p>
                     )}
