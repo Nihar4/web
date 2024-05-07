@@ -108,6 +108,10 @@
   font-weight: 800;
   line-height: normal;
   letter-spacing: -0.8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .swift-account-content-content {
   color: #011627b3;
@@ -118,9 +122,9 @@
   line-height: normal;
   width: 100%;
   height: calc(100% - 24px);
-  word-wrap: break-word; /* For older browsers compatibility */
-  overflow-wrap: break-word; /* For newer browsers */
-  max-width: 100%; /* Optional: adjust maximum width as needed */
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+  max-width: 100%; 
 }
 
 .swift-accounts-content-div-1 {
@@ -496,6 +500,10 @@ width: 400px !important;
   color: #011627;
   font-size: 12px;
   padding: 5px 10px;
+}
+
+.eureka-graph{
+  height: 100%;
 }
 
 @media screen and (max-width: 1240px) {

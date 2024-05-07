@@ -11,35 +11,39 @@ const Strategy = ({
   style,
   id,
   setChange,
-  email_id
+  email_id,
+  edithandler,
+  deletehandler
 }) => {
   const navigate = useNavigate();
   const handleDelete = async () => {
-    console.log("delete", id);
+    // console.log("delete", id);
 
-    const data = await ServerRequest({
-      method: "delete",
-      URL: `/strategy/`,
-      data: { id: id },
-    });
+    // const data = await ServerRequest({
+    //   method: "delete",
+    //   URL: `/strategy/`,
+    //   data: { id: id },
+    // });
 
-    if (data.server_error) {
-      alert("error");
-    }
+    // if (data.server_error) {
+    //   alert("error");
+    // }
 
-    if (data.error) {
-      alert("error1");
-    }
-    setChange(Math.random());
+    // if (data.error) {
+    //   alert("error1");
+    // }
+    // setChange(Math.random());
+    deletehandler(id);
   };
 
   const handleEdit = async () => {
     // console.log("delete", id);
 
-    navigate(`/accounts/dashboard/addstrategy/${id}`,{
-      state: {email_id: email_id},
-    });
+    // navigate(`/accounts/dashboard/addstrategy/${id}`,{
+    //   state: {email_id: email_id},
+    // });
     // setChange(Math.random());
+    edithandler(id);
   }
   
   return (

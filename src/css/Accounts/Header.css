@@ -12,9 +12,10 @@
 .swift-accounts-header-left {
   display: flex;
   /* border: 2px solid black; */
-  width: 18%;
+  /* width: 18%; */
   justify-content: space-between;
   align-items: center;
+  column-gap: 20px;
 }
 .swift-accounts-header-right {
   display: flex;
