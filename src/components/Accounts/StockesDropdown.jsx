@@ -183,6 +183,7 @@ const StockesDropdown = ({
 
   return !loading && !loading1 && !loading2 ? (
     <div className="stocks-dropdown-main">
+      {heading !== "eureka" &&
       <div className="stocks-dropdown-header">
         <div className="stocks-dropdown-header-left">
           <div className="stocks-dropdown-heading" onClick={onToggle}>
@@ -213,7 +214,7 @@ const StockesDropdown = ({
         <div className="stocks-dropdown-header-right">
           <p>{totalPercentage}%</p>
         </div>
-      </div>
+      </div>}
       {isOpen && (
         <div className="stocks-dropdown-options-container">
           <ul className="stocks-dropdown-options">
@@ -251,14 +252,26 @@ const StockesDropdown = ({
                               %
                             </p>
                           ) : (
-                            "--"
+                            <span
+                                className={
+                                  stockDetailsArray[stock]
+                                    .regularMarketChangePercent >= 0
+                                    ? "green-text"
+                                    : "red-text"
+                                }
+                              >
+                                {stockDetailsArray[
+                                  stock
+                                ].regularMarketChangePercent.toFixed(3)}
+                                %
+                              </span>
                           )}
                         </p>
 
                         <p className="stocks-dropdown-option-change-1">
                           {stockDetailsArray[stock] ? (
                             <>
-                              {stockDetailsArray[stock].regularMarketPrice}
+                              {stockDetailsArray[stock].regularMarketPrice.toFixed(2)}
                               <span
                                 className={
                                   stockDetailsArray[stock]
@@ -271,7 +284,7 @@ const StockesDropdown = ({
                                 (
                                 {stockDetailsArray[
                                   stock
-                                ].regularMarketChangePercent.toFixed(2)}
+                                ].regularMarketChangePercent.toFixed(3)}
                                 %)
                               </span>
                             </>

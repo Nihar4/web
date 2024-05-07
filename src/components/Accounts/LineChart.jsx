@@ -108,6 +108,12 @@ const LineChart = ({
         new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
         lastDatePlusFiveDays,
       ]);
+    } 
+    else if (duration === "3Y") {
+      setXevents([
+        new Date(Date.now() - 3*365 * 24 * 60 * 60 * 1000),
+        lastDatePlusFiveDays,
+      ]);
     } else if (duration === "YTD") {
       const startOfYear = new Date(new Date().getFullYear(), 0, 1);
       setXevents([startOfYear, lastDatePlusFiveDays, ``]);
@@ -131,8 +137,9 @@ const LineChart = ({
   oneDayAgo.setDate(today.getDate() - 1);
   let newestDate;
 
-  if(name.startsWith("Eurekahedge")){
-    newestDate = new Date(initialData[initialData.length-4].date).setDate(0);
+  if(name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC"){
+    newestDate = new Date(initialData[initialData.length-13].date).setDate(0);
+    console.log('nD',new Date(newestDate).toLocaleString());
   }
   else{
     newestDate = initialData.reduce((acc, cur) => {

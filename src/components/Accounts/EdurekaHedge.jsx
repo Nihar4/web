@@ -12,7 +12,9 @@ import { useLocation } from "react-router-dom";
 import Pulse from "../Loader/Pulse";
 import moment from "moment-timezone";
 
-const AssetAllocation = () => {
+
+
+const EdurekaHedge = () => {
   const [initialStrategies, setInitialStrategies] = useState([]);
 
   const [selectedStrategy, setSelectedStrategy] = useState(0);
@@ -50,7 +52,7 @@ const AssetAllocation = () => {
 
     const data = await ServerRequest({
       method: "delete",
-      URL: `/strategy/`,
+      URL: `/strategy/eureka`,
       data: { id: id },
     });
 
@@ -67,11 +69,11 @@ const AssetAllocation = () => {
   const handleEditStrategy = async (id) => {
     // console.log("delete", id);
 
-    navigate(`/accounts/dashboard/addstrategy/${id}`,{
-      state: {email_id: email_id},
+    navigate(`/accounts/dashboard/eureka/addstrategy/${id}`, {
+      state: { email_id: email_id },
     });
     // setChange(Math.random());
-  }
+  };
 
   const fetchStockData = async (stock) => {
     let stock_name = stock;
@@ -99,10 +101,9 @@ const AssetAllocation = () => {
     // console.log(stock,detailed_name, "stock");
     setloading2(true);
     setSelectedStock(stock);
-    if(stock == stock.split(".")[0]){
-      setDuration("1Y");
-    }
-    else{
+    if (stock == stock.split(".")[0]) {
+      setDuration("3Y");
+    } else {
       setDuration("1M");
     }
     setSelectedStockName(detailed_name);
@@ -115,7 +116,7 @@ const AssetAllocation = () => {
     // setloading(true);
     const data = await ServerRequest({
       method: "get",
-      URL: `/strategy/get?email=${email_id}`,
+      URL: `/strategy/getEureka?email=${email_id}`,
     });
 
     if (data.server_error) {
@@ -126,8 +127,7 @@ const AssetAllocation = () => {
       alert("error1");
     }
 
-    console.log(data);
-    if (data.data.length > 0) {
+    if (data) {
       const uniqueIds = new Set();
 
       const filteredData = data.data.filter((item) => {
@@ -187,14 +187,14 @@ const AssetAllocation = () => {
         setStrategyid(combinedStrategiesArray[0].id);
         let stock =
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
-          console.log(stock);
+        console.log(stock);
         if (stock == stock.split(".")[0]) {
-          setDuration("1Y");
+          setDuration("3Y");
         } else {
           setDuration("1M");
-
         }
-        fetchDataAndUpdateState();
+        setLastupdated("abc");
+        // fetchDataAndUpdateState();
       }
       // setTimeout(() => {
       // setloading(false);
@@ -221,9 +221,9 @@ const AssetAllocation = () => {
     );
     setIschartvisible(false);
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
-    console.log("click",stock);
+    console.log("click", stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("1Y");
+      setDuration("3Y");
     } else {
       setDuration("1M");
     }
@@ -239,64 +239,69 @@ const AssetAllocation = () => {
     }
   };
 
-  const fetchDlData = async (id) => {
-    try {
-      const data = await ServerRequest({
-        method: "get",
-        URL: `/strategy/getdldta?id=${id}`,
-      });
-
-      if (data.server_error) {
-        alert("error");
-      }
-
-      if (data.error) {
-        alert("error1");
-      }
-
-      return data.data;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const fetchDataAndUpdateState = async () => {
-    if (selectedStrategy !== null) {
+    const fetchDlData = async (id) => {
       try {
-        if (initialStrategies.length !== 0) {
-          setloading(true);
-          // setIschartvisible(false);
-          const data = await fetchDlData(
-            initialStrategies[selectedStrategy].id
-          );
-          // console.log(data);
-          const hasPendingStatus = data.some(
-            (item) => item.status === "Pending"
-          );
-          setIschartvisible(!hasPendingStatus);
-          const dateCompletedArray = data.map((item) =>
-            new Date(item.date_completed).toISOString()
-          );
-          const filteredDates = dateCompletedArray.filter((date) => date);
-          const latestDate = new Date(
-            Math.max(...filteredDates.map((date) => new Date(date)))
-          );
-          setLastupdated(latestDate);
-          // setLastupdated("abc");
-          // console.log(hasPendingStatus);
+        const data = await ServerRequest({
+          method: "get",
+          URL: `/strategy/getdldta?id=${id}`,
+        });
 
-          setTimeout(() => {
-            setloading(false);
-          }, 1000);
+        if (data.server_error) {
+          alert("error");
         }
+
+        if (data.error) {
+          alert("error1");
+        }
+
+        return data.data;
       } catch (error) {
-        console.error("Error fetching and setting data:", error);
+        console.error("Error fetching data:", error);
       }
-    }
-  };
+    };
+
+    const fetchDataAndUpdateState = async () => {
+      if (selectedStrategy !== null) {
+        try {
+          if (initialStrategies.length !== 0) {
+            setloading(true);
+            // setIschartvisible(false);
+            const data = await fetchDlData(
+              initialStrategies[selectedStrategy].id
+            );
+            // console.log(data);
+            const hasPendingStatus = data.some(
+              (item) => item.status === "Pending"
+            );
+            setIschartvisible(!hasPendingStatus);
+            const dateCompletedArray = data.map((item) =>
+              new Date(item.date_completed).toISOString()
+            );
+            const filteredDates = dateCompletedArray.filter((date) => date);
+            const latestDate = new Date(
+              Math.max(...filteredDates.map((date) => new Date(date)))
+            );
+            setLastupdated(latestDate);
+            // setLastupdated("abc");
+            // console.log(hasPendingStatus);
+
+            setTimeout(() => {
+              setloading(false);
+            }, 1000);
+          }
+        } catch (error) {
+          console.error("Error fetching and setting data:", error);
+        }
+      }
+    };
 
   useEffect(() => {
     fetchDataAndUpdateState();
+    // setloading(true);
+    // setIschartvisible(true);
+    // setTimeout(() => {
+    //   setloading(false);
+    // }, 1000);
   }, [selectedStrategy, reRenderKey, initialStrategies]);
 
   const backButoonFunction = () => {
@@ -330,6 +335,7 @@ const AssetAllocation = () => {
   });
 
   const [reloadRequired, setReloadRequired] = useState(false);
+  const [radarKey, setRadarKey] = useState(0);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -342,7 +348,7 @@ const AssetAllocation = () => {
         // console.log("wh", containerHeight,containerWidth)
 
         setGraphDimensions({ width: containerWidth, height: containerHeight });
-        // setRadarKey((prevKey) => prevKey + 1);
+        setRadarKey((prevKey) => prevKey + 1);
       }
 
       if (window.innerWidth > 768 && reloadRequired) {
@@ -352,6 +358,7 @@ const AssetAllocation = () => {
       setReloadRequired(window.innerWidth <= 768);
     };
     if (!loading && !loading2) {
+      // console.log("hello");
       updateDimensions();
     }
 
@@ -362,48 +369,49 @@ const AssetAllocation = () => {
     };
   }, [cnt, ischartvisible, loading, loading2]);
 
-  const insertStocks = async (stock, id, email_id) => {
-    try {
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/jobqueue`,
-        data: {
-          stock: `${stock}`,
-          id: id,
-          email_id: email_id,
-        },
+    const insertStocks = async (stock, id, email_id) => {
+      try {
+        const data1 = await ServerRequest({
+          method: "post",
+          URL: `/strategy/jobqueue`,
+          data: {
+            stock: `${stock}`,
+            id: id,
+            email_id: email_id,
+          },
+        });
+        if (data1.server_error) {
+          alert("error jobqueue");
+        }
+
+        if (data1.error) {
+          alert("error1 jobqueue");
+        }
+        // console.log(data1);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const run_analysis = async () => {
+      // setloading(true);
+      for (const stock of stockArray) {
+        const stockList = stock.stock;
+        const trimmedStocks = stockList.split(",").map((stock) => stock.trim());
+        for (const value of trimmedStocks) {
+          await insertStocks(value, strategyID, email_id);
+        }
+      }
+      navigate("/accounts/dashboard/jobqueue", {
+        state: { email_id: email_id },
       });
-      if (data1.server_error) {
-        alert("error jobqueue");
-      }
+      // setReRenderKey((prevKey) => prevKey + 1);
+      // setloading(false);
+    };
 
-      if (data1.error) {
-        alert("error1 jobqueue");
-      }
-      // console.log(data1);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const run_analysis = async () => {
-    // setloading(true);
-    for (const stock of stockArray) {
-      const stockList = stock.stock;
-      const trimmedStocks = stockList.split(",").map((stock) => stock.trim());
-      for (const value of trimmedStocks) {
-        await insertStocks(value, strategyID, email_id);
-      }
-    }
-    navigate("/accounts/dashboard/jobqueue", {
-      state: { email_id: email_id },
-    });
-    // setReRenderKey((prevKey) => prevKey + 1);
-    // setloading(false);
-  };
+  
 
   const [chart_data, setChartData] = useState([]);
-
   const handleDuraion = (item) => {
     setDuration(item);
   };
@@ -421,8 +429,10 @@ const AssetAllocation = () => {
           // || loading == true
         ) {
           if (ischartvisible == false || initialStrategies.length == 0) {
+            // console.log("hii");
             setloading2(false);
           }
+          // console.log("hello");
           return;
         }
 
@@ -454,16 +464,17 @@ const AssetAllocation = () => {
       }
     };
     fetchData();
-  }, [selectedStock, strategyID, duration, ischartvisible]);
+  }, [selectedStock, strategyID, ischartvisible,duration]);
 
   const handleEdit = async () => {
-    navigate(`/accounts/dashboard/addstrategy/${strategyID}`, {
+    navigate(`/accounts/dashboard/eureka/addstrategy/${strategyID}`, {
       state: { email_id: email_id },
     });
   };
 
   const protfolio = [];
   const handleGetSum = (value) => {
+    // console.log("val",value)
     const existingItem = protfolio.find(
       (item) => item.heading === value.heading
     );
@@ -495,17 +506,15 @@ const AssetAllocation = () => {
   useEffect(() => {
     animateValue(sum * 100);
   }, [sum]);
-  // console.log(lastupdated);
 
-  console.log(loading, loading2,lastupdated,chart_data.length,initialStrategies.length);
-  // console.log("chart", ischartvisible, chart_data.length);
-  // console.log(openDropdown);
+  console.log(loading, loading2, lastupdated);
+  console.log("stockname", selectStockName);
 
   return !loading &&
     (chart_data.length > 0 || loading2 == false) &&
     lastupdated ? (
     <div className="swift-accounts-main">
-      <Header email_id={email_id} setloading={setloading}  />
+      <Header email_id={email_id} setloading={setloading} />
       <div className="swift-accounts-content">
         <div
           className={`swift-accounts-content-left ${
@@ -547,7 +556,7 @@ const AssetAllocation = () => {
               text="Add Strategy"
               classname="swift-accounts-content-button"
               onClick={() => {
-                navigate("/accounts/dashboard/addstrategy", {
+                navigate("/accounts/dashboard/eureka/addstrategy", {
                   state: { email_id: email_id },
                 });
               }}
@@ -587,58 +596,34 @@ const AssetAllocation = () => {
                 </p>
               </div>
               <div
-                className={`swift-account-content-graph ${
+                className={`swift-account-content-graph  ${
                   isRightVisible ? "showgraph" : ""
                 }`}
               >
+                {/* <div
+                  className="swift-account-graph eureka-graph"
+                  ref={graphContainerRef}
+                >
+                  {graphDimensions.width > 0 && graphDimensions.height > 0 && (
+                    <Radar
+                      key={radarKey}
+                      data={chart_data}
+                      height={graphDimensions.height}
+                      width={graphDimensions.width}
+                      options={radarOptions}
+                      updateMode={"resize"}
+                    />
+                    // <p> {graphDimensions.width }</p>
+                  )}
+                </div> */}
+
                 <div className="swift-asset-range-buttons">
-                  {selectedStock &&
-                    selectedStock.split(".")[0] !== selectedStock && (
-                      <>
-                        <p
-                          onClick={() => handleDuraion("1M")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "1M" ? "selected_duration" : ""
-                          }
-                        >
-                          1m
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("3M")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "3M" ? "selected_duration" : ""
-                          }
-                        >
-                          3m
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("6M")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "6M" ? "selected_duration" : ""
-                          }
-                        >
-                          6m
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("YTD")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "YTD" ? "selected_duration" : ""
-                          }
-                        >
-                          YTD
-                        </p>
-                      </>
-                    )}
                   <p
-                    onClick={() => handleDuraion("1Y")}
+                    onClick={() => handleDuraion("3Y")}
                     style={{ cursor: "pointer" }}
-                    className={duration == "1Y" ? "selected_duration" : ""}
+                    className={duration == "3Y" ? "selected_duration" : ""}
                   >
-                    1y
+                    3y
                   </p>
                   <p
                     onClick={() => handleDuraion("5Y")}
@@ -710,40 +695,43 @@ const AssetAllocation = () => {
                           .format("DD-MM-YYYY HH:mm:ss")}
                       </p>
                     )}
-                    <p className="run-analysis-btn" onClick={run_analysis}>
-                      Run Analysis
-                    </p>
+                    <p className="run-analysis-btn" onClick={run_analysis}>Run Analysis</p>
                   </div>
                   <div className="swift-accounts-content-stocks-text">
                     <div className="swift-accounts-content-stocks-text-left">
                       <div className="swift-accounts-content-stocks-text-left-sub-div">
-                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">MTD</p>
-                      <p className="swift-accounts-content-stocks-text-left-sub-div-p2">Price</p>
-                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">SAA</p>
-                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">Prediction (3 mth)</p>
-                      <p className="swift-accounts-content-stocks-text-left-sub-div-p1">Confidence</p>
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                          MTD
+                        </p>
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p2">
+                          Price
+                        </p>
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                          SAA
+                        </p>
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                          Prediction (3 mth)
+                        </p>
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                          Confidence
+                        </p>
                       </div>
                     </div>
-
                   </div>
                 </div>
                 <div
                   className="swift-accounts-content-stocks-show"
                   key={reRenderKey}
                 >
-                  {stockArray.map((asset, index) => (
-                    <StockesDropdown
-                      key={index}
-                      heading={asset.name}
-                      options={[asset]}
-                      id={strategyID}
-                      // isOpen={openDropdown === index}
-                      isOpen={openDropdown[index]}
-                      onToggle={() => handleDropdownToggle(index)}
-                      onStockSelect={handleStockSelect}
-                      getsum={handleGetSum}
-                    />
-                  ))}
+                  <StockesDropdown
+                    heading={stockArray[0].name}
+                    options={[stockArray[0]]}
+                    id={strategyID}
+                    isOpen={true}
+                    onStockSelect={handleStockSelect}
+                    getsum={handleGetSum}
+                  />
+                  {/* ))} */}
                 </div>
               </div>
             </div>
@@ -775,4 +763,4 @@ const AssetAllocation = () => {
   );
 };
 
-export default AssetAllocation;
+export default EdurekaHedge;

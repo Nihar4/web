@@ -29,6 +29,11 @@ const Header = ({email_id,setloading}) => {
       state: { email_id: email_id },
     });
   }
+  const edurekaHedgeHandler = (email_id) => {
+    navigate("/accounts/dashboard/edurekahedge", {
+      state: { email_id: email_id },
+    });
+  }
 
   return !loader ? (<div className="swift-accounts-header">
       <div className="swift-accounts-header-left">
@@ -39,6 +44,7 @@ const Header = ({email_id,setloading}) => {
         
         <p className="swift-accounts-heading-2" onClick={() =>dashboardHandler(email_id)}>Dashboard</p>
         <p className="swift-accounts-heading-2"onClick={() => jobqueueHandler(email_id)}>Job Queue</p>
+        <p className="swift-accounts-heading-2"onClick={() => edurekaHedgeHandler(email_id)}>Hedged Strategy Optimisation</p>
     
       </div>
       <div className="swift-accounts-header-right">
