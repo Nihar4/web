@@ -428,38 +428,40 @@ const AddStrategyMain = () => {
 
     return hasError;
 
-    // if (totalPercentage !== 100) {
-    //   // console.log("Total percentage is not 100. Please adjust.");
-    //   settotalError("Total weight needs to added to 100");
-    //   hasError = true;
-    //   // return hasError;
-    // } else {
-    //   settotalError("error");
-    // }
-
-    // formValues.assetClasses.forEach((assetClass, index) => {
-    //   if (isEmpty(assetClass.name)) {
-    //     hasError = true;
-    //     alert("name");
-
-    //     return hasError;
-    //   }
-
-    //   assetClass.underlyings.forEach((underlying, underlyingIndex) => {
-    //     if (isEmpty(underlying.stock)) {
-    //       hasError = true;
-    //       alert("stock");
-
-    //       return hasError;
-    //     }
-    //   });
-    // });
-
-    // return hasError;
   };
+
+  function checkForDuplicateStocks() {
+    const stockSet = new Set();
+    for (const assetClass of formValues.assetClasses) {
+      for (const underlying of assetClass.underlyings) {
+        if (stockSet.has(underlying.stock)) {
+          return underlying.stock;
+        }
+        stockSet.add(underlying.stock);
+      }
+    }
+    return "";
+  }
 
   const handleSubmit = async () => {
     if (ValidateAll()) return;
+    const stock  = checkForDuplicateStocks(); 
+    if(stock != ""){
+      Alert({
+        TitleText: "Error",
+        Message: `${stock} is multiple time`,
+        BandColor: "#e51a4b",
+
+        AutoClose: {
+          Active: true,
+          Line: true,
+          LineColor: "#e51a4b",
+          Time: 2,
+        },
+      });
+      return;
+    }
+
 
     // console.log("Submitting form data:", formValues);
 
@@ -483,9 +485,26 @@ const AddStrategyMain = () => {
       state: { id: data.data, email_id: email_id },
     });
   };
+  
   const handleUpdate = async () => {
     console.log("call");
     if (ValidateAll()) return;
+    const stock  = checkForDuplicateStocks(); 
+    if(stock != ""){
+      Alert({
+        TitleText: "Error",
+        Message: `${stock} is multiple time`,
+        BandColor: "#e51a4b",
+
+        AutoClose: {
+          Active: true,
+          Line: true,
+          LineColor: "#e51a4b",
+          Time: 2,
+        },
+      });
+      return;
+    }
 
     const data = await ServerRequest({
       method: "delete",
@@ -536,7 +555,7 @@ const AddStrategyMain = () => {
     setValue1(inputValue);
   };
 
-  console.log(longName);
+  console.log(formValues);
   return loading ? (
     <div className="swift-aseet-loader">
       <p>Loading</p>

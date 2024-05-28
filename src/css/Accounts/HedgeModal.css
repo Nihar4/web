@@ -1,0 +1,380 @@
+.swift-modal-content {
+  background-color: white;
+  height: 93vh;
+  /* overflow-y: auto; */
+  column-gap: 14px;
+  width: 95vw;
+  border-radius: 10px;
+  padding: 10px;
+  padding-top: 0px;
+}
+
+.swift-modal-content-left {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* row-gap: 5px; */
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 0px 3px 0px rgba(1, 22, 39, 0.1);
+}
+
+.swift-modal-content-right {
+  width: 74%;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 0px 3px 0px rgba(1, 22, 39, 0.1);
+  padding: 20px;
+  display: flex;
+}
+
+.swift-modal-weights {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  height: 77vh;
+}
+.swift-modal-weights-heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.swift-modal-weights-heading > p {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+
+.swift-modal-weights-heading > p {
+  width: 20%;
+}
+.swift-modal-weights-content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.swift-modal-weights-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.swift-modal-weights-content::-webkit-scrollbar-thumb {
+  background-color: #e8e8e8;
+  border-radius: 34px;
+  height: 98px;
+}
+
+.swift-modal-weights-content::-webkit-scrollbar-track {
+  background-color: #eee;
+}
+
+.swift-modal-weights-content::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+
+.swift-modal-weight-content-div {
+  display: flex;
+  justify-content: space-between;
+}
+.swift-modal-weights-content-main {
+  border-bottom: 0.5px solid rgba(1, 22, 39, 0.3);
+}
+
+.swift-modal-weights-content-details {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  /* white-space: nowrap; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 60%;
+}
+
+.swift-modal-weight-content-div > p,
+.swift-modal-weight-content-div > div {
+  width: 20%;
+  padding-right: 10px;
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  align-items: center;
+  display: flex;
+  text-align: left;
+}
+
+.swift-modal-graph {
+  width: 60%;
+  height: 100%;
+  /* width: 400px;
+  height: 400px; */
+}
+.swift-modal-optData {
+  height: 100%;
+  width: 40%;
+}
+
+.modal-btn-div {
+  justify-content: flex-end;
+}
+
+.modal-submit-btn-div {
+  justify-content: flex-end;
+  height: 7vh;
+}
+
+.modal-submit-btn {
+  width: 141px;
+}
+
+.modal-btn {
+  width: 115px;
+}
+.swift-modal-portfolio-heading1,
+.swift-modal-portfolio-heading2,
+.swift-modal-portfolio-heading {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+
+.swift-modal-portfolio-heading1 {
+  width: 40%;
+}
+.swift-modal-portfolio-heading2 {
+  width: 20%;
+}
+
+.swift-modal-portfolio {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.swift-modal-portfolio-title {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+.swift-modal-portfolios-weights-heading {
+  display: flex;
+  justify-content: space-between;
+}
+.swift-modal-portfolios-weights-heading > p {
+  /* width: 40%; */
+  text-align: left;
+}
+
+.swift-modal-portfolio-weights-content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  height: 49vh;
+  overflow-y: auto;
+}
+
+.swift-modal-portfolio-weights-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.swift-modal-portfolio-weights-content::-webkit-scrollbar-thumb {
+  background-color: #e8e8e8;
+  border-radius: 34px;
+  height: 98px;
+}
+
+.swift-modal-portfolio-weights-content::-webkit-scrollbar-track {
+  background-color: #eee;
+}
+
+.swift-modal-portfolio-weights-content::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+
+.swift-modal-portfolio-weight-stock {
+  display: flex;
+  justify-content: space-between;
+}
+.swift-modal-portfolio-weight-stock > p {
+  width: 20%;
+  text-align: left;
+}
+.swift-modal-portfoli-weight {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.swift-modal-weight-stock {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.swift-modal-dropdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.swift-modal-dropdown > p {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+
+.swift-modal-input-weight {
+  border: none !important;
+  border-bottom: 1px solid #01162733 !important;
+  color: #011627b3;
+  font-family: Open Sans;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 16px;
+  padding: 8px !important;
+  border-radius: 0px !important;
+}
+.swift-modal-portfolio-detailed-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  width: 40%;
+}
+
+.swift-modal-weight-detailed-name {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  /* white-space: nowrap; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%;
+}
+
+.swiift-modal-weights-table tr td{
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  text-align: left;
+  padding-bottom: 5px;
+}
+.swiift-modal-weights-table tr th{
+  padding-bottom: 5px;
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  text-align: left;
+}
+
+.swiift-modal-weights-table tr td:nth-child(1){
+  width: 20%;
+}
+
+.swiift-modal-weights-table tr td:nth-child(2){
+  width: 25%;
+}
+.swiift-modal-weights-table tr td:nth-child(3),
+.swiift-modal-weights-table tr td:nth-child(4){
+  width: 17.5%;
+}
+
+
+.swiift-modal-weights-table {
+  width: 100%;
+  table-layout: fixed; 
+}
+
+.swiift-modal-weights-table tr td,
+.swiift-modal-weights-table tr th {
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.8px;
+  text-align: left;
+  padding-bottom: 5px;
+  /* border: 1px solid #ddd;  */
+}
+
+.swiift-modal-weights-table tr th {
+  font-weight: 800;
+}
+
+.swiift-modal-weights-table tr td {
+  font-weight: 500;
+}
+
+.swiift-modal-weights-table tr td:nth-child(1) {
+  width: 60%;
+}
+
+.swiift-modal-weights-table tr td:nth-child(2) {
+  width: 20%;
+}
+
+.swiift-modal-weights-table tr td:nth-child(3),
+.swiift-modal-weights-table tr td:nth-child(4) {
+  width: 10%;
+}
+
+.modal-submit-btn-div{
+  justify-content: space-evenly;
+}
+
+.custom__alert__close{
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 7px;
+  border-radius: 3px;
+}
+.custom__alert__close > img{
+  width: 12px;
+  height: 12px;
+
+}
+
+.swift-modal-main-content{
+  display: flex;
+    column-gap: 14px;
+    border-radius: 10px;
+    height: 87vh;
+}

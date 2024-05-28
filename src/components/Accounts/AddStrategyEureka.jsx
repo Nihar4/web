@@ -455,8 +455,36 @@ const AddStrategyMain_Eureka = () => {
     // return hasError;
   };
 
+  function checkForDuplicateStocks() {
+    const stockSet = new Set();
+    for (const assetClass of formValues.assetClasses) {
+      for (const underlying of assetClass.underlyings) {
+        if (stockSet.has(underlying.stock)) {
+          return underlying.stock;
+        }
+        stockSet.add(underlying.stock);
+      }
+    }
+    return "";
+  }
   const handleSubmit = async () => {
     if (ValidateAll()) return;
+    const stock  = checkForDuplicateStocks(); 
+    if(stock != ""){
+      Alert({
+        TitleText: "Error",
+        Message: `${stock} is multiple time`,
+        BandColor: "#e51a4b",
+
+        AutoClose: {
+          Active: true,
+          Line: true,
+          LineColor: "#e51a4b",
+          Time: 2,
+        },
+      });
+      return;
+    }
 
     // console.log("Submitting form data:", formValues);
 
@@ -483,6 +511,22 @@ const AddStrategyMain_Eureka = () => {
   const handleUpdate = async () => {
     console.log("call");
     if (ValidateAll()) return;
+    const stock  = checkForDuplicateStocks(); 
+    if(stock != ""){
+      Alert({
+        TitleText: "Error",
+        Message: `${stock} is multiple time`,
+        BandColor: "#e51a4b",
+
+        AutoClose: {
+          Active: true,
+          Line: true,
+          LineColor: "#e51a4b",
+          Time: 2,
+        },
+      });
+      return;
+    }
 
     const data = await ServerRequest({
       method: "delete",
@@ -738,7 +782,7 @@ const StrategyCreated_Eureka = () => {
     try {
       const data = await ServerRequest({
         method: "get",
-        URL: `/strategy/getdldta?id=${id}`,
+        URL: `/strategy/getdldataHedge?id=${id}`,
       });
 
       if (data.server_error) {
@@ -833,7 +877,7 @@ const StrategyCreated_Eureka = () => {
                     help@swiftfolios.co.uk
                   </span>
                 </div>
-                <div className="table-wrapper">
+                <div className="table-wrapper eureka-table">
                   <table className="swift-strategy-created-table">
                     <thead>
                       <tr>
@@ -849,7 +893,10 @@ const StrategyCreated_Eureka = () => {
                         dl_data.map((item, index) => (
                           <tr key={index}>
                             {/* <td>{item.strategy_id}</td> */}
-                            <td>{item.security}</td>
+                            <td style={{width:"25%"}}>
+                              <p>{item.security}</p>
+                              <p>{item.longname}</p>
+                              </td>
                             <td>
                               {!item.date_created
                                 ? ""
