@@ -311,7 +311,7 @@ const AssetAllocation = () => {
 
   useEffect(() => {
     fetchDataAndUpdateState();
-  }, [selectedStrategy, reRenderKey, initialStrategies]);
+  }, [selectedStrategy, reRenderKey, initialStrategies,ischartvisible]);
 
   const backButoonFunction = () => {
     setIsLeftVisible(true);
@@ -589,6 +589,7 @@ const AssetAllocation = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (stockArray.length > 0) {
+        setWeights();
         for (let stockObj of stockArray) {
           const minWeightStr = String(stockObj.min_weight);
           const maxWeightStr = String(stockObj.max_weight);
