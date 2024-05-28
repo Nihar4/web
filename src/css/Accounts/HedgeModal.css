@@ -85,14 +85,16 @@
   justify-content: space-between;
 }
 .swift-modal-weights-content-main {
-  border-bottom: 0.5px solid rgba(1, 22, 39, 0.3);
+  /* border-bottom: 0.5px solid rgba(1, 22, 39, 0.3); */
+
+  border-bottom: 0.5px solid #f1f1f1;
 }
 
 .swift-modal-weights-content-details {
   color: var(--text-color);
   font-size: 12px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: normal;
   letter-spacing: -0.8px;
   /* white-space: nowrap; */
@@ -109,7 +111,7 @@
   color: var(--text-color);
   font-size: 12px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: normal;
   letter-spacing: -0.8px;
   align-items: center;
@@ -126,6 +128,13 @@
 .swift-modal-optData {
   height: 100%;
   width: 40%;
+
+  height: 100%;
+    width: 40%;
+    padding: 15px;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    margin: 10px;
 }
 
 .modal-btn-div {
@@ -193,6 +202,12 @@
   row-gap: 15px;
   height: 49vh;
   overflow-y: auto;
+
+  display: flex;
+    flex-direction: column;
+    height: 44vh;
+    overflow-y: auto;
+    row-gap: 15px;
 }
 
 .swift-modal-portfolio-weights-content::-webkit-scrollbar {
@@ -216,6 +231,10 @@
 .swift-modal-portfolio-weight-stock {
   display: flex;
   justify-content: space-between;
+
+  display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f1f1;
 }
 .swift-modal-portfolio-weight-stock > p {
   width: 20%;
@@ -359,12 +378,12 @@
 }
 
 .custom__alert__close{
+  align-items: center;
+  border-radius: 5px;
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding: 7px;
-  border-radius: 3px;
+  padding: 15px;
 }
 .custom__alert__close > img{
   width: 12px;

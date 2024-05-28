@@ -1047,6 +1047,7 @@ const EdurekaHedge = () => {
                     isOpen={true}
                     onStockSelect={handleStockSelect}
                     getsum={handleGetSum}
+                    selectedStock={selectedStock}
                   />
                   {/* ))} */}
                 </div>
@@ -1302,7 +1303,7 @@ const EdurekaHedge = () => {
                               </p>
                             </div>
                             <p className="swift-modal-portfolio-title">
-                              {parseFloat(OptData.z[index] * 100).toFixed(2)}
+                              {parseFloat(OptData.z[index] * 100).toFixed(2)}%
                             </p>
                             <p className="swift-modal-portfolio-title">{stockArray[0].percentage.split(",")[index]}%</p>
                             <p className="swift-modal-portfolio-title" >

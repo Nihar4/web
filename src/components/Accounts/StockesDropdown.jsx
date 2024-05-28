@@ -11,6 +11,7 @@ const StockesDropdown = ({
   id,
   onStockSelect,
   getsum,
+  selectedStock
 }) => {
   const [dl_data, setDlData] = useState(null);
   const [stockDetailsArray, setStockDetailsArray] = useState({});
@@ -179,7 +180,7 @@ const StockesDropdown = ({
     }
   };
 
-  // console.log("lol",loading,loading1,loading2);
+  console.log(selectedStock);
 
   return !loading && !loading1 && !loading2 ? (
     <div className="stocks-dropdown-main">
@@ -226,7 +227,7 @@ const StockesDropdown = ({
                 }
                 style={{ cursor: "pointer" }}
               >
-                <div className="stocks-dropdown-option-details">
+                <div className={`stocks-dropdown-option-details ${stock == selectedStock ? "stock-dropdown-option-details-active": ""}`}>
 
                     <div className="stocks-dropdown-option-up">
                       <div className="stocks-dropdown-option-title">

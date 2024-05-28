@@ -5,6 +5,17 @@
   border: 1px solid rgba(1, 22, 39, 0.05);
   padding: 10px 13px;
   cursor: pointer;
+
+
+}
+.swift-accounts-strategy-active{
+  border: 1px solid #0116270d;
+  border-radius: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 10px 13px;
+  width: 100%;
+  background: #fafafa;
 }
 
 .swift-accounts-strategy-content {
