@@ -319,7 +319,7 @@ const EdurekaHedge = () => {
     // setTimeout(() => {
     //   setloading(false);
     // }, 1000);
-  }, [selectedStrategy, reRenderKey, initialStrategies]);
+  }, [selectedStrategy, reRenderKey, initialStrategies,ischartvisible]);
 
   const backButoonFunction = () => {
     setIsLeftVisible(true);
@@ -597,6 +597,7 @@ const EdurekaHedge = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (stockArray.length > 0) {
+        setWeights();
         const min_weight_array = stockArray[0].min_weight.split(",");
         const max_weight_array = stockArray[0].max_weight.split(",");
 
@@ -768,18 +769,18 @@ const EdurekaHedge = () => {
           setWeights((prev) => ({
             ...prev,
             [stock]: [
-              parseFloat(
+             Math.max( parseFloat(
                 (
                   (stockArray[0].percentage.split(",")[index] / 100) *
                   (1 - dev)
                 ).toFixed(3)
-              ),
-              parseFloat(
+              ),0),
+              Math.min(parseFloat(
                 (
                   (stockArray[0].percentage.split(",")[index] / 100) *
                   (1 + dev)
                 ).toFixed(3)
-              ),
+              ),1),
             ],
           }));
         } else {
@@ -1134,7 +1135,7 @@ const EdurekaHedge = () => {
                                   ? weights[item.trim()][0]
                                   : dev == "Unconstrained"
                                   ? 0
-                                  : parseFloat(
+                                  : Math.max(parseFloat(
                                       (
                                         (stockArray[0].percentage.split(",")[
                                           index
@@ -1142,7 +1143,7 @@ const EdurekaHedge = () => {
                                           100) *
                                         (1 - dev)
                                       ).toFixed(3)
-                                    )
+                                    ),0)
                               }
                               styleInput={{ width: "100%", height: "10px" }}
                               // maxLength={"3"}
@@ -1169,7 +1170,7 @@ const EdurekaHedge = () => {
                                   ? weights[item.trim()][1]
                                   : dev == "Unconstrained"
                                   ? 1
-                                  : parseFloat(
+                                  : Math.min(parseFloat(
                                       (
                                         (stockArray[0].percentage.split(",")[
                                           index
@@ -1177,7 +1178,7 @@ const EdurekaHedge = () => {
                                           100) *
                                         (1 + dev)
                                       ).toFixed(3)
-                                    )
+                                    ),1)
                               }
                               name={item.trim()}
                               onInputChange={(name, value) => {
