@@ -47,7 +47,7 @@ const Strategy = ({
   }
   
   return (
-    <div className="swift-accounts-strategy">
+<div className={`swift-accounts-strategy ${isClicked ? 'swift-accounts-strategy-active' : ''}`}>
       <div
         className="swift-accounts-strategy-content"
         style={style}

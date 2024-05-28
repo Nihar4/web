@@ -21,7 +21,7 @@ const ScatterChart = ({ initialData, width, ratio, height, HandleOptData }) => {
       {
         data: transformedData,
         backgroundColor: (context) => context.raw.backgroundColor,
-        // pointRadius: 5,
+        pointRadius: 4,
       },
     ],
   };

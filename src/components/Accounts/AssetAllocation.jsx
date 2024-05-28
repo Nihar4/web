@@ -1100,6 +1100,7 @@ const AssetAllocation = () => {
                       onToggle={() => handleDropdownToggle(index)}
                       onStockSelect={handleStockSelect}
                       getsum={handleGetSum}
+                      selectedStock={selectedStock}
                     />
                   ))}
                 </div>
@@ -1375,7 +1376,7 @@ const AssetAllocation = () => {
                                     </p>
                                   </div>
                                   <p className="swift-modal-portfolio-title">
-                                    {parseFloat(optDataValue * 100).toFixed(2)}
+                                    {parseFloat(optDataValue * 100).toFixed(2)}%
                                   </p>
                                   <p className="swift-modal-portfolio-title">
                                     {stockObj.percentage.split(",")[index]}%

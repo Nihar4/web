@@ -56,11 +56,32 @@
 }
 
 .stocks-dropdown-option-details {
-  padding: 6px 0px 6px 0px;
+  /* padding: 6px 0px 6px 0px;
   display: flex;
   justify-content: space-between;
-  flex-direction: column;
+  flex-direction: column; */
+
+
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px;
+    margin: 3px 0px;
+    background: #ffffff;
+    border-radius: 10px;
+    BORDER: 1px solid #ffffff;
+}
   /* border-bottom: 0.5px solid rgba(1, 22, 39, 0.1); */
+
+.stock-dropdown-option-details-active{
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px;
+    margin: 3px 0px;
+    background: #fafafa;
+    border-radius: 10px;
+    BORDER: 1px solid #E8E8E8;
 }
 
 .stocks-dropdown-option-left {
