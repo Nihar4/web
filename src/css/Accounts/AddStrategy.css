@@ -391,3 +391,7 @@
   height: 86%;
   overflow-y: auto;
 }
+
+.eureka-table{
+  overflow-y: auto;
+}

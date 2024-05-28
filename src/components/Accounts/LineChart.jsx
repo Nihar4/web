@@ -139,7 +139,7 @@ const LineChart = ({
 
   if(name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC"){
     newestDate = new Date(initialData[initialData.length-13].date).setDate(0);
-    console.log('nD',new Date(newestDate).toLocaleString());
+    // console.log('nD',new Date(newestDate).toLocaleString());
   }
   else{
     newestDate = initialData.reduce((acc, cur) => {
@@ -189,7 +189,7 @@ else{
   initialData = [...initialData, ...newData];
 
 
-console.log(initialData);
+// console.log(initialData);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
     

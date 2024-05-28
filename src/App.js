@@ -8,12 +8,14 @@ import DashBoard from './components/DashBoard/DashBoard';
 import Error from './components/Error';
 import Searchbar from './components/Accounts/Searchbar';
 import SearchLive from './components/Accounts/SearchLive';
+import Sample from './components/Sample';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/table" element={<Sample />} />
         <Route path="/login/*" element={<Login />} />
         <Route path='/signup/*' element={<Signup />} />
         <Route path='/accounts/*' element={<DashBoard />} />
