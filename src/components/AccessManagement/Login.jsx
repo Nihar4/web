@@ -128,11 +128,23 @@ const LoginMain = () => {
 
   const handleSubmit = async (e) => {
 
-    if(formValues["email"] == "demo@swiftfolios.co.uk" && formValues["otp"] == "128314"){
-      navigate("/accounts/dashboard/asset", {
-        state: { email_id: formValues["email"] },
-      });
-      return;
+    if(formValues["email"] == "demo@swiftfolios.co.uk" ){
+      if(formValues["otp"] == "128314"){
+
+        navigate("/accounts/dashboard/asset", {
+          state: { email_id: formValues["email"] },
+        });
+        return;
+      }
+      else{
+        if(formValues.otp.length != 6){
+          setOtpError("OTP must be 6 length");
+        }
+        else{
+          setOtpError("Incorrect OTP")
+        }
+        return;
+      }
     }
     setOtpError("error");
     if (isNextButtonDisabled) return;

@@ -116,7 +116,7 @@
   font-weight: var(--font-weight-heavy);
   line-height: 20px; /* 153.846% */
   letter-spacing: -0.65px;
-  width: 20%;
+  width: 15%;
 }
 
 .stocks-dropdown-option-change {
@@ -132,7 +132,7 @@
   justify-content:space-between; */
 
   display: flex;
-  width: 80%;
+  width:85%;
   /* column-gap: 15px; */
   justify-content: space-between;
 

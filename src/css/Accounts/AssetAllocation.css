@@ -136,7 +136,7 @@
   display: flex;
     flex-direction: column;
     row-gap: 20px;
-    width: 60%;
+    width: 55%;
   /* border: 2px solid black; */
 }
 
@@ -197,7 +197,7 @@ width: 400px !important;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  width: 40%;
+  width: 45%;
   /* border: 2px solid black; */
 }
 .swift-accounts-content-info {
@@ -386,7 +386,7 @@ width: 400px !important;
   /* width: 55%;
   display: flex; */
 
-  width: 80%;
+  width: 85%;
     /* column-gap: 15px; */
     display: flex;
     justify-content: space-between;
