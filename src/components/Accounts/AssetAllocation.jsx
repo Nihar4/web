@@ -39,7 +39,7 @@ const AssetAllocation = () => {
   const [loading, setloading] = useState(true);
   const [loading1, setloading1] = useState(true);
   const [loading2, setloading2] = useState(true);
-  const [duration, setDuration] = useState("1M");
+  const [duration, setDuration] = useState("5Y");
   const [openDropdown, setOpenDropdown] = useState();
 
   const [sum, setTotalsum] = useState(null);
@@ -111,9 +111,9 @@ const AssetAllocation = () => {
     setloading2(true);
     setSelectedStock(stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("1Y");
+      setDuration("5Y");
     } else {
-      setDuration("1M");
+      setDuration("5Y");
     }
     setSelectedStockName(detailed_name);
     setTimeout(() => {
@@ -203,9 +203,9 @@ const AssetAllocation = () => {
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
         console.log(stock);
         if (stock == stock.split(".")[0]) {
-          setDuration("1Y");
+          setDuration("5Y");
         } else {
-          setDuration("1M");
+          setDuration("5Y");
         }
         // setLastupdated("abc");
         fetchDataAndUpdateState();
@@ -237,9 +237,9 @@ const AssetAllocation = () => {
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
     console.log("click", stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("1Y");
+      setDuration("5Y");
     } else {
-      setDuration("1M");
+      setDuration("5Y");
     }
 
     // console.log(initialStrategies[index].assetclass);
@@ -787,7 +787,7 @@ const AssetAllocation = () => {
                 Math.max(
                   parseFloat(
                     (
-                      (stockObj.percentage.split(",")[index] / 100) *
+                      (stockObj.percentage.split(",")[index]) *
                       (1 - dev)
                     ).toFixed(3)
                   ),
@@ -796,11 +796,11 @@ const AssetAllocation = () => {
                 Math.min(
                   parseFloat(
                     (
-                      (stockObj.percentage.split(",")[index] / 100) *
+                      (stockObj.percentage.split(",")[index] ) *
                       (1 + dev)
                     ).toFixed(3)
                   ),
-                  1
+                  100
                 ),
               ],
             }));
@@ -810,7 +810,7 @@ const AssetAllocation = () => {
                 const stockvalue = stock.trim();
                 setWeights((prev) => ({
                   ...prev,
-                  [stockvalue]: [0, 1],
+                  [stockvalue]: [0, 100],
                 }));
               });
             } else {
@@ -938,7 +938,7 @@ const AssetAllocation = () => {
                 }`}
               >
                 <div className="swift-asset-range-buttons">
-                  {selectedStock &&
+                  {/* {selectedStock &&
                     selectedStock.split(".")[0] !== selectedStock && (
                       <>
                         <p
@@ -985,7 +985,7 @@ const AssetAllocation = () => {
                     className={duration == "1Y" ? "selected_duration" : ""}
                   >
                     1y
-                  </p>
+                  </p> */}
                   <p
                     onClick={() => handleDuraion("5Y")}
                     style={{ cursor: "pointer" }}
@@ -1028,7 +1028,7 @@ const AssetAllocation = () => {
                       <p>
                         Portfolio
                         <span style={{ fontSize: "12px" }}>
-                          {` (3m exp. ret `}
+                          {` (12m exp. ret `}
 
                           <span
                             className={
@@ -1075,12 +1075,12 @@ const AssetAllocation = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
                           SAA
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13%"}}>
                           <span>Pred.</span>
                           <br />
-                          <span>(3 mth)</span>
+                          <span>(12 mth)</span>
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
                           Conf.
                         </p>
                       </div>
@@ -1195,8 +1195,7 @@ const AssetAllocation = () => {
                                               (
                                                 (stockObj.percentage.split(",")[
                                                   index
-                                                ] /
-                                                  100) *
+                                                ]) *
                                                 (1 - dev)
                                               ).toFixed(3)
                                             ),
@@ -1234,18 +1233,17 @@ const AssetAllocation = () => {
                                         ? weights[item.trim()] &&
                                           weights[item.trim()][1]
                                         : dev == "Unconstrained"
-                                        ? 1
+                                        ? 100
                                         : Math.min(
                                             parseFloat(
                                               (
                                                 (stockObj.percentage.split(",")[
                                                   index
-                                                ] /
-                                                  100) *
+                                                ]) *
                                                 (1 + dev)
                                               ).toFixed(3)
                                             ),
-                                            1
+                                            100
                                           )
                                     }
                                     name={item.trim()}
@@ -1423,7 +1421,9 @@ const AssetAllocation = () => {
                       </div>
                     </div>
                   ) : (
-                    <></>
+                    <div className="swift-aseet-loader">
+                    <Pulse />
+                  </div>
                   )}
                 </div>
               </div>

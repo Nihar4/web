@@ -36,51 +36,6 @@ const LineChart = ({
   const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setloading] = useState(true);
 
-  // console.log("chart", initialData);
-  // useEffect(() => {
-  //   setloading(true);
-  //   if (duration === "1M") {
-  //     setXevents([
-  //       new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   } else if (duration === "3M") {
-  //     setXevents([
-  //       new Date(Date.now() - 3 * 30 * 24 * 60 * 60 * 1000),
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   } else if (duration === "6M") {
-  //     setXevents([
-  //       new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000),
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   } else if (duration === "1Y") {
-  //     setXevents([
-  //       new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   } else if (duration === "YTD") {
-  //     const startOfYear = new Date(new Date().getFullYear(), 0, 1);
-  //     setXevents([
-  //       startOfYear,
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   } else if (duration === "5Y") {
-  //     setXevents([
-  //       new Date(Date.now() - 5 * 365 * 24 * 60 * 60 * 1000),
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   } else if (duration === "MAX") {
-  //     setXevents([
-  //       new Date(initialData[0]?.date),
-  //       new Date(initialData[initialData.length - 1]?.date),
-  //     ]);
-  //   }
-  //   setTimeout(() => {
-  //     setloading(false);
-  //   }, 1000);
-
-  // }, [duration, initialData]);
 
   useEffect(() => {
     setloading(true);

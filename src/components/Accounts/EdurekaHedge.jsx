@@ -40,7 +40,7 @@ const EdurekaHedge = () => {
   const [loading, setloading] = useState(true);
   const [loading1, setloading1] = useState(true);
   const [loading2, setloading2] = useState(true);
-  const [duration, setDuration] = useState("1M");
+  const [duration, setDuration] = useState("5Y");
   const [openDropdown, setOpenDropdown] = useState();
 
   const [sum, setTotalsum] = useState(null);
@@ -114,9 +114,9 @@ const EdurekaHedge = () => {
     setloading2(true);
     setSelectedStock(stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("3Y");
+      setDuration("5Y");
     } else {
-      setDuration("1M");
+      setDuration("5Y");
     }
     setSelectedStockName(detailed_name);
     setTimeout(() => {
@@ -205,9 +205,9 @@ const EdurekaHedge = () => {
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
         console.log(stock);
         if (stock == stock.split(".")[0]) {
-          setDuration("3Y");
+          setDuration("5Y");
         } else {
-          setDuration("1M");
+          setDuration("5Y");
         }
         setLastupdated("abc");
         // fetchDataAndUpdateState();
@@ -240,9 +240,9 @@ const EdurekaHedge = () => {
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
     console.log("click", stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("3Y");
+      setDuration("5Y");
     } else {
-      setDuration("1M");
+      setDuration("5Y");
     }
     // console.log("sa", initialStrategies[index].assetclass);
     // console.log(initialStrategies[index].assetclass);
@@ -598,9 +598,11 @@ const EdurekaHedge = () => {
     const fetchData = async () => {
       if (stockArray.length > 0) {
         setWeights();
-        const min_weight_array = stockArray[0].min_weight.split(",");
-        const max_weight_array = stockArray[0].max_weight.split(",");
+        const minWeightStr = String(stockArray[0].min_weight);
+        const maxWeightStr = String(stockArray[0].max_weight);
 
+        const min_weight_array = minWeightStr.split(",");
+        const max_weight_array = maxWeightStr.split(",");
         stockArray[0].stock.split(",").forEach(async (value, index) => {
           const stock = value.trim();
           setWeights((prev) => ({
@@ -772,7 +774,7 @@ const EdurekaHedge = () => {
               Math.max(
                 parseFloat(
                   (
-                    (stockArray[0].percentage.split(",")[index] / 100) *
+                    (stockArray[0].percentage.split(",")[index]) *
                     (1 - dev)
                   ).toFixed(3)
                 ),
@@ -781,11 +783,11 @@ const EdurekaHedge = () => {
               Math.min(
                 parseFloat(
                   (
-                    (stockArray[0].percentage.split(",")[index] / 100) *
+                    (stockArray[0].percentage.split(",")[index]) *
                     (1 + dev)
                   ).toFixed(3)
                 ),
-                1
+                100
               ),
             ],
           }));
@@ -797,13 +799,19 @@ const EdurekaHedge = () => {
               const stock = value.trim();
               setWeights((prev) => ({
                 ...prev,
-                [stock]: [0, 1],
+                [stock]: [0, 100],
               }));
             });
           } else {
-            const min_weight_array = stockArray[0].min_weight.split(",");
+            const minWeightStr = String(stockArray[0].min_weight);
+            const maxWeightStr = String(stockArray[0].max_weight);
 
-            const max_weight_array = stockArray[0].max_weight.split(",");
+            const min_weight_array = minWeightStr.split(",");
+            const max_weight_array = maxWeightStr.split(",");
+
+            // const min_weight_array = stockArray[0].min_weight.split(",");
+
+            // const max_weight_array = stockArray[0].max_weight.split(",");
 
             stockArray[0].stock.split(",").forEach(async (value, index) => {
               const stock = value.trim();
@@ -936,13 +944,13 @@ const EdurekaHedge = () => {
                 </div> */}
 
                 <div className="swift-asset-range-buttons">
-                  <p
+                  {/* <p
                     onClick={() => handleDuraion("3Y")}
                     style={{ cursor: "pointer" }}
                     className={duration == "3Y" ? "selected_duration" : ""}
                   >
                     3y
-                  </p>
+                  </p> */}
                   <p
                     onClick={() => handleDuraion("5Y")}
                     style={{ cursor: "pointer" }}
@@ -1032,12 +1040,12 @@ const EdurekaHedge = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
                           SAA
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13%"}}>
                           <span>Pred.</span>
                           <br />
-                          <span>(3 mth)</span>
+                          <span>(12 mth)</span>
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
                           Conf.
                         </p>
                       </div>
@@ -1144,8 +1152,7 @@ const EdurekaHedge = () => {
                                           (
                                             (stockArray[0].percentage.split(
                                               ","
-                                            )[index] /
-                                              100) *
+                                            )[index]) *
                                             (1 - dev)
                                           ).toFixed(3)
                                         ),
@@ -1178,18 +1185,17 @@ const EdurekaHedge = () => {
                                   dev == "Select"
                                     ? weights[item.trim()][1]
                                     : dev == "Unconstrained"
-                                    ? 1
+                                    ? 100
                                     : Math.min(
                                         parseFloat(
                                           (
                                             (stockArray[0].percentage.split(
                                               ","
-                                            )[index] /
-                                              100) *
+                                            )[index]) *
                                             (1 + dev)
                                           ).toFixed(3)
                                         ),
-                                        1
+                                        100
                                       )
                                 }
                                 name={item.trim()}
@@ -1356,7 +1362,9 @@ const EdurekaHedge = () => {
                     </div>
                   ) : (
                     // <p>Select the risk and return</p>
-                    <></>
+                    <div className="swift-aseet-loader">
+                    <Pulse />
+                  </div>
                   )}
                 </div>
               </div>

@@ -344,7 +344,7 @@ width: 400px !important;
   padding: 5px 15px;
   border-radius: 35px;
   font-weight: 600;
-  width: 115px;
+  width: 100px;
 }
 
 .swift-accounts-content-stocks-text{
@@ -379,6 +379,7 @@ width: 400px !important;
   /* grid-template-columns: repeat(2, 60px); */
   justify-content: flex-end;
   text-align: left;
+  padding: 0px 10px;
 
 }
 
@@ -437,9 +438,10 @@ width: 400px !important;
   color: #011627;
   display: flex;
   font-size: 12px;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 6px 20px;
-  width: 80%;
+  width: 100%;
+  column-gap: 20px;
 }
 
 .swift-asset-range-buttons > p {

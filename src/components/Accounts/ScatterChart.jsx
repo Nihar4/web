@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Scatter } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -30,6 +30,15 @@ const ScatterChart = ({ initialData, width, ratio, height, HandleOptData }) => {
   const xMax = Math.max(...transformedData.map(point => point.x));
   const yMin = Math.min(...transformedData.map(point => point.y));
   const yMax = Math.max(...transformedData.map(point => point.y));
+
+  useEffect(() => {
+    if (transformedData.length > 0) {
+      const maxRiskPoint = transformedData.reduce((prev, curr) => (prev.x > curr.x ? prev : curr));
+      const maxRiskIndex = transformedData.findIndex(point => point.x === maxRiskPoint.x);
+      setClickedIndices([maxRiskIndex]);
+      HandleOptData(maxRiskPoint);
+    }
+  }, [initialData]);
 
   const handleClick = (event, elements) => {
     if (elements.length > 0) {

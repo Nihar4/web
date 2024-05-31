@@ -37,10 +37,18 @@ const Header = ({ email_id, setloading }) => {
   const pathname = location.pathname;
   let currentPage;
 
-  if (pathname == "/accounts/dashboard/asset") {
+  if (
+    pathname == "/accounts/dashboard/asset" ||
+    pathname.startsWith("/accounts/dashboard/strategy") ||
+    pathname.startsWith("/accounts/dashboard/addstrategy")
+  ) {
     // console.log("hii")
     currentPage = "Multi-asset";
-  } else if (pathname == "/accounts/dashboard/edurekahedge") {
+  } else if (
+    pathname == "/accounts/dashboard/edurekahedge" ||
+    pathname.startsWith("/accounts/dashboard/eureka/addstrategy") ||
+    pathname.startsWith("/accounts/dashboard/eureka/strategy")
+  ) {
     // console.log("hello")
     currentPage = "Hedged Strategies";
   } else {
@@ -73,7 +81,7 @@ const Header = ({ email_id, setloading }) => {
             fontWeight: "var(--font-weight-heavy)",
             lineHeight: "normal",
             letterSpacing: "-0.7px",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
           onSelect={onDropdownSelect}
           default_value={currentPage}
