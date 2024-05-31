@@ -39,7 +39,7 @@ const AssetAllocation = () => {
   const [loading, setloading] = useState(true);
   const [loading1, setloading1] = useState(true);
   const [loading2, setloading2] = useState(true);
-  const [duration, setDuration] = useState("1M");
+  const [duration, setDuration] = useState("5Y");
   const [openDropdown, setOpenDropdown] = useState();
 
   const [sum, setTotalsum] = useState(null);
@@ -111,9 +111,9 @@ const AssetAllocation = () => {
     setloading2(true);
     setSelectedStock(stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("1Y");
+      setDuration("5Y");
     } else {
-      setDuration("1M");
+      setDuration("5Y");
     }
     setSelectedStockName(detailed_name);
     setTimeout(() => {
@@ -203,9 +203,9 @@ const AssetAllocation = () => {
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
         console.log(stock);
         if (stock == stock.split(".")[0]) {
-          setDuration("1Y");
+          setDuration("5Y");
         } else {
-          setDuration("1M");
+          setDuration("5Y");
         }
         // setLastupdated("abc");
         fetchDataAndUpdateState();
@@ -237,9 +237,9 @@ const AssetAllocation = () => {
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
     console.log("click", stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("1Y");
+      setDuration("5Y");
     } else {
-      setDuration("1M");
+      setDuration("5Y");
     }
 
     // console.log(initialStrategies[index].assetclass);
@@ -311,7 +311,7 @@ const AssetAllocation = () => {
 
   useEffect(() => {
     fetchDataAndUpdateState();
-  }, [selectedStrategy, reRenderKey, initialStrategies,ischartvisible]);
+  }, [selectedStrategy, reRenderKey, initialStrategies, ischartvisible]);
 
   const backButoonFunction = () => {
     setIsLeftVisible(true);
@@ -787,7 +787,7 @@ const AssetAllocation = () => {
                 Math.max(
                   parseFloat(
                     (
-                      (stockObj.percentage.split(",")[index] / 100) *
+                      (stockObj.percentage.split(",")[index]) *
                       (1 - dev)
                     ).toFixed(3)
                   ),
@@ -796,11 +796,11 @@ const AssetAllocation = () => {
                 Math.min(
                   parseFloat(
                     (
-                      (stockObj.percentage.split(",")[index] / 100) *
+                      (stockObj.percentage.split(",")[index] ) *
                       (1 + dev)
                     ).toFixed(3)
                   ),
-                  1
+                  100
                 ),
               ],
             }));
@@ -810,7 +810,7 @@ const AssetAllocation = () => {
                 const stockvalue = stock.trim();
                 setWeights((prev) => ({
                   ...prev,
-                  [stockvalue]: [0, 1],
+                  [stockvalue]: [0, 100],
                 }));
               });
             } else {
@@ -938,7 +938,7 @@ const AssetAllocation = () => {
                 }`}
               >
                 <div className="swift-asset-range-buttons">
-                  {selectedStock &&
+                  {/* {selectedStock &&
                     selectedStock.split(".")[0] !== selectedStock && (
                       <>
                         <p
@@ -985,7 +985,7 @@ const AssetAllocation = () => {
                     className={duration == "1Y" ? "selected_duration" : ""}
                   >
                     1y
-                  </p>
+                  </p> */}
                   <p
                     onClick={() => handleDuraion("5Y")}
                     style={{ cursor: "pointer" }}
@@ -1028,7 +1028,7 @@ const AssetAllocation = () => {
                       <p>
                         Portfolio
                         <span style={{ fontSize: "12px" }}>
-                          {` (3m exp. ret `}
+                          {` (12m exp. ret `}
 
                           <span
                             className={
@@ -1075,11 +1075,13 @@ const AssetAllocation = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
                           SAA
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
-                          Prediction (3 mth)
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13%"}}>
+                          <span>Pred.</span>
+                          <br />
+                          <span>(12 mth)</span>
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
-                          Confidence
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
+                          Conf.
                         </p>
                       </div>
                     </div>
@@ -1127,297 +1129,304 @@ const AssetAllocation = () => {
       </div>
       {visibleModal && (
         <SwiftModal closeModal={closeModal} top="2%">
-         
           <div className="swift-modal-content">
-          <div
-            className="custom__alert__close"
-            onClick={()=>closeModal()}
-          >
-            <img src={Close} alt="X" />
-          </div>
+            <div className="custom__alert__close" onClick={() => closeModal()}>
+              <img src={Close} alt="X" />
+            </div>
             <div className="swift-modal-main-content">
-            <div className="swift-modal-content-left">
-              <div className="swift-modal-weights">
-                <div className="swift-modal-dropdown">
-                  <p>Select Deviation</p>
-                  <CustomDropdown
-                    options={[
-                      "Select",
-                      "Unconstrained",
-                      "10%",
-                      "20%",
-                      "30%",
-                      "40%",
-                      "50%",
-                      "60%",
-                      "70%",
-                      "80%",
-                      "90%",
-                      "100%",
-                    ]}
-                    onSelect={devationDropdownSelect}
-                    default_value={"Select"}
-                    style={{ width: "150px" }}
-                  />
-                </div>
-                <div className="swift-modal-weights-heading">
-                  {/* <p>AssetClass</p> */}
-                  <p>Stock</p>
-                  <p>Weight</p>
-                  <p>Min. Wt.(%)</p>
-                  <p>Max. Wt.(%)</p>
-                </div>
-                {!loadingStock ? (
-                  <div className="swift-modal-weights-content">
-                    {stockArray.map((stockObj, stockIndex) => (
-                      <>
-                        {stockObj.stock.split(",").map((item, index) => (
-                          <div
-                            className="swift-modal-weights-content-main"
-                            key={`${stockIndex}-${index}`}
-                          >
-                            <div className="swift-modal-weight-content-div">
-                              {/* <p>{stockObj.name}</p> */}
-                              <div>
-                                <p>{item}</p>
-                              </div>
-                              <p>{stockObj.percentage.split(",")[index]}%</p>
-                              <p>
-                                <CustomInput
-                                  classnameInput={"swift-modal-input-weight"}
-                                  type="number"
-                                  value={
-                                    dev === "Select"
-                                      ? weights[item.trim()] &&
-                                        weights[item.trim()][0]
-                                      : dev == "Unconstrained"
-                                      ? 0
-                                      : Math.max(
-                                          parseFloat(
-                                            (
-                                              (stockObj.percentage.split(",")[
-                                                index
-                                              ] /
-                                                100) *
-                                              (1 - dev)
-                                            ).toFixed(3)
-                                          ),
-                                          0
-                                        )
-                                  }
-                                  styleInput={{ width: "100%", height: "10px" }}
-                                  name={item.trim()}
-                                  onInputChange={(name, value) => {
-                                    setWeights((prevValues) => ({
-                                      ...prevValues,
-                                      [name]: [
-                                        parseFloat(value),
-                                        prevValues[name]
-                                          ? prevValues[name][1]
-                                          : 0,
-                                      ],
-                                    }));
-                                  }}
-                                />
-                              </p>
-                              <p>
-                                <CustomInput
-                                  type="number"
-                                  classnameInput={"swift-modal-input-weight"}
-                                  styleInput={{ width: "100%", height: "10px" }}
-                                  value={
-                                    dev === "Select"
-                                      ? weights[item.trim()] &&
-                                        weights[item.trim()][1]
-                                      : dev == "Unconstrained"
-                                      ? 1
-                                      : Math.min(
-                                          parseFloat(
-                                            (
-                                              (stockObj.percentage.split(",")[
-                                                index
-                                              ] /
-                                                100) *
-                                              (1 + dev)
-                                            ).toFixed(3)
-                                          ),
-                                          1
-                                        )
-                                  }
-                                  name={item.trim()}
-                                  onInputChange={(name, value) => {
-                                    setWeights((prevValues) => ({
-                                      ...prevValues,
-                                      [name]: [
-                                        prevValues[name]
-                                          ? prevValues[name][0]
-                                          : 0,
-                                        parseFloat(value),
-                                      ],
-                                    }));
-                                  }}
-                                />
-                              </p>
-                            </div>
+              <div className="swift-modal-content-left">
+                <div className="swift-modal-weights">
+                  <div className="swift-modal-dropdown">
+                    <p>Select Deviation</p>
+                    <CustomDropdown
+                      options={[
+                        "Select",
+                        "Unconstrained",
+                        "10%",
+                        "20%",
+                        "30%",
+                        "40%",
+                        "50%",
+                        "60%",
+                        "70%",
+                        "80%",
+                        "90%",
+                        "100%",
+                      ]}
+                      onSelect={devationDropdownSelect}
+                      default_value={"Select"}
+                      style={{ width: "150px" }}
+                    />
+                  </div>
+                  <div className="swift-modal-weights-heading">
+                    {/* <p>AssetClass</p> */}
+                    <p>Stock</p>
+                    <p>Weight</p>
+                    <p>Min. Wt.(%)</p>
+                    <p>Max. Wt.(%)</p>
+                  </div>
+                  {!loadingStock ? (
+                    <div className="swift-modal-weights-content">
+                      {stockArray.map((stockObj, stockIndex) => (
+                        <>
+                          {stockObj.stock.split(",").map((item, index) => (
                             <div
-                              className="swift-modal-weights-content-details"
-                              title={
-                                stock_details
+                              className="swift-modal-weights-content-main"
+                              key={`${stockIndex}-${index}`}
+                            >
+                              <div className="swift-modal-weight-content-div">
+                                {/* <p>{stockObj.name}</p> */}
+                                <div>
+                                  <p>{item}</p>
+                                </div>
+                                <p>{stockObj.percentage.split(",")[index]}%</p>
+                                <p>
+                                  <CustomInput
+                                    classnameInput={"swift-modal-input-weight"}
+                                    type="number"
+                                    value={
+                                      dev === "Select"
+                                        ? weights[item.trim()] &&
+                                          weights[item.trim()][0]
+                                        : dev == "Unconstrained"
+                                        ? 0
+                                        : Math.max(
+                                            parseFloat(
+                                              (
+                                                (stockObj.percentage.split(",")[
+                                                  index
+                                                ]) *
+                                                (1 - dev)
+                                              ).toFixed(3)
+                                            ),
+                                            0
+                                          )
+                                    }
+                                    styleInput={{
+                                      width: "100%",
+                                      height: "10px",
+                                    }}
+                                    name={item.trim()}
+                                    onInputChange={(name, value) => {
+                                      setWeights((prevValues) => ({
+                                        ...prevValues,
+                                        [name]: [
+                                          parseFloat(value),
+                                          prevValues[name]
+                                            ? prevValues[name][1]
+                                            : 0,
+                                        ],
+                                      }));
+                                    }}
+                                  />
+                                </p>
+                                <p>
+                                  <CustomInput
+                                    type="number"
+                                    classnameInput={"swift-modal-input-weight"}
+                                    styleInput={{
+                                      width: "100%",
+                                      height: "10px",
+                                    }}
+                                    value={
+                                      dev === "Select"
+                                        ? weights[item.trim()] &&
+                                          weights[item.trim()][1]
+                                        : dev == "Unconstrained"
+                                        ? 100
+                                        : Math.min(
+                                            parseFloat(
+                                              (
+                                                (stockObj.percentage.split(",")[
+                                                  index
+                                                ]) *
+                                                (1 + dev)
+                                              ).toFixed(3)
+                                            ),
+                                            100
+                                          )
+                                    }
+                                    name={item.trim()}
+                                    onInputChange={(name, value) => {
+                                      setWeights((prevValues) => ({
+                                        ...prevValues,
+                                        [name]: [
+                                          prevValues[name]
+                                            ? prevValues[name][0]
+                                            : 0,
+                                          parseFloat(value),
+                                        ],
+                                      }));
+                                    }}
+                                  />
+                                </p>
+                              </div>
+                              <div
+                                className="swift-modal-weights-content-details"
+                                title={
+                                  stock_details
+                                    ? stock_details.find(
+                                        (s) => s.stock === item.trim()
+                                      )?.detailed_name
+                                    : ""
+                                }
+                              >
+                                {stock_details
                                   ? stock_details.find(
                                       (s) => s.stock === item.trim()
                                     )?.detailed_name
-                                  : ""
-                              }
-                            >
-                              {stock_details
-                                ? stock_details.find(
-                                    (s) => s.stock === item.trim()
-                                  )?.detailed_name
-                                : ""}
+                                  : ""}
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                      </>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="swift-aseet-loader">
-                    {/* <p>Loading</p> */}
-                    <Pulse />
-                  </div>
-                )}
-              </div>
-              <div className="swift-accounts-content-btn modal-submit-btn-div">
-                <CustomButton
-                  text="Submit"
-                  classname="swift-accounts-content-button modal-btn"
-                  onClick={handleResultclick}
-                />
-              </div>
-            </div>
-            <div className="swift-modal-content-right">
-              <div className="swift-modal-graph" ref={scatterRef}>
-                {scatter_data &&
-                scatter_data.length > 0 &&
-                scatterDimensions.width > 0 &&
-                scatterDimensions.height > 0 ? (
-                  <ScatterChart
-                    initialData={scatter_data}
-                    width={scatterDimensions.width}
-                    height={scatterDimensions.height}
-                    HandleOptData={HandleOptData}
-                    // chartload = {loadingChart}
+                          ))}
+                        </>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="swift-aseet-loader">
+                      {/* <p>Loading</p> */}
+                      <Pulse />
+                    </div>
+                  )}
+                </div>
+                <div className="swift-accounts-content-btn modal-submit-btn-div">
+                  <CustomButton
+                    text="Submit"
+                    classname="swift-accounts-content-button modal-btn"
+                    onClick={handleResultclick}
                   />
-                ) : (
-                  // <p>Please provide weights for optimization</p>
-                  <></>
-                )}
+                </div>
               </div>
-              <div className="swift-modal-optData">
-                {OptData ? (
-                  <div className="swift-modal-portfolio">
-                    <p className="swift-modal-portfolio-heading">
-                      Selected Portfolio
-                    </p>
-                    <div>
-                      <p className="swift-modal-portfolio-title">
-                        Extected Return
-                      </p>
+              <div className="swift-modal-content-right">
+                <div className="swift-modal-graph" ref={scatterRef}>
+                  {scatter_data &&
+                  scatter_data.length > 0 &&
+                  scatterDimensions.width > 0 &&
+                  scatterDimensions.height > 0 ? (
+                    <ScatterChart
+                      initialData={scatter_data}
+                      width={scatterDimensions.width}
+                      height={scatterDimensions.height}
+                      HandleOptData={HandleOptData}
+                      // chartload = {loadingChart}
+                    />
+                  ) : (
+                    // <p>Please provide weights for optimization</p>
+                    <></>
+                  )}
+                </div>
+                <div className="swift-modal-optData">
+                  {OptData ? (
+                    <div className="swift-modal-portfolio">
                       <p className="swift-modal-portfolio-heading">
-                        {parseFloat(OptData.y).toFixed(2)}%
+                        Selected Portfolio
                       </p>
-                    </div>
-                    <div>
-                      <p className="swift-modal-portfolio-title">
-                        Extected Risk
-                      </p>
-                      <p className="swift-modal-portfolio-heading">
-                        {parseFloat(OptData.x).toFixed(2)}%
-                      </p>
-                    </div>
-                    {/* <p>risk - {OptData.risk}</p> */}
-                    <div className="swift-modal-portfoli-weight">
-                      <p className="swift-modal-portfolio-heading">
-                        Portfolio Weights
-                      </p>
-                      <div className="swift-modal-portfolios-weights-heading">
-                        <p className="swift-modal-portfolio-heading1">
-                          Security
+                      <div>
+                        <p className="swift-modal-portfolio-title">
+                          Extected Return
                         </p>
-                        <p className="swift-modal-portfolio-heading2">
-                          Proposed Wt.
+                        <p className="swift-modal-portfolio-heading">
+                          {parseFloat(OptData.y).toFixed(2)}%
                         </p>
-                        <p className="swift-modal-portfolio-heading2">
-                          Actual Wt
-                        </p>
-                        <p className="swift-modal-portfolio-heading2">Diff.</p>
                       </div>
-                      <div className="swift-modal-portfolio-weights-content">
-                        {stockArray.map((stockObj, stockIndex) => (
-                          <>
-                            {stockObj.stock.split(",").map((item, index) => {
-                              const optDataValue = OptData.z[currentIndex];
-                              currentIndex++;
-                              return (
-                                <div
-                                  key={index}
-                                  className="swift-modal-portfolio-weight-stock"
-                                >
-                                  <div className="swift-modal-portfolio-detailed-list">
+                      <div>
+                        <p className="swift-modal-portfolio-title">
+                          Extected Risk
+                        </p>
+                        <p className="swift-modal-portfolio-heading">
+                          {parseFloat(OptData.x).toFixed(2)}%
+                        </p>
+                      </div>
+                      {/* <p>risk - {OptData.risk}</p> */}
+                      <div className="swift-modal-portfoli-weight">
+                        <p className="swift-modal-portfolio-heading">
+                          Portfolio Weights
+                        </p>
+                        <div className="swift-modal-portfolios-weights-heading">
+                          <p className="swift-modal-portfolio-heading1">
+                            Security
+                          </p>
+                          <p className="swift-modal-portfolio-heading2">
+                            Proposed Wt.
+                          </p>
+                          <p className="swift-modal-portfolio-heading2">
+                            Actual Wt
+                          </p>
+                          <p className="swift-modal-portfolio-heading2">
+                            Diff.
+                          </p>
+                        </div>
+                        <div className="swift-modal-portfolio-weights-content">
+                          {stockArray.map((stockObj, stockIndex) => (
+                            <>
+                              {stockObj.stock.split(",").map((item, index) => {
+                                const optDataValue = OptData.z[currentIndex];
+                                currentIndex++;
+                                return (
+                                  <div
+                                    key={index}
+                                    className="swift-modal-portfolio-weight-stock"
+                                  >
+                                    <div className="swift-modal-portfolio-detailed-list">
+                                      <p className="swift-modal-portfolio-title">
+                                        {item}
+                                      </p>
+                                      <p className="swift-modal-weight-detailed-name">
+                                        {stock_details
+                                          ? stock_details.find(
+                                              (s) => s.stock == item.trim()
+                                            ).detailed_name
+                                          : ""}
+                                      </p>
+                                    </div>
                                     <p className="swift-modal-portfolio-title">
-                                      {item}
+                                      {parseFloat(optDataValue * 100).toFixed(
+                                        2
+                                      )}
+                                      %
                                     </p>
-                                    <p className="swift-modal-weight-detailed-name">
-                                      {stock_details
-                                        ? stock_details.find(
-                                            (s) => s.stock == item.trim()
-                                          ).detailed_name
-                                        : ""}
+                                    <p className="swift-modal-portfolio-title">
+                                      {stockObj.percentage.split(",")[index]}%
+                                    </p>
+                                    <p className="swift-modal-portfolio-title">
+                                      {(
+                                        parseFloat(optDataValue * 100).toFixed(
+                                          2
+                                        ) -
+                                        parseFloat(
+                                          stockObj.percentage.split(",")[index]
+                                        )
+                                      ).toFixed(2)}
+                                      %
                                     </p>
                                   </div>
-                                  <p className="swift-modal-portfolio-title">
-                                    {parseFloat(optDataValue * 100).toFixed(2)}%
-                                  </p>
-                                  <p className="swift-modal-portfolio-title">
-                                    {stockObj.percentage.split(",")[index]}%
-                                  </p>
-                                  <p className="swift-modal-portfolio-title">
-                                    {(
-                                      parseFloat(optDataValue * 100).toFixed(
-                                        2
-                                      ) -
-                                      parseFloat(
-                                        stockObj.percentage.split(",")[index]
-                                      )
-                                    ).toFixed(2)}
-                                    %
-                                  </p>
-                                </div>
-                              );
-                            })}
-                          </>
-                        ))}
-                      </div>
+                                );
+                              })}
+                            </>
+                          ))}
+                        </div>
 
-                      <div className="swift-accounts-content-btn modal-submit-btn-div">
-                        <CustomButton
-                          text="Update portfolio"
-                          classname="swift-accounts-content-button modal-submit-btn"
-                          onClick={handleUpdatePortfolio}
-                        />
-                        <CustomButton
-                          text="Save ranges"
-                          classname="swift-accounts-content-button modal-submit-btn"
-                          onClick={handleSaveclick}
-                        />
+                        <div className="swift-accounts-content-btn modal-submit-btn-div">
+                          <CustomButton
+                            text="Update portfolio"
+                            classname="swift-accounts-content-button modal-submit-btn"
+                            onClick={handleUpdatePortfolio}
+                          />
+                          <CustomButton
+                            text="Save ranges"
+                            classname="swift-accounts-content-button modal-submit-btn"
+                            onClick={handleSaveclick}
+                          />
+                        </div>
                       </div>
                     </div>
+                  ) : (
+                    <div className="swift-aseet-loader">
+                    <Pulse />
                   </div>
-                ) : (
-                  <></>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
             </div>
           </div>
         </SwiftModal>

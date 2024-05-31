@@ -180,6 +180,17 @@ const StockesDropdown = ({
     }
   };
 
+  const map_corr_eureka = (correlation) => {
+    console.log("corr",correlation);
+    if (correlation > 0.7) {
+      return "High";
+    } else if (correlation > 0.5) {
+      return "Medium";
+    } else {
+      return "Low";
+    }
+  };
+
   console.log(selectedStock);
 
   return !loading && !loading1 && !loading2 ? (
@@ -311,7 +322,7 @@ const StockesDropdown = ({
                           %
                         </p>
                         <p className="stocks-dropdown-option-change-2">
-                          {map_corr(latestValuesArray[stock].correlation)}
+                          {heading !== "eureka" ? map_corr(latestValuesArray[stock].correlation) :map_corr_eureka(latestValuesArray[stock].correlation) }
                         </p>
                       </div>
                     </div>
