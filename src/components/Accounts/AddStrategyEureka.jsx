@@ -69,7 +69,7 @@ const AddStrategyMain_Eureka = () => {
             ] of asset.underlyings.entries()) {
               // console.log("Stock:", underlying.stock);
               const longNameValue = await fetchLongName(underlying.stock);
-              const name = `assetClasses[${assetIndex}].underlyings[${underlyingIndex}].stock`;
+              const name = `${underlying.stock.trim()}`;
               setLongName((prevLongName) => ({
                 ...prevLongName,
                 [name]: longNameValue,
@@ -168,7 +168,7 @@ const AddStrategyMain_Eureka = () => {
       setShowalert(false);
       setLongName((prevLongName) => ({
         ...prevLongName,
-        [name]: longNameValue,
+        [stockValue]: longNameValue,
       }));
 
       if (name.includes(".")) {
@@ -322,11 +322,14 @@ const AddStrategyMain_Eureka = () => {
             const updatedUnderlyings = assetClass.underlyings.filter(
               (_, j) => j !== underlyingIndex
             );
-            const updatedLongNames = { ...longName };
-            delete updatedLongNames[
-              `assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`
-            ];
-            setLongName(updatedLongNames);
+            // console.log("aaa",updatedUnderlyings)
+            // const updatedLongNames = { ...longName };
+            // console.log("assetclass",assetClass);
+            // delete updatedLongNames[
+            //   `${assetClass.underlyings[underlyingIndex].stock}`
+            // ];
+            // console.log("lna",updatedLongNames);
+            // setLongName(updatedLongNames);
             return {
               ...assetClass,
               underlyings: updatedUnderlyings,
@@ -340,6 +343,7 @@ const AddStrategyMain_Eureka = () => {
         assetClasses: updatedAssetClasses,
       };
     });
+
   };
   const totalPercentage =
     formValues.assetClasses.length > 0
@@ -486,6 +490,8 @@ const AddStrategyMain_Eureka = () => {
       return;
     }
 
+    console.log(formValues.assetClasses[0]);
+
     // console.log("Submitting form data:", formValues);
 
     const data = await ServerRequest({
@@ -577,7 +583,7 @@ const AddStrategyMain_Eureka = () => {
     setValue1(inputValue);
   };
 
-  console.log(formValues);
+  // console.log(formValues.assetClasses[0]);
   return loading ? (
     <div className="swift-aseet-loader">
       <p>Loading</p>
@@ -645,8 +651,10 @@ const AddStrategyMain_Eureka = () => {
             Add Underlying
           </p>
           <div className="swift-addstrategy-assetclassdiv">
-            {formValues.assetClasses.map((assetClass, classIndex) => (
-              <div key={classIndex} className="swift-addstrategy-asset">
+            {formValues.assetClasses.map((assetClass, classIndex) => {
+              console.log(assetClass)
+              return(
+              <div key={assetClass.name+classIndex} className="swift-addstrategy-asset">
                 <div className="swift-addstrategy-asset-1">
                   {/* <div className="swift-addstrategy-asset-left"> */}
                   {/* <CustomInput
@@ -683,7 +691,8 @@ const AddStrategyMain_Eureka = () => {
                 </div>
                 <div className="swift-addstrategy-asset2">
                   {assetClass.underlyings.map((underlying, underlyingIndex) => (
-                    <div>
+                 
+                    <div  key={assetClass.name+classIndex+underlying.stock+underlyingIndex}>
                       <div
                         key={underlyingIndex}
                         className="swift-addstrategy-underlying"
@@ -728,7 +737,9 @@ const AddStrategyMain_Eureka = () => {
                       <div className="swift-addstrategy-longname">
                         {
                           longName[
-                            `assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`
+                            formValues.assetClasses[classIndex].underlyings[
+                              underlyingIndex
+                            ].stock.trim()
                           ]
                         }
                       </div>
@@ -736,7 +747,8 @@ const AddStrategyMain_Eureka = () => {
                   ))}
                 </div>
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
         <div className="swift-addstrategy-submit-btn">

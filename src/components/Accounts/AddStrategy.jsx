@@ -65,7 +65,7 @@ const AddStrategyMain = () => {
             for (const [underlyingIndex, underlying] of asset.underlyings.entries()) {
                 // console.log("Stock:", underlying.stock);
                 const longNameValue = await fetchLongName(underlying.stock);
-                const name = `assetClasses[${assetIndex}].underlyings[${underlyingIndex}].stock`
+                const name = `${underlying.stock.trim()}`
                 setLongName((prevLongName) => ({
                   ...prevLongName,
                   [name]: longNameValue,
@@ -167,7 +167,7 @@ const AddStrategyMain = () => {
       setShowalert(false);
       setLongName((prevLongName) => ({
         ...prevLongName,
-        [name]: longNameValue,
+        [stockValue]: longNameValue,
       }));
 
       if (name.includes(".")) {
@@ -276,7 +276,7 @@ const AddStrategyMain = () => {
       prevValues.assetClasses[index].underlyings.forEach(
         (_, underlyingIndex) => {
           delete updatedLongNames[
-            `assetClasses[${index}].underlyings[${underlyingIndex}].stock`
+            `${prevValues.assetClasses[index].underlyings[underlyingIndex].stock}`
           ];
         }
       );
@@ -325,11 +325,11 @@ const AddStrategyMain = () => {
             const updatedUnderlyings = assetClass.underlyings.filter(
               (_, j) => j !== underlyingIndex
             );
-            const updatedLongNames = { ...longName };
-            delete updatedLongNames[
-              `assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`
-            ];
-            setLongName(updatedLongNames);
+            // const updatedLongNames = { ...longName };
+            // delete updatedLongNames[
+            //   `${assetClasses[index].underlyings[underlyingIndex].stock}`
+            // ];
+            // setLongName(updatedLongNames);
             return {
               ...assetClass,
               underlyings: updatedUnderlyings,
@@ -633,7 +633,7 @@ const AddStrategyMain = () => {
           </div>
           <div className="swift-addstrategy-assetclassdiv">
             {formValues.assetClasses.map((assetClass, classIndex) => (
-              <div key={classIndex} className="swift-addstrategy-asset">
+              <div key={assetClass.name+classIndex} className="swift-addstrategy-asset">
                 <div className="swift-addstrategy-asset-1">
                   {/* <div className="swift-addstrategy-asset-left"> */}
                   <CustomInput
@@ -672,7 +672,7 @@ const AddStrategyMain = () => {
                   {assetClass.underlyings.map((underlying, underlyingIndex) => (
                     <div>
                       <div
-                        key={underlyingIndex}
+                        key={assetClass.name+classIndex+underlying.stock+underlyingIndex}
                         className="swift-addstrategy-underlying"
                       >
                         {/* <div className="swift-addstrategy-underlying-left"> */}
@@ -715,7 +715,9 @@ const AddStrategyMain = () => {
                       <div className="swift-addstrategy-longname">
                         {
                           longName[
-                            `assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`
+                            formValues.assetClasses[classIndex].underlyings[
+                              underlyingIndex
+                            ].stock.trim()
                           ]
                         }
                       </div>
