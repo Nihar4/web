@@ -243,6 +243,12 @@
 .swift-modal-portfoli-weight {
   display: flex;
   flex-direction: column;
+  /* row-gap: 10px; */
+  justify-content: space-between;
+}
+.swift-modal-portfolio-weight-main-content{
+  display: flex;
+  flex-direction: column;
   row-gap: 10px;
 }
 

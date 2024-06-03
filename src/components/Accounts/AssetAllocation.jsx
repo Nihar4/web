@@ -1339,6 +1339,7 @@ const AssetAllocation = () => {
                       </div>
                       {/* <p>risk - {OptData.risk}</p> */}
                       <div className="swift-modal-portfoli-weight">
+                        <div className="swift-modal-portfolio-weight-main-content">
                         <p className="swift-modal-portfolio-heading">
                           Portfolio Weights
                         </p>
@@ -1388,7 +1389,14 @@ const AssetAllocation = () => {
                                     <p className="swift-modal-portfolio-title">
                                       {stockObj.percentage.split(",")[index]}%
                                     </p>
-                                    <p className="swift-modal-portfolio-title">
+                                    <p className={`swift-modal-portfolio-title ${(
+                                        parseFloat(optDataValue * 100).toFixed(
+                                          2
+                                        ) -
+                                        parseFloat(
+                                          stockObj.percentage.split(",")[index]
+                                        )
+                                      ) <0 ? "red-text" : "" }`}>
                                       {(
                                         parseFloat(optDataValue * 100).toFixed(
                                           2
@@ -1405,7 +1413,7 @@ const AssetAllocation = () => {
                             </>
                           ))}
                         </div>
-
+                        </div>
                         <div className="swift-accounts-content-btn modal-submit-btn-div">
                           <CustomButton
                             text="Update portfolio"

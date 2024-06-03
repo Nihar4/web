@@ -1289,6 +1289,7 @@ const EdurekaHedge = () => {
                       </div>
                       {/* <p>risk - {OptData.risk}</p> */}
                       <div className="swift-modal-portfoli-weight">
+                      <div className="swift-modal-portfolio-weight-main-content">
                         <p className="swift-modal-portfolio-heading">
                           Portfolio Weights
                         </p>
@@ -1330,7 +1331,14 @@ const EdurekaHedge = () => {
                               <p className="swift-modal-portfolio-title">
                                 {stockArray[0].percentage.split(",")[index]}%
                               </p>
-                              <p className="swift-modal-portfolio-title">
+                              <p className={`swift-modal-portfolio-title ${(
+                                  parseFloat(OptData.z[index] * 100).toFixed(
+                                    2
+                                  ) -
+                                  parseFloat(
+                                    stockArray[0].percentage.split(",")[index]
+                                  )
+                                ) <0 ? "red-text":""}`}>
                                 {(
                                   parseFloat(OptData.z[index] * 100).toFixed(
                                     2
@@ -1345,7 +1353,7 @@ const EdurekaHedge = () => {
                           ))}
                           {/* </table> */}
                         </div>
-
+                          </div>
                         <div className="swift-accounts-content-btn modal-submit-btn-div">
                           <CustomButton
                             text="Update portfolio"

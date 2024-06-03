@@ -10,7 +10,7 @@ const ScatterChart = ({ initialData, width, ratio, height, HandleOptData }) => {
   const [clickedIndices, setClickedIndices] = useState([]);
 
   const transformedData = initialData.map((item, index) => ({
-    x: item.risk,
+    x: Math.sqrt(12) * item.risk,
     y: item.return,
     z: item.weights,
     backgroundColor: clickedIndices.includes(index) ? 'yellow' : '#000fff',
