@@ -1368,7 +1368,7 @@ const AssetAllocation = () => {
                                     className="swift-modal-portfolio-weight-stock"
                                   >
                                     <div className="swift-modal-portfolio-detailed-list">
-                                      <p className="swift-modal-portfolio-title">
+                                      <p className="swift-modal-portfolio-title" style={{fontWeight:"800"}}>
                                         {item}
                                       </p>
                                       <p className="swift-modal-weight-detailed-name">
