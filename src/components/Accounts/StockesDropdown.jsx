@@ -252,7 +252,7 @@ const StockesDropdown = ({
                             stockDetailsArray[stock].percentage_change >= 0
                               ? "green-text"
                               : "red-text") +
-                            (stock.split(".")[0] == stock ? "normal-text" : "")
+                            (stock.split(".")[1] == "EH" ? "normal-text" : "")
                           }
                         >
                           {stockDetailsArray[stock] &&

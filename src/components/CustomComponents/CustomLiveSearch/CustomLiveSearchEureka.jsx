@@ -43,6 +43,7 @@ const CustomLiveSearchEureka = ({ onItemClick, prevvalue }) => {
     // console.log(result.code);
     onItemClick(`${result.symbol},${result.longname}`);
     // setName(`${result.longname}`)
+    console.log("symbol",result);
     setSearchQuery(`${result.symbol}`);
     setFilteredResults([]);
   };
