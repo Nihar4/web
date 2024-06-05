@@ -7,6 +7,11 @@ import CustomDropdown from "../CustomComponents/CustomDropdown/CustomDropdown";
 const Header = ({ email_id, setloading }) => {
   const navigate = useNavigate();
   const [loader, setloader] = useState(false);
+  const location = useLocation();
+  const pathname = location.pathname;
+  let currentPage;
+  const previousPath = location.state?.previousPath;
+  // console.log(previousPath);
 
   const handleclick = () => {
     window.location.href = `mailto:hello@swiftfolios.com`;
@@ -25,7 +30,7 @@ const Header = ({ email_id, setloading }) => {
   };
   const jobqueueHandler = (email_id) => {
     navigate("/accounts/dashboard/jobqueue", {
-      state: { email_id: email_id },
+      state: { email_id: email_id ,previousPath:pathname},
     });
   };
   const edurekaHedgeHandler = (email_id) => {
@@ -33,28 +38,60 @@ const Header = ({ email_id, setloading }) => {
       state: { email_id: email_id },
     });
   };
-  const location = useLocation();
-  const pathname = location.pathname;
-  let currentPage;
 
-  if (
-    pathname == "/accounts/dashboard/asset" ||
-    pathname.startsWith("/accounts/dashboard/strategy") ||
-    pathname.startsWith("/accounts/dashboard/addstrategy")
-  ) {
-    // console.log("hii")
-    currentPage = "Multi-asset";
-  } else if (
-    pathname == "/accounts/dashboard/edurekahedge" ||
-    pathname.startsWith("/accounts/dashboard/eureka/addstrategy") ||
-    pathname.startsWith("/accounts/dashboard/eureka/strategy")
-  ) {
-    // console.log("hello")
-    currentPage = "Hedged Strategies";
-  } else {
-    currentPage = "Multi-asset";
-  }
+
+  // if (
+  //   pathname == "/accounts/dashboard/asset" ||
+  //   pathname.startsWith("/accounts/dashboard/strategy") ||
+  //   pathname.startsWith("/accounts/dashboard/addstrategy")
+  // ) {
+  //   // console.log("hii")
+  //   currentPage = "Multi-asset";
+  // } else if (
+  //   pathname == "/accounts/dashboard/edurekahedge" ||
+  //   pathname.startsWith("/accounts/dashboard/eureka/addstrategy") ||
+  //   pathname.startsWith("/accounts/dashboard/eureka/strategy")
+  // ) {
+  //   // console.log("hello")
+  //   currentPage = "Hedged Strategies";
+  // } else {
+  //   currentPage = "Multi-asset";
+  // }
   // console.log('path',pathname );
+
+  if (pathname === "/accounts/dashboard/jobqueue" && previousPath) {
+    if (
+      previousPath === "/accounts/dashboard/asset" ||
+      previousPath.startsWith("/accounts/dashboard/strategy") ||
+      previousPath.startsWith("/accounts/dashboard/addstrategy")
+    ) {
+      currentPage = "Multi-asset";
+    } else if (
+      previousPath === "/accounts/dashboard/edurekahedge" ||
+      previousPath.startsWith("/accounts/dashboard/eureka/addstrategy") ||
+      previousPath.startsWith("/accounts/dashboard/eureka/strategy")
+    ) {
+      currentPage = "Hedged Strategies";
+    } else {
+      currentPage = "Multi-asset";
+    }
+  } else {
+    if (
+      pathname === "/accounts/dashboard/asset" ||
+      pathname.startsWith("/accounts/dashboard/strategy") ||
+      pathname.startsWith("/accounts/dashboard/addstrategy")
+    ) {
+      currentPage = "Multi-asset";
+    } else if (
+      pathname === "/accounts/dashboard/edurekahedge" ||
+      pathname.startsWith("/accounts/dashboard/eureka/addstrategy") ||
+      pathname.startsWith("/accounts/dashboard/eureka/strategy")
+    ) {
+      currentPage = "Hedged Strategies";
+    } else {
+      currentPage = "Multi-asset";
+    }
+  }
 
   const onDropdownSelect = (option) => {
     if (option == "Multi-asset") {
