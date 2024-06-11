@@ -148,7 +148,7 @@ const AddStrategyMain_Eureka = () => {
           BandColor: "#e51a4b",
 
           AutoClose: {
-            Active: true,
+            Active: false,
             Line: true,
             LineColor: "#e51a4b",
             Time: 2,
