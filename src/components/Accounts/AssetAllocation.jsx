@@ -1072,17 +1072,17 @@ const AssetAllocation = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p2">
                           Price
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13.5%"}}>
                           SAA
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13%"}}>
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"16%"}}>
                           <span>Pred.</span>
                           <br />
                           <span>(12 mth)</span>
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
+                        {/* <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
                           Conf.
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>

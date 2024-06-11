@@ -387,7 +387,7 @@ width: 400px !important;
   /* width: 55%;
   display: flex; */
 
-  width: 85%;
+  width: 71%;
     /* column-gap: 15px; */
     display: flex;
     justify-content: space-between;
@@ -398,7 +398,7 @@ width: 400px !important;
 }
 
 .swift-accounts-content-stocks-text-left-sub-div-p2{
-  width: 25%;
+  width: 30%;
 }
 
 .swift-accounts-content-stocks-show {

@@ -321,9 +321,9 @@ const StockesDropdown = ({
                           ).toFixed(2)}
                           %
                         </p>
-                        <p className="stocks-dropdown-option-change-2">
+                        {/* <p className="stocks-dropdown-option-change-2">
                           {heading !== "eureka" ? map_corr(latestValuesArray[stock].correlation) :map_corr_eureka(latestValuesArray[stock].correlation) }
-                        </p>
+                        </p> */}
                       </div>
                     </div>
 

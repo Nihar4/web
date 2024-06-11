@@ -87,6 +87,7 @@ const AddStrategyMain = () => {
     fetchdata();
   }, [id]);
 
+
   const extractPropertyNameAndIndex = (path) => {
     const matches = path.match(/^(.+)\[(\d+)\]$/);
     if (matches) {
@@ -99,6 +100,14 @@ const AddStrategyMain = () => {
   };
 
   const [showalert, setShowalert] = useState(false);
+
+  const closeAlert = () => {
+    setTimeout(() => {
+      
+      setShowalert(false);
+    },100);
+};
+
   const handleInputChange = async (name, value) => {
     // console.log(1);
     // console.log("addstraegy", name, value);
@@ -140,22 +149,29 @@ const AddStrategyMain = () => {
         // alert(
         //   `${value}'s data is not sufficient for analysis, please choose another one`
         // );
+        // setShowalert(true);
+        // Alert({
+        //   TitleText: "Error",
+        //   Message: `${stockValue}'s data is not sufficient for analysis, please choose another one`,
+        //   BandColor: "#e51a4b",
+
+        //   AutoClose: {
+        //     Active: false,
+        //     Line: true,
+        //     LineColor: "#e51a4b",
+        //     Time: 4,
+        //   },
+        // });
+        // setTimeout(() => {
+        //   setShowalert(false);
+        // }, 2000);
         setShowalert(true);
-        Alert({
+         Alert({
           TitleText: "Error",
           Message: `${stockValue}'s data is not sufficient for analysis, please choose another one`,
           BandColor: "#e51a4b",
-
-          AutoClose: {
-            Active: true,
-            Line: true,
-            LineColor: "#e51a4b",
-            Time: 2,
-          },
-        });
-        setTimeout(() => {
-          setShowalert(false);
-        }, 2000);
+          AutoClose: { Active: false, Time: 5 },
+      }, closeAlert)
 
         // if(document.getElementsByClassName("custom__alert__box").length==0){
         //   setShowalert(false);
@@ -562,11 +578,14 @@ const AddStrategyMain = () => {
       <Pulse />
     </div>
   ) : (
+    <>
+    <div className={`background-div ${showalert ? "blur-background" : ""}`}>
+    </div>
     <div className="swift-addstrategy-main">
       <Header email_id={email_id} setloading={setLoading}/>
       <div
         className={`swift-addstrategy-content ${
-          showalert ? "blur-background" : ""
+          showalert ? "" : ""
         }`}
       >
         <div className="swift-addstrategy-content-wrap" id="scroll">
@@ -755,6 +774,8 @@ const AddStrategyMain = () => {
         </div>
       </div>
     </div>
+
+    </>
   );
 };
 
