@@ -168,7 +168,7 @@ const AddStrategyMain = () => {
         setShowalert(true);
          Alert({
           TitleText: "Error",
-          Message: `${stockValue}'s data is not sufficient for analysis, please choose another one`,
+          Message: `${stockValue}'s data is not sufficient for analysis, please choose another one. Minimum data points is 1200.`,
           BandColor: "#e51a4b",
           AutoClose: { Active: false, Time: 5 },
       }, closeAlert)
