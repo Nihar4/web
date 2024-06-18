@@ -9,7 +9,8 @@ import Pulse from "../Loader/Pulse";
 const Jobqueu = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email_id = location.state ? location.state.email_id : null;
+  // const email_id = location.state ? location.state.email_id : null;
+  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
   const [dl_data, setDlData] = useState(null);
   const [loading,setloading] = useState(true);
   const previousPath = location.state?.previousPath;

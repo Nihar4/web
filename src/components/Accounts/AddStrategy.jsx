@@ -22,7 +22,8 @@ import moment from "moment-timezone";
 
 const AddStrategyMain = () => {
   const location = useLocation();
-  const email_id = location.state ? location.state.email_id : null;
+  // const email_id = location.state ? location.state.email_id : null;
+  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
   // console.log("add strategy", email_id);
 
   const navigate = useNavigate();
@@ -783,7 +784,8 @@ const StrategyCreated = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const id = location.state ? location.state.id : null;
-  const email_id = location.state ? location.state.email_id : null;
+  // const email_id = location.state ? location.state.email_id : null;
+  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
   const [dl_data, setDlData] = useState(null);
   const [loading,setloading] = useState(true)
   // console.log("strategy", email_id);
