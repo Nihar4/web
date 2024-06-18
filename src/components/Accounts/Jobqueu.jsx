@@ -12,6 +12,7 @@ const Jobqueu = () => {
   const email_id = location.state ? location.state.email_id : null;
   const [dl_data, setDlData] = useState(null);
   const [loading,setloading] = useState(true);
+  const previousPath = location.state?.previousPath;
   // console.log("strategy", email_id);
 
   const fetchData = async () => {
@@ -35,6 +36,36 @@ const Jobqueu = () => {
       // throw error;
     }
   };
+
+  const clickHandler = () => {
+
+    if (
+      previousPath === "/accounts/dashboard/asset" ||
+      previousPath.startsWith("/accounts/dashboard/strategy") ||
+      previousPath.startsWith("/accounts/dashboard/addstrategy")
+    ) {
+      // currentPage = "Multi-asset";
+      navigate("/accounts/dashboard/asset", {
+        state: { email_id: email_id },
+      });
+    } else if (
+      previousPath === "/accounts/dashboard/edurekahedge" ||
+      previousPath.startsWith("/accounts/dashboard/eureka/addstrategy") ||
+      previousPath.startsWith("/accounts/dashboard/eureka/strategy")
+    ) {
+      navigate("/accounts/dashboard/edurekahedge", {
+        state: { email_id: email_id },
+      });
+    } else {
+      navigate("/accounts/dashboard/asset", {
+        state: { email_id: email_id },
+      });
+    }
+    // navigate(-1, {
+    //   state: { email_id: email_id },
+    // });
+  };
+
 
   useEffect(() => {
     const fetchDataAndSetState = async () => {
@@ -81,10 +112,10 @@ const Jobqueu = () => {
       <Header email_id={email_id} setloading={setloading}/>
       <div className="swift-addstrategy-content">
         <div className="swift-addstrategy-content-wrap job-queue-wrap">
-          <BackButton />
+          {/* <BackButton /> */}
           <div className="swift-signup-status-main swift-strategy-created-main">
-            <div className="swift-signup-status-info swift-strategy-info">
-              <div className="swift-signup-status-info-1 swift-strategy-created">
+            <div className="swift-signup-status-info swift-strategy-info strategy-created-info">
+              <div className="swift-signup-status-info-1 swift-strategy-created strategy-created-content">
                 <div className="swift-strategy-created-head-text">
                   {/* <div>Status</div> */}
                   <div style={{ fontWeight: 800 }}>Job queue</div>
@@ -149,12 +180,12 @@ const Jobqueu = () => {
                 </div>
               </div>
               <div className="swift-signup-status-info-2 open-dashboard-btn ">
-                {/* <button
+                <button
                   className="swift-signup-status-button"
                   onClick={clickHandler}
                 >
                   Open Dashboard
-                </button> */}
+                </button>
               </div>
             </div>
           </div>
