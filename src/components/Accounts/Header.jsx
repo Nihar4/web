@@ -65,7 +65,21 @@ const Header = ({ email_id, setloading }) => {
   // console.log('path',pathname );
 
   if (pathname === "/accounts/dashboard/jobqueue" && previousPath) {
-  
+    if (
+      previousPath === "/accounts/dashboard/asset" ||
+      previousPath.startsWith("/accounts/dashboard/strategy") ||
+      previousPath.startsWith("/accounts/dashboard/addstrategy")
+    ) {
+      currentPage = "Multi-asset";
+    } else if (
+      previousPath === "/accounts/dashboard/edurekahedge" ||
+      previousPath.startsWith("/accounts/dashboard/eureka/addstrategy") ||
+      previousPath.startsWith("/accounts/dashboard/eureka/strategy")
+    ) {
+      currentPage = "Hedged Strategies";
+    } else {
+      currentPage = "Multi-asset";
+    }
   } else {
     if (
       pathname === "/accounts/dashboard/asset" ||
