@@ -19,9 +19,14 @@ const Header = ({ email_id, setloading }) => {
   const logOutHandler = () => {
     setloader(true);
     setloading(true);
+    localStorage.removeItem('userData'); 
+
     setTimeout(() => {
-      navigate("/login");
+      window.location.replace("/login");               
     }, 3000);
+    // setTimeout(() => {
+    //   navigate("/login");
+    // }, 3000);
   };
   const dashboardHandler = (email_id) => {
     navigate("/accounts/dashboard/asset", {
@@ -60,21 +65,7 @@ const Header = ({ email_id, setloading }) => {
   // console.log('path',pathname );
 
   if (pathname === "/accounts/dashboard/jobqueue" && previousPath) {
-    if (
-      previousPath === "/accounts/dashboard/asset" ||
-      previousPath.startsWith("/accounts/dashboard/strategy") ||
-      previousPath.startsWith("/accounts/dashboard/addstrategy")
-    ) {
-      currentPage = "Multi-asset";
-    } else if (
-      previousPath === "/accounts/dashboard/edurekahedge" ||
-      previousPath.startsWith("/accounts/dashboard/eureka/addstrategy") ||
-      previousPath.startsWith("/accounts/dashboard/eureka/strategy")
-    ) {
-      currentPage = "Hedged Strategies";
-    } else {
-      currentPage = "Multi-asset";
-    }
+  
   } else {
     if (
       pathname === "/accounts/dashboard/asset" ||
