@@ -49,7 +49,8 @@ const EdurekaHedge = () => {
   const [selectStockName, setSelectedStockName] = useState(null);
 
   const location = useLocation();
-  const email_id = location.state ? location.state.email_id : null;
+  // const email_id = location.state ? location.state.email_id : null;
+  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
 
   const [visibleModal, setVisibleModal] = useState(false);
 

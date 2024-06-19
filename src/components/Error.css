@@ -1,0 +1,111 @@
+.app__notfound {
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.notfound__content {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.notfound__content a{
+    color: var(--font-primary);
+    text-decoration: none;
+}
+
+.notfound__content .brand{
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: rgba(1, 22, 39, 0.7);
+}
+
+.notfound__content .notfound__heading {
+    font-size: 130px;
+    font-weight: 300;
+    letter-spacing: -2px;
+}
+
+.notfound__content .notfound__title {
+    margin-bottom: 10px;
+}
+
+.notfound__content .notfound__title>p {
+    font-size: 34px;
+    color: var(--font-primary);
+    font-weight: 500;
+    text-align: center;
+}
+
+.notfound__content>p {
+    color: #404040;
+    font-weight: 300;
+    font-size: 16px;
+    text-align: center;
+}
+
+.notfound__content .notfound__buttons {
+    margin-top: 40px;
+}
+
+.notfound__content .notfound__buttons>button {
+    border: 1px solid #404040;
+    background-color: transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    color: var(--font-primary);
+    padding: 15px 50px;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+.notfound__content .notfound__buttons>button a {
+    color: var(--font-primary);
+    text-decoration: none;
+}
+
+.notfound__content .notfound__buttons>button a:visited {
+    text-decoration: none;
+}
+
+.notfound__content .notfound__buttons>button:hover{
+    background-color: #f5f5f5;
+}
+
+
+
+@media only screen and (max-width:768px) {
+    .app__notfound {
+        display: flex;
+        align-items: center;
+        flex-direction: column-reverse;
+    }
+
+    .notfound__content {
+        width: 100%;
+    }
+
+    .notfound__content .notfound__heading {
+        font-size: 100px;
+    }
+    
+    .notfound__content .notfound__title {
+        margin-bottom: 30px;
+    }
+    
+    .notfound__content .notfound__title>p {
+        font-size: 24px;
+    }
+    
+    .notfound__content>p {
+        font-size: 14px;
+        margin-bottom: 2px;
+        font-weight: 400;
+    }
+}

@@ -22,7 +22,11 @@ const Header = ({ email_id, setloading }) => {
     localStorage.removeItem('userData'); 
 
     setTimeout(() => {
-      window.location.replace("/login");               
+      window.history.pushState(null, null, window.location.href);
+      window.history.pushState(null, null, '/login');
+      window.history.replaceState(null, null, '/login');
+  
+      window.location.replace('/login');
     }, 3000);
     // setTimeout(() => {
     //   navigate("/login");

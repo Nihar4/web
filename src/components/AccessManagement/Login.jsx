@@ -130,7 +130,7 @@ const LoginMain = () => {
 
     if(formValues["email"] == "demo@swiftfolios.co.uk" ){
       if(formValues["otp"] == "128314"){
-
+        localStorage.setItem("userData", formValues["email"]);
         navigate("/accounts/dashboard/asset", {
           state: { email_id: formValues["email"] },
         });
@@ -309,6 +309,7 @@ const LoginPin = () => {
         setError(true);
       }
       if (data1.error == false){
+        localStorage.setItem("userData", email);
         navigate("/accounts/dashboard/asset", {
           state: { email_id: email },
         });
