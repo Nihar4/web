@@ -15,7 +15,8 @@ const Error = () => {
           <p>Please visit the Homepage or Contact us for more information.</p>
           <div className="notfound__buttons">
             <button>
-              <Link to="/">Go to Home</Link>
+              {/* <Link to="/">Go to Home</Link> */}
+              <a href="https://www.swiftfolios.co.uk/">Go to Home</a>
             </button>
           </div>
         </div>
