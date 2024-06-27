@@ -160,8 +160,8 @@ const Jobqueu = () => {
                                       new Date(item.date_created).toISOString(),
                                       moment.tz.guess()
                                     )
-                                    .add(5, "hours")
-                                    .add(30, "minutes")
+                                    // .add(5, "hours")
+                                    // .add(30, "minutes")
                                     .format("DD-MM-YYYY HH:mm:ss")}
                             </td>
                             <td>{item.status}</td>
@@ -175,8 +175,8 @@ const Jobqueu = () => {
                                       ).toISOString(),
                                       moment.tz.guess()
                                     )
-                                    .add(5, "hours")
-                                    .add(30, "minutes")
+                                    // .add(5, "hours")
+                                    // .add(30, "minutes")
                                     .format("DD-MM-YYYY HH:mm:ss")}
                             </td>
                           </tr>

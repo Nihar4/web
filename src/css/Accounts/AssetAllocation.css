@@ -289,9 +289,14 @@ width: 400px !important;
 }
 
 .swift-accounts-content-stocks-right {
-  display: grid;
-  grid-template-columns: repeat(1, 50px);
+  /* display: grid;
+  grid-template-columns: repeat(1, 50px); */
+  display: flex;
   column-gap: 8px;
+
+}
+
+.swift-accounts-content-stocks-right > p {
   text-align: center;
   cursor: pointer;
   background: #e8e8e8;
@@ -326,7 +331,7 @@ width: 400px !important;
 
 .swift-accounts-content-stocks-checkbox {
   display: flex;
-  column-gap: 33px;
+  /* column-gap: 33px; */
   justify-content: space-between;
   align-items: center;
 }
@@ -535,6 +540,25 @@ width: 400px !important;
   font-size: var(--font-small);
   letter-spacing: -0.5px;
 }
+.swiftfolios-stock-performance{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.swiftfolios-stock-performace-data{
+display: flex;
+justify-content: space-between;
+}
+
+.swiftfolios-stock-performace-data > p{
+  color: #011627b3;
+  font-size: var(--font-small);
+  letter-spacing: -0.5px;
+
+}
+
 
 @media screen and (max-width: 1240px) {
   .swift-accounts-content-stocks-text {

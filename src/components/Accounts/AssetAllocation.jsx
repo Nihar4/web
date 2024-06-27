@@ -49,9 +49,13 @@ const AssetAllocation = () => {
 
   const location = useLocation();
   // const email_id = location.state ? location.state.email_id : null;
-  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
+  const email_id = localStorage.getItem("userData")
+    ? localStorage.getItem("userData")
+    : null;
   // console.log(email_id);
   const [visibleModal, setVisibleModal] = useState(false);
+  const [per_visivleModal, setPer_visibleModal] = useState(false);
+  const [performance_result, setPerformace_result] = useState();
 
   const [weights, setWeights] = useState();
   const [scatter_data, setScatter_data] = useState();
@@ -553,6 +557,16 @@ const AssetAllocation = () => {
     currentIndex = 0;
     // setWeights();
   };
+
+  const openPerformanceModal = async () => {
+    setPer_visibleModal(true);
+    performaceClick();
+  };
+
+  const closePerformaceModal = async () => {
+    setPer_visibleModal(false);
+    setPerformace_result();
+  };
   const closeModal = async () => {
     setVisibleModal(false);
     setScatter_data();
@@ -635,6 +649,49 @@ const AssetAllocation = () => {
       setLoadingStock(false);
     }, 1000);
   }, [stockArray]);
+
+  const performaceClick = async () => {
+    if (stockArray) {
+      try {
+        const data1 = await ServerRequest({
+          method: "post",
+          URL: `/strategy/performance-asset`,
+          data: stockArray,
+        });
+        if (data1.server_error) {
+          alert("performance error");
+        }
+
+        if (data1.error) {
+          alert("performance error");
+        }
+
+        const per_data = data1.data;
+        per_data.sort((a, b) => b.pred_percentage - a.pred_percentage);
+
+        let top25Stocks = per_data.slice(0, 25);
+
+        top25Stocks.sort((a, b) => b.market_cap - a.market_cap);
+
+        let totalMarketCap = top25Stocks.reduce(
+          (sum, stock) => sum + stock.market_cap,
+          0
+        );
+
+        top25Stocks = top25Stocks.map((stock) => ({
+          ...stock,
+          weight: (stock.market_cap / totalMarketCap)*100,
+        }));
+        top25Stocks.sort((a, b) => b.weight - a.weight);
+
+        console.log(top25Stocks);
+        setPerformace_result(top25Stocks);
+        // setPerformace_result(data1.data);
+      } catch (error) {
+        alert(error);
+      }
+    }
+  };
 
   const handleResultclick = async () => {
     // const data=weights;
@@ -787,19 +844,17 @@ const AssetAllocation = () => {
               [stock]: [
                 Math.max(
                   parseFloat(
-                    (
-                      (stockObj.percentage.split(",")[index]) *
-                      (1 - dev)
-                    ).toFixed(3)
+                    (stockObj.percentage.split(",")[index] * (1 - dev)).toFixed(
+                      3
+                    )
                   ),
                   0
                 ),
                 Math.min(
                   parseFloat(
-                    (
-                      (stockObj.percentage.split(",")[index] ) *
-                      (1 + dev)
-                    ).toFixed(3)
+                    (stockObj.percentage.split(",")[index] * (1 + dev)).toFixed(
+                      3
+                    )
                   ),
                   100
                 ),
@@ -846,7 +901,7 @@ const AssetAllocation = () => {
   //   initialStrategies.length
   // );
   // console.log("chart", ischartvisible, chart_data.length);
-  console.log(weights);
+  // console.log(initialStrategies[selectedStrategy]);
 
   return !loading &&
     (chart_data.length > 0 || loading2 == false) &&
@@ -1043,6 +1098,7 @@ const AssetAllocation = () => {
                       </p>
                     </div>
                     <div className="swift-accounts-content-stocks-right">
+                      {/* <p onClick={openPerformanceModal}>Performace</p> */}
                       <p onClick={handleEdit}>Change</p>
                     </div>
                   </div>
@@ -1060,6 +1116,7 @@ const AssetAllocation = () => {
                     <button className="asset-div-btn" onClick={openModal}>
                       Optimization
                     </button>
+                    {initialStrategies[selectedStrategy].strategyname=="Nifty Strategy" && <p onClick={openPerformanceModal} className="run-analysis-btn">Performace</p>}
                     <p className="run-analysis-btn" onClick={run_analysis}>
                       Run Analysis
                     </p>
@@ -1073,10 +1130,16 @@ const AssetAllocation = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p2">
                           Price
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13.5%"}}>
+                        <p
+                          className="swift-accounts-content-stocks-text-left-sub-div-p1"
+                          style={{ width: "13.5%" }}
+                        >
                           SAA
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"16%"}}>
+                        <p
+                          className="swift-accounts-content-stocks-text-left-sub-div-p1"
+                          style={{ width: "16%" }}
+                        >
                           <span>Pred.</span>
                           <br />
                           <span>(12 mth)</span>
@@ -1194,9 +1257,9 @@ const AssetAllocation = () => {
                                         : Math.max(
                                             parseFloat(
                                               (
-                                                (stockObj.percentage.split(",")[
+                                                stockObj.percentage.split(",")[
                                                   index
-                                                ]) *
+                                                ] *
                                                 (1 - dev)
                                               ).toFixed(3)
                                             ),
@@ -1238,9 +1301,9 @@ const AssetAllocation = () => {
                                         : Math.min(
                                             parseFloat(
                                               (
-                                                (stockObj.percentage.split(",")[
+                                                stockObj.percentage.split(",")[
                                                   index
-                                                ]) *
+                                                ] *
                                                 (1 + dev)
                                               ).toFixed(3)
                                             ),
@@ -1341,79 +1404,99 @@ const AssetAllocation = () => {
                       {/* <p>risk - {OptData.risk}</p> */}
                       <div className="swift-modal-portfoli-weight">
                         <div className="swift-modal-portfolio-weight-main-content">
-                        <p className="swift-modal-portfolio-heading">
-                          Portfolio Weights
-                        </p>
-                        <div className="swift-modal-portfolios-weights-heading">
-                          <p className="swift-modal-portfolio-heading1">
-                            Security
+                          <p className="swift-modal-portfolio-heading">
+                            Portfolio Weights
                           </p>
-                          <p className="swift-modal-portfolio-heading2">
-                            Proposed Wt.
-                          </p>
-                          <p className="swift-modal-portfolio-heading2">
-                            Actual Wt
-                          </p>
-                          <p className="swift-modal-portfolio-heading2">
-                            Diff.
-                          </p>
-                        </div>
-                        <div className="swift-modal-portfolio-weights-content">
-                          {stockArray.map((stockObj, stockIndex) => (
-                            <>
-                              {stockObj.stock.split(",").map((item, index) => {
-                                const optDataValue = OptData.z[currentIndex];
-                                currentIndex++;
-                                return (
-                                  <div
-                                    key={index}
-                                    className="swift-modal-portfolio-weight-stock"
-                                  >
-                                    <div className="swift-modal-portfolio-detailed-list">
-                                      <p className="swift-modal-portfolio-title" style={{fontWeight:"800"}}>
-                                        {item}
-                                      </p>
-                                      <p className="swift-modal-weight-detailed-name">
-                                        {stock_details
-                                          ? stock_details.find(
-                                              (s) => s.stock == item.trim()
-                                            ).detailed_name
-                                          : ""}
-                                      </p>
-                                    </div>
-                                    <p className="swift-modal-portfolio-title">
-                                      {parseFloat(optDataValue * 100).toFixed(
-                                        2
-                                      )}
-                                      %
-                                    </p>
-                                    <p className="swift-modal-portfolio-title">
-                                      {stockObj.percentage.split(",")[index]}%
-                                    </p>
-                                    <p className={`swift-modal-portfolio-title ${(
-                                        parseFloat(optDataValue * 100).toFixed(
-                                          2
-                                        ) -
-                                        parseFloat(
-                                          stockObj.percentage.split(",")[index]
-                                        )
-                                      ) <0 ? "red-text" : "" }`}>
-                                      {(
-                                        parseFloat(optDataValue * 100).toFixed(
-                                          2
-                                        ) -
-                                        parseFloat(
-                                          stockObj.percentage.split(",")[index]
-                                        )
-                                      ).toFixed(2)}
-                                      %
-                                    </p>
-                                  </div>
-                                );
-                              })}
-                            </>
-                          ))}
-                        </div>
+                          <div className="swift-modal-portfolios-weights-heading">
+                            <p className="swift-modal-portfolio-heading1">
+                              Security
+                            </p>
+                            <p className="swift-modal-portfolio-heading2">
+                              Proposed Wt.
+                            </p>
+                            <p className="swift-modal-portfolio-heading2">
+                              Actual Wt
+                            </p>
+                            <p className="swift-modal-portfolio-heading2">
+                              Diff.
+                            </p>
+                          </div>
+                          <div className="swift-modal-portfolio-weights-content">
+                            {stockArray.map((stockObj, stockIndex) => (
+                              <>
+                                {stockObj.stock
+                                  .split(",")
+                                  .map((item, index) => {
+                                    const optDataValue =
+                                      OptData.z[currentIndex];
+                                    currentIndex++;
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="swift-modal-portfolio-weight-stock"
+                                      >
+                                        <div className="swift-modal-portfolio-detailed-list">
+                                          <p
+                                            className="swift-modal-portfolio-title"
+                                            style={{ fontWeight: "800" }}
+                                          >
+                                            {item}
+                                          </p>
+                                          <p className="swift-modal-weight-detailed-name">
+                                            {stock_details
+                                              ? stock_details.find(
+                                                  (s) => s.stock == item.trim()
+                                                ).detailed_name
+                                              : ""}
+                                          </p>
+                                        </div>
+                                        <p className="swift-modal-portfolio-title">
+                                          {parseFloat(
+                                            optDataValue * 100
+                                          ).toFixed(2)}
+                                          %
+                                        </p>
+                                        <p className="swift-modal-portfolio-title">
+                                          {
+                                            stockObj.percentage.split(",")[
+                                              index
+                                            ]
+                                          }
+                                          %
+                                        </p>
+                                        <p
+                                          className={`swift-modal-portfolio-title ${
+                                            parseFloat(
+                                              optDataValue * 100
+                                            ).toFixed(2) -
+                                              parseFloat(
+                                                stockObj.percentage.split(",")[
+                                                  index
+                                                ]
+                                              ) <
+                                            0
+                                              ? "red-text"
+                                              : ""
+                                          }`}
+                                        >
+                                          {(
+                                            parseFloat(
+                                              optDataValue * 100
+                                            ).toFixed(2) -
+                                            parseFloat(
+                                              stockObj.percentage.split(",")[
+                                                index
+                                              ]
+                                            )
+                                          ).toFixed(2)}
+                                          %
+                                        </p>
+                                      </div>
+                                    );
+                                  })}
+                              </>
+                            ))}
+                          </div>
                         </div>
                         <div className="swift-accounts-content-btn modal-submit-btn-div">
                           <CustomButton
@@ -1431,11 +1514,110 @@ const AssetAllocation = () => {
                     </div>
                   ) : (
                     <div className="swift-aseet-loader">
-                    <Pulse />
-                  </div>
+                      <Pulse />
+                    </div>
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+        </SwiftModal>
+      )}
+
+      {per_visivleModal && (
+        <SwiftModal closeModal={closeModal} top="2%">
+          <div className="swift-modal-content" style={{ width: "55vw" }}>
+            <div
+              className="custom__alert__close"
+              onClick={() => closePerformaceModal()}
+            >
+              <img src={Close} alt="X" />
+            </div>
+            <div className="swift-modal-main-content">
+              <div
+                className="swift-modal-content-left"
+                style={{ width: "100%" }}
+              >
+                <div
+                  className="swift-modal-weights"
+                  style={{ height: "100vh" }}
+                >
+                  <div className="swift-modal-weights-content">
+                    <div className="swift-modal-weigts-table-heading">
+                      <p>Stock</p>
+                      <p>Predicted Retturn</p>
+                      <p>MarketCap</p>
+                      <p>Weight</p>
+                    </div>
+                    {performance_result ? (
+                      performance_result.map((info, index) => (
+                        <div
+                          key={index}
+                          className="swift-modal-weights-content-main"
+                        >
+                          <div className="swift-modal-weight-content-div">
+                            <p>{info.stock}</p>
+                            <p>{info.pred_percentage.toFixed(4)}</p>
+                            <p>
+                              {info.market_cap
+                                ? info.market_cap
+                                : "not found"}
+                            </p>
+                            <p>{info.weight
+                                ? `${info.weight.toFixed(2)}%`
+                                : "not found"}</p>
+                          </div>
+
+                          <div
+                            className="swift-modal-weights-content-details"
+                            title={
+                              stock_details
+                                ? stock_details.find(
+                                    (s) => s.stock === info.stock.trim()
+                                  )?.detailed_name
+                                : ""
+                            }
+                          >
+                            {stock_details
+                              ? stock_details.find(
+                                  (s) => s.stock === info.stock.trim()
+                                )?.detailed_name
+                              : ""}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="swift-aseet-loader">
+                        <Pulse />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {/* <div className="swift-modal-content-right">
+                <div className="swiftfolios-stock-performance">
+                  {performance_result ? (
+                    performance_result.map((info, index) => (
+                      <div
+                        key={index}
+                        className="swiftfolios-stock-performace-data"
+                      >
+                        <p>{info.stock}</p>
+                        <p>{info.pred_percentage.toFixed(3)}</p>
+                        <p>
+                          {info.market_cap.marketCap
+                            ? info.market_cap.marketCap.toFixed(3)
+                            : "not found"}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="swift-aseet-loader">
+                      <Pulse />
+                    </div>
+                  )}
+                </div>
+              </div> */}
             </div>
           </div>
         </SwiftModal>
