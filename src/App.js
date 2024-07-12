@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "../src/css/global.css";
+import "../src/components/CustomComponents/CustomTable/CustomTable.css"
 import Login from "./components/AccessManagement/Login";
 import Signup from "./components/AccessManagement/Signup";
 import Home from "./components/Home/Home";

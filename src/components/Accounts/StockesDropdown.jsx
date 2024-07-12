@@ -11,7 +11,7 @@ const StockesDropdown = ({
   id,
   onStockSelect,
   getsum,
-  selectedStock
+  selectedStock,
 }) => {
   const [dl_data, setDlData] = useState(null);
   const [stockDetailsArray, setStockDetailsArray] = useState({});
@@ -21,7 +21,6 @@ const StockesDropdown = ({
 
   const stock_saa_array = {};
   const stockOrder = [];
-
   options.forEach((option) => {
     const stocks = option.stock.split(", ");
     const percentages = option.percentage.split(", ");
@@ -80,9 +79,7 @@ const StockesDropdown = ({
   }, [id]);
 
   const fetchStockData = async (stock) => {
-    // console.log("stock name", stock);
     let stock_name = stock;
-    // console.log(stock_name);
     try {
       const data = await ServerRequest({
         method: "get",
@@ -110,7 +107,6 @@ const StockesDropdown = ({
         // const latestData =
         //   dl_data && dl_data.find((datum) => datum.security === stock);
         const stock_data = await fetchStockData(stock);
-        // console.log(stock_data);
 
         setStockDetailsArray((prevStockDetails) => ({
           ...prevStockDetails,
@@ -181,7 +177,6 @@ const StockesDropdown = ({
   };
 
   const map_corr_eureka = (correlation) => {
-    console.log("corr",correlation);
     if (correlation > 0.7) {
       return "High";
     } else if (correlation > 0.5) {
@@ -190,43 +185,41 @@ const StockesDropdown = ({
       return "Low";
     }
   };
-
-  console.log(selectedStock);
-
   return !loading && !loading1 && !loading2 ? (
     <div className="stocks-dropdown-main">
-      {heading !== "eureka" &&
-      <div className="stocks-dropdown-header">
-        <div className="stocks-dropdown-header-left">
-          <div className="stocks-dropdown-heading" onClick={onToggle}>
-            {heading}
+      {heading !== "eureka" && (
+        <div className="stocks-dropdown-header">
+          <div className="stocks-dropdown-header-left">
+            <div className="stocks-dropdown-heading" onClick={onToggle}>
+              {heading}
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="8"
+              viewBox="0 0 14 8"
+              fill="none"
+              className={`stock-dropdown-icon ${
+                isOpen ? "up-arrow" : "down-arrow"
+              }`}
+              onClick={onToggle}
+            >
+              <path
+                d="M13 7L7 1L1 7"
+                stroke="#011627"
+                stroke-opacity="0.7"
+                stroke-width="2"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="8"
-            viewBox="0 0 14 8"
-            fill="none"
-            className={`stock-dropdown-icon ${
-              isOpen ? "up-arrow" : "down-arrow"
-            }`}
-            onClick={onToggle}
-          >
-            <path
-              d="M13 7L7 1L1 7"
-              stroke="#011627"
-              stroke-opacity="0.7"
-              stroke-width="2"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <div className="stocks-dropdown-header-right">
+            <p>{totalPercentage}%</p>
+          </div>
         </div>
-        <div className="stocks-dropdown-header-right">
-          <p>{totalPercentage}%</p>
-        </div>
-      </div>}
+      )}
       {isOpen && (
         <div className="stocks-dropdown-options-container">
           <ul className="stocks-dropdown-options">
@@ -238,53 +231,59 @@ const StockesDropdown = ({
                 }
                 style={{ cursor: "pointer" }}
               >
-                <div className={`stocks-dropdown-option-details ${stock == selectedStock ? "stock-dropdown-option-details-active": ""}`}>
+                <div
+                  className={`stocks-dropdown-option-details ${
+                    stock == selectedStock
+                      ? "stock-dropdown-option-details-active"
+                      : ""
+                  }`}
+                >
+                  <div className="stocks-dropdown-option-up">
+                    <div className="stocks-dropdown-option-title">{stock}</div>
+                    <div className="stocks-dropdown-option-change">
+                      <p
+                        className={
+                          "stocks-dropdown-option-change-2 " +
+                          (stockDetailsArray[stock] &&
+                          stockDetailsArray[stock].percentage_change >= 0
+                            ? "green-text"
+                            : "red-text") +
+                          (stock.split(".")[1] == "EH" ? "normal-text" : "")
+                        }
+                      >
+                        {stockDetailsArray[stock] &&
+                        stockDetailsArray[stock].percentage_change !== "-" ? (
+                          <p>
+                            {stockDetailsArray[stock].percentage_change.toFixed(
+                              2
+                            )}
+                            %
+                          </p>
+                        ) : (
+                          <span
+                            className={
+                              stockDetailsArray[stock]
+                                .regularMarketChangePercent >= 0
+                                ? "green-text"
+                                : "red-text"
+                            }
+                          >
+                            {stockDetailsArray[
+                              stock
+                            ].regularMarketChangePercent.toFixed(3)}
+                            %
+                          </span>
+                        )}
+                      </p>
 
-                    <div className="stocks-dropdown-option-up">
-                      <div className="stocks-dropdown-option-title">
-                        {stock}
-                      </div>
-                      <div className="stocks-dropdown-option-change">
-                        <p
-                          className={
-                            "stocks-dropdown-option-change-2 " +
-                            (stockDetailsArray[stock] &&
-                            stockDetailsArray[stock].percentage_change >= 0
-                              ? "green-text"
-                              : "red-text") +
-                            (stock.split(".")[1] == "EH" ? "normal-text" : "")
-                          }
-                        >
-                          {stockDetailsArray[stock] &&
-                          stockDetailsArray[stock].percentage_change !== "-" ? (
-                            <p>
-                              {stockDetailsArray[
-                                stock
-                              ].percentage_change.toFixed(2)}
-                              %
-                            </p>
-                          ) : (
-                            <span
-                                className={
-                                  stockDetailsArray[stock]
-                                    .regularMarketChangePercent >= 0
-                                    ? "green-text"
-                                    : "red-text"
-                                }
-                              >
-                                {stockDetailsArray[
-                                  stock
-                                ].regularMarketChangePercent.toFixed(3)}
-                                %
-                              </span>
-                          )}
-                        </p>
-
-                        <p className="stocks-dropdown-option-change-1">
-                          {stockDetailsArray[stock] ? (
-                            <>
-                              {stockDetailsArray[stock].regularMarketPrice.toFixed(2)}
-                             {heading !== "eureka" && <span
+                      <p className="stocks-dropdown-option-change-1">
+                        {stockDetailsArray[stock] ? (
+                          <>
+                            {stockDetailsArray[
+                              stock
+                            ].regularMarketPrice.toFixed(2)}
+                            {heading !== "eureka" && (
+                              <span
                                 className={
                                   stockDetailsArray[stock]
                                     .regularMarketChangePercent >= 0
@@ -298,34 +297,34 @@ const StockesDropdown = ({
                                   stock
                                 ].regularMarketChangePercent.toFixed(3)}
                                 %)
-                              </span>}
-                            </>
-                          ) : (
-                            ""
-                          )}
-                        </p>
-                        <p className="stocks-dropdown-option-change-2">
-                          {stock_saa_array[stock].toFixed(1)}%
-                        </p>
-                        <p
-                          className={
-                            "stocks-dropdown-option-change-2 " +
-                            (latestValuesArray[stock].predict_percentage * 100 >
-                            0
-                              ? "green-text"
-                              : "red-text")
-                          }
-                        >
-                          {(
-                            latestValuesArray[stock].predict_percentage * 100
-                          ).toFixed(2)}
-                          %
-                        </p>
-                        {/* <p className="stocks-dropdown-option-change-2">
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </p>
+                      <p className="stocks-dropdown-option-change-2">
+                        {stock_saa_array[stock].toFixed(1)}%
+                      </p>
+                      <p
+                        className={
+                          "stocks-dropdown-option-change-2 " +
+                          (latestValuesArray[stock].predict_percentage * 100 > 0
+                            ? "green-text"
+                            : "red-text")
+                        }
+                      >
+                        {(
+                          latestValuesArray[stock].predict_percentage * 100
+                        ).toFixed(2)}
+                        %
+                      </p>
+                      {/* <p className="stocks-dropdown-option-change-2">
                           {heading !== "eureka" ? map_corr(latestValuesArray[stock].correlation) :map_corr_eureka(latestValuesArray[stock].correlation) }
                         </p> */}
-                      </div>
                     </div>
+                  </div>
 
                   <div className="stocks-dropdown-option-info">
                     <div className="stocks-dropdown-option-down">
@@ -335,7 +334,6 @@ const StockesDropdown = ({
                     </div>
                   </div>
                 </div>
-
               </li>
             ))}
           </ul>

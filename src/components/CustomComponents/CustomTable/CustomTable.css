@@ -1,0 +1,130 @@
+/* ============================================Table============================================ */
+
+.swift-uk-table-container {
+    border-radius: 15px;
+    width: 100%;
+    padding: 0px 0px 5px;
+    overflow-y: scroll;
+    padding: 0 0px;
+    border: 1px solid #f5f5f5;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.swift-uk-table-container {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.swift-uk-table-container table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.swift-uk-table-container table thead {
+    position: sticky;
+    z-index: 1;
+    inset-block-start: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 1px #f5f5f5;
+}
+
+.swift-uk-table-container table thead tr td {
+    text-align: left;
+    padding: 5px 10px 5px 10px;
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 20px;
+    background-color: #ffffff;
+    color: var(--text-color);
+}
+
+.swift-uk-table-container table tbody {
+    width: 100%;
+}
+
+.swift-uk-table-container table tbody tr {
+    cursor: initial;
+    transition: 0.3s;
+    border-bottom: 1px solid #f5f5f5c5;
+    /* height: 61px; */
+}
+
+.swift-uk-table-container table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+.swift-uk-table-container table tbody tr td {
+    padding: 14px 10px;
+    color: var(--text-color);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+}
+
+.swift-uk-table-container table tbody tr td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.swift-uk-table-container::-webkit-scrollbar {
+    width: 0px;
+}
+
+.swift-uk-table-container::-webkit-scrollbar-thumb {
+    background-color: #e8e8e8;
+    border-radius: 34px;
+    height: 98px;
+}
+
+.swift-uk-table-container::-webkit-scrollbar-track {
+    background-color: #eee;
+}
+
+.swift-uk-table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #ccc;
+}
+
+.swift-performance-modal-container table tr td:nth-child(1) {
+    width: 25%;
+}
+
+.swift-performance-modal-container table tr td:nth-child(2) {
+    width: 15%;
+}
+
+.swift-performance-modal-container table tr td:nth-child(3) {
+    width: 12.5%;
+}
+
+.swift-performance-modal-container table tr td:nth-child(4) {
+    width: 10%;
+}
+
+.swift-performance-modal-container table tr td:nth-child(5) {
+    width: 12.5%;
+}
+
+.swift-performance-modal-container table tr td:nth-child(6) {
+    width: 12.5%;
+}
+
+.swift-performance-modal-container table tr td:nth-child(7) {
+    width: 12.5%;
+}
+
+.swift-performance-modal-container table tr td {
+    color: var(--text-color);
+    font-weight: 800 !important;
+}
+
+.swift-performance-modal-container table tbody tr td p:nth-child(1) {
+    font-weight: 800 !important;
+}
+
+.swift-performance-modal-container table tbody tr td p:nth-child(2) {
+    font-weight: 400 !important;
+}
