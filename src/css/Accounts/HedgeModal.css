@@ -36,12 +36,13 @@
   row-gap: 15px;
   height: 77vh;
 }
+
 .swift-modal-weights-heading {
   display: flex;
   justify-content: space-between;
 }
 
-.swift-modal-weights-heading > p {
+.swift-modal-weights-heading>p {
   color: var(--text-color);
   font-size: 12px;
   font-style: normal;
@@ -51,9 +52,10 @@
   white-space: nowrap;
 }
 
-.swift-modal-weights-heading > p {
+.swift-modal-weights-heading>p {
   width: 20%;
 }
+
 .swift-modal-weights-content {
   display: flex;
   flex-direction: column;
@@ -84,6 +86,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .swift-modal-weights-content-main {
   /* border-bottom: 0.5px solid rgba(1, 22, 39, 0.3); */
 
@@ -104,8 +107,8 @@
   width: 60%;
 }
 
-.swift-modal-weight-content-div > p,
-.swift-modal-weight-content-div > div {
+.swift-modal-weight-content-div>p,
+.swift-modal-weight-content-div>div {
   width: 20%;
   padding-right: 10px;
   color: var(--text-color);
@@ -125,16 +128,17 @@
   /* width: 400px;
   height: 400px; */
 }
+
 .swift-modal-optData {
   height: 100%;
   width: 40%;
 
   height: 100%;
-    width: 40%;
-    padding: 15px;
-    border: 1px solid #e8e8e8;
-    border-radius: 10px;
-    margin: 10px;
+  width: 40%;
+  padding: 15px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  margin: 10px;
 }
 
 .modal-btn-div {
@@ -153,6 +157,7 @@
 .modal-btn {
   width: 115px;
 }
+
 .swift-modal-portfolio-heading1,
 .swift-modal-portfolio-heading2,
 .swift-modal-portfolio-heading {
@@ -168,6 +173,7 @@
 .swift-modal-portfolio-heading1 {
   width: 40%;
 }
+
 .swift-modal-portfolio-heading2 {
   width: 20%;
 }
@@ -187,11 +193,13 @@
   letter-spacing: -0.8px;
   white-space: nowrap;
 }
+
 .swift-modal-portfolios-weights-heading {
   display: flex;
   justify-content: space-between;
 }
-.swift-modal-portfolios-weights-heading > p {
+
+.swift-modal-portfolios-weights-heading>p {
   /* width: 40%; */
   text-align: left;
 }
@@ -204,10 +212,10 @@
   overflow-y: auto;
 
   display: flex;
-    flex-direction: column;
-    height: 44vh;
-    overflow-y: auto;
-    row-gap: 15px;
+  flex-direction: column;
+  height: 44vh;
+  overflow-y: auto;
+  row-gap: 15px;
 }
 
 .swift-modal-portfolio-weights-content::-webkit-scrollbar {
@@ -233,20 +241,23 @@
   justify-content: space-between;
 
   display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #f1f1f1;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
 }
-.swift-modal-portfolio-weight-stock > p {
+
+.swift-modal-portfolio-weight-stock>p {
   width: 20%;
   text-align: left;
 }
+
 .swift-modal-portfoli-weight {
   display: flex;
   flex-direction: column;
   /* row-gap: 10px; */
   justify-content: space-between;
 }
-.swift-modal-portfolio-weight-main-content{
+
+.swift-modal-portfolio-weight-main-content {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -263,7 +274,8 @@
   justify-content: space-between;
   align-items: center;
 }
-.swift-modal-dropdown > p {
+
+.swift-modal-dropdown>p {
   color: var(--text-color);
   font-size: 12px;
   font-style: normal;
@@ -286,8 +298,9 @@
   padding: 8px !important;
   border-radius: 0px !important;
 
-  
+
 }
+
 .swift-modal-portfolio-detailed-list {
   display: flex;
   flex-direction: column;
@@ -309,7 +322,7 @@
   width: 80%;
 }
 
-.swiift-modal-weights-table tr td{
+.swiift-modal-weights-table tr td {
   color: var(--text-color);
   font-size: 12px;
   font-style: normal;
@@ -319,7 +332,8 @@
   text-align: left;
   padding-bottom: 5px;
 }
-.swiift-modal-weights-table tr th{
+
+.swiift-modal-weights-table tr th {
   padding-bottom: 5px;
   color: var(--text-color);
   font-size: 12px;
@@ -330,22 +344,23 @@
   text-align: left;
 }
 
-.swiift-modal-weights-table tr td:nth-child(1){
+.swiift-modal-weights-table tr td:nth-child(1) {
   width: 20%;
 }
 
-.swiift-modal-weights-table tr td:nth-child(2){
+.swiift-modal-weights-table tr td:nth-child(2) {
   width: 25%;
 }
+
 .swiift-modal-weights-table tr td:nth-child(3),
-.swiift-modal-weights-table tr td:nth-child(4){
+.swiift-modal-weights-table tr td:nth-child(4) {
   width: 17.5%;
 }
 
 
 .swiift-modal-weights-table {
   width: 100%;
-  table-layout: fixed; 
+  table-layout: fixed;
 }
 
 .swiift-modal-weights-table tr td,
@@ -381,32 +396,32 @@
   width: 10%;
 }
 
-.modal-submit-btn-div{
+.modal-submit-btn-div {
   justify-content: space-evenly;
 }
 
-.custom__alert__close{
+.custom__alert__close {
   align-items: center;
   border-radius: 5px;
-  cursor: pointer;
   display: flex;
   justify-content: flex-end;
   padding: 15px;
 }
-.custom__alert__close > img{
+
+.custom__alert__close>img {
   width: 12px;
   height: 12px;
-
+  cursor: pointer;
 }
 
-.swift-modal-main-content{
+.swift-modal-main-content {
   display: flex;
-    column-gap: 14px;
-    border-radius: 10px;
-    height: 87vh;
+  column-gap: 14px;
+  border-radius: 10px;
+  height: 87vh;
 }
 
-.swift-modal-weigts-table-heading{
+.swift-modal-weigts-table-heading {
   display: flex;
   justify-content: space-between;
   border-bottom: 0.5px solid #f1f1f1;
@@ -414,7 +429,7 @@
 
 }
 
-.swift-modal-weigts-table-heading > p{
+.swift-modal-weigts-table-heading>p {
   width: 20%;
   padding-right: 10px;
   color: var(--text-color);
@@ -426,4 +441,41 @@
   align-items: center;
   display: flex;
   text-align: left;
+}
+
+.swift-performance-modal-content {
+  background-color: white;
+  height: 93vh;
+  width: 60vw;
+  border-radius: 10px;
+  padding: 10px;
+  padding-top: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.swift-performance-modal-main-body {
+  display: flex;
+  flex-direction: column;
+  height: Calc(100% - 50px - 50px);
+}
+
+.swift-performance-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 5px 0;
+  align-items: center;
+}
+
+.swift-performance-modal-footer>div {
+  display: flex;
+  column-gap: 15px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.swift-performance-modal-content .custom__alert__close {
+  column-gap: 40px;
+  font-size: 13px;
+  font-weight: 600;
 }

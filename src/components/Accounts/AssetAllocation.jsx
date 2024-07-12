@@ -17,6 +17,7 @@ import CustomDropdown from "../CustomComponents/CustomDropdown/CustomDropdown";
 import CustomInput from "../CustomComponents/CustomInput/CustomInput";
 import ScatterChart from "./ScatterChart";
 import Close from "../../assets/crossicon.svg";
+import { numberFormat } from "../../utils/utilsFunction";
 
 const AssetAllocation = () => {
   const [initialStrategies, setInitialStrategies] = useState([]);
@@ -37,7 +38,7 @@ const AssetAllocation = () => {
   const [stockArray, setStockArray] = useState([]);
   const [reRenderKey, setReRenderKey] = useState(0);
   const [loading, setloading] = useState(true);
-  const [loading1, setloading1] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
   const [loading2, setloading2] = useState(true);
   const [duration, setDuration] = useState("5Y");
   const [openDropdown, setOpenDropdown] = useState();
@@ -52,7 +53,6 @@ const AssetAllocation = () => {
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
     : null;
-  // console.log(email_id);
   const [visibleModal, setVisibleModal] = useState(false);
   const [per_visivleModal, setPer_visibleModal] = useState(false);
   const [performance_result, setPerformace_result] = useState();
@@ -60,10 +60,9 @@ const AssetAllocation = () => {
   const [weights, setWeights] = useState();
   const [scatter_data, setScatter_data] = useState();
   const [stock_weights, setStock_weights] = useState();
+  const [runanalysis, setRunAnalysis] = useState(false);
 
   const handleDeleteStrategy = async (id) => {
-    console.log("delete", id);
-
     const data = await ServerRequest({
       method: "delete",
       URL: `/strategy/`,
@@ -81,8 +80,6 @@ const AssetAllocation = () => {
   };
 
   const handleEditStrategy = async (id) => {
-    // console.log("delete", id);
-
     navigate(`/accounts/dashboard/addstrategy/${id}`, {
       state: { email_id: email_id },
     });
@@ -112,7 +109,7 @@ const AssetAllocation = () => {
   };
 
   const handleStockSelect = (stock, detailed_name) => {
-    // console.log(stock,detailed_name, "stock");
+    // // console.log(stock,detailed_name, "stock");
     setloading2(true);
     setSelectedStock(stock);
     if (stock == stock.split(".")[0]) {
@@ -141,7 +138,7 @@ const AssetAllocation = () => {
       alert("error1");
     }
 
-    console.log(data);
+    // console.log(data);
     if (data.data.length > 0) {
       const uniqueIds = new Set();
 
@@ -168,6 +165,7 @@ const AssetAllocation = () => {
           },
         ],
       }));
+      // console.log(strategiesArray);
 
       const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
         const existingStrategy = acc.find((item) => item.id === curr.id);
@@ -192,9 +190,10 @@ const AssetAllocation = () => {
 
         return acc;
       }, []);
+      // console.log(combinedStrategiesArray);
 
       setInitialStrategies(combinedStrategiesArray);
-      // console.log(combinedStrategiesArray);
+      // // console.log(combinedStrategiesArray);
 
       if (combinedStrategiesArray.length > 0) {
         setClickedStrategy(combinedStrategiesArray[0]);
@@ -206,7 +205,7 @@ const AssetAllocation = () => {
         setStrategyid(combinedStrategiesArray[0].id);
         let stock =
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
-        console.log(stock);
+        // console.log(stock);
         if (stock == stock.split(".")[0]) {
           setDuration("5Y");
         } else {
@@ -240,17 +239,17 @@ const AssetAllocation = () => {
     );
     setIschartvisible(false);
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
-    console.log("click", stock);
+    // console.log("click", stock);
     if (stock == stock.split(".")[0]) {
       setDuration("5Y");
     } else {
       setDuration("5Y");
     }
 
-    // console.log(initialStrategies[index].assetclass);
+    // // console.log(initialStrategies[index].assetclass);
 
     // setStockArray(initialStrategies[index])
-    // console.log(stockArray);
+    // // console.log(stockArray);
 
     if (window.innerWidth <= 768) {
       setIsLeftVisible(false);
@@ -288,7 +287,7 @@ const AssetAllocation = () => {
           const data = await fetchDlData(
             initialStrategies[selectedStrategy].id
           );
-          // console.log(data);
+          // // console.log(data);
           const hasPendingStatus = data.some(
             (item) => item.status === "Pending"
           );
@@ -302,7 +301,7 @@ const AssetAllocation = () => {
           );
           setLastupdated(latestDate);
           // setLastupdated("abc");
-          // console.log(hasPendingStatus);
+          // // console.log(hasPendingStatus);
 
           setTimeout(() => {
             setloading(false);
@@ -328,7 +327,7 @@ const AssetAllocation = () => {
       setOpenDropdown(new Array(stockArray.length).fill(true));
     }
   }, [stockArray]);
-
+  console.log(stockArray);
   const handleDropdownToggle = (dropdownIndex) => {
     // if (openDropdown === dropdownIndex) {
     //   setOpenDropdown(null);
@@ -358,12 +357,12 @@ const AssetAllocation = () => {
   useEffect(() => {
     const updateDimensions = () => {
       const container = graphContainerRef.current;
-      // console.log("container",container);
+      // // console.log("container",container);
 
       if (container) {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        // console.log("wh", containerHeight,containerWidth)
+        // // console.log("wh", containerHeight,containerWidth)
 
         setGraphDimensions({ width: containerWidth, height: containerHeight });
         // setRadarKey((prevKey) => prevKey + 1);
@@ -389,12 +388,12 @@ const AssetAllocation = () => {
   useEffect(() => {
     const updateDimensions = () => {
       const container = scatterRef.current;
-      // console.log("container",container);
+      // // console.log("container",container);
 
       if (container) {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        // console.log("wh", containerHeight,containerWidth)
+        // // console.log("wh", containerHeight,containerWidth)
 
         setScatterDimensions({
           width: containerWidth,
@@ -431,7 +430,7 @@ const AssetAllocation = () => {
       if (data1.error) {
         alert("error1 jobqueue");
       }
-      // console.log(data1);
+      // // console.log(data1);
     } catch (error) {
       console.error(error);
     }
@@ -458,7 +457,7 @@ const AssetAllocation = () => {
   const handleDuraion = (item) => {
     setDuration(item);
   };
-
+  // console.log(selectedStock);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -480,7 +479,7 @@ const AssetAllocation = () => {
         setloading2(true);
 
         const name = await fetchStockData(selectedStock);
-        // console.log("name", name);
+        // // console.log("name", name);
         // const name = "abc";
         setSelectedStockName(name);
 
@@ -546,7 +545,7 @@ const AssetAllocation = () => {
   useEffect(() => {
     animateValue(sum * 100);
   }, [sum]);
-  // console.log(lastupdated);
+  // // console.log(lastupdated);
 
   let currentIndex = 0;
   const openModal = async () => {
@@ -591,7 +590,7 @@ const AssetAllocation = () => {
       if (data.error) {
         alert("error1");
       }
-      // console.log(stock,data.data);
+      // // console.log(stock,data.data);
       return data.data;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -650,52 +649,9 @@ const AssetAllocation = () => {
     }, 1000);
   }, [stockArray]);
 
-  const performaceClick = async () => {
-    if (stockArray) {
-      try {
-        const data1 = await ServerRequest({
-          method: "post",
-          URL: `/strategy/performance-asset`,
-          data: stockArray,
-        });
-        if (data1.server_error) {
-          alert("performance error");
-        }
-
-        if (data1.error) {
-          alert("performance error");
-        }
-
-        const per_data = data1.data;
-        per_data.sort((a, b) => b.pred_percentage - a.pred_percentage);
-
-        let top25Stocks = per_data.slice(0, 25);
-
-        top25Stocks.sort((a, b) => b.market_cap - a.market_cap);
-
-        let totalMarketCap = top25Stocks.reduce(
-          (sum, stock) => sum + stock.market_cap,
-          0
-        );
-
-        top25Stocks = top25Stocks.map((stock) => ({
-          ...stock,
-          weight: (stock.market_cap / totalMarketCap)*100,
-        }));
-        top25Stocks.sort((a, b) => b.weight - a.weight);
-
-        console.log(top25Stocks);
-        setPerformace_result(top25Stocks);
-        // setPerformace_result(data1.data);
-      } catch (error) {
-        alert(error);
-      }
-    }
-  };
-
   const handleResultclick = async () => {
     // const data=weights;
-    // console.log("wei", weights);
+    // // console.log("wei", weights);
     if (weights) {
       try {
         // setLoadingChart(true);
@@ -733,7 +689,7 @@ const AssetAllocation = () => {
             },
           });
         }
-        // console.log(data1);
+        // // console.log(data1);
         setScatter_data(data1.data);
         // setLoadingChart(false);
       } catch (error) {
@@ -770,7 +726,7 @@ const AssetAllocation = () => {
     const apiData = [];
     let valueIndex = 0;
     for (let stockObj of stockArray) {
-      // console.log(stockObj);
+      // // console.log(stockObj);
       stockObj.stock.split(",").forEach(async (value, index) => {
         const stock = stockObj.name + "+" + value.trim();
         const percentage = OptData.z[valueIndex];
@@ -778,7 +734,7 @@ const AssetAllocation = () => {
         apiData.push({ [stock]: percentage });
       });
     }
-    // console.log(apiData);
+    // // console.log(apiData);
     // const apiData = stockArray[0].stock.split(",").map((value, index) => ({
     //   [value.trim()]: OptData.z[index],
     // }));
@@ -893,16 +849,95 @@ const AssetAllocation = () => {
     }
   }, [dev]);
 
-  // console.log(
+  // // console.log(
   //   loading,
   //   loading2,
   //   lastupdated,
   //   chart_data.length,
   //   initialStrategies.length
   // );
-  // console.log("chart", ischartvisible, chart_data.length);
-  // console.log(initialStrategies[selectedStrategy]);
+  // // console.log("chart", ischartvisible, chart_data.length);
+  // // console.log(initialStrategies[selectedStrategy]);
 
+  const insertPortfolioHandler = async () => {
+    try {
+      setPerformace_result();
+      setRunAnalysis(false);
+
+      const data1 = await ServerRequest({
+        method: "post",
+        URL: `/strategy/update-portfolio`,
+        data: performance_result,
+      });
+      if (data1.server_error) {
+        alert("Server Error");
+      }
+
+      if (data1.error) {
+        alert("Update portfolio Error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setTimeout(() => {
+      closePerformaceModal();
+    }, 2000);
+  };
+
+  const runAnalysisHandler = async () => {
+    try {
+      setRunAnalysis(true);
+      setPerformace_result();
+      const data1 = await ServerRequest({
+        method: "post",
+        URL: `/strategy/calculate-performance`,
+        data: { id: strategyID, email: email_id },
+        // data: stockArray,
+      });
+      if (data1.server_error) {
+        alert("performance error");
+      }
+
+      if (data1.error) {
+        alert("performance error");
+      }
+
+      const per_data = data1.data;
+      const sortedData = [...per_data.data].sort((a, b) => b.weight - a.weight);
+
+      setPerformace_result({ ...per_data, data: sortedData });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const performaceClick = async () => {
+    try {
+      setRunAnalysis(false);
+
+      const data1 = await ServerRequest({
+        method: "post",
+        URL: `/strategy/getPortfolio`,
+        data: { id: strategyID, email: email_id },
+        // data: stockArray,
+      });
+      if (data1.server_error) {
+        alert("performance error");
+      }
+
+      if (data1.error) {
+        alert("performance error");
+      }
+
+      const per_data = data1.data;
+      const sortedData = [...per_data.data].sort((a, b) => b.weight - a.weight);
+
+      setPerformace_result({ ...per_data, data: sortedData });
+    } catch (error) {
+      alert(error);
+    }
+  };
+  // console.log(stockArray);
   return !loading &&
     (chart_data.length > 0 || loading2 == false) &&
     lastupdated ? (
@@ -1116,7 +1151,15 @@ const AssetAllocation = () => {
                     <button className="asset-div-btn" onClick={openModal}>
                       Optimization
                     </button>
-                    {initialStrategies[selectedStrategy].strategyname=="Nifty Strategy" && <p onClick={openPerformanceModal} className="run-analysis-btn">Performace</p>}
+                    {initialStrategies[selectedStrategy].strategyname ==
+                      "Nifty Strategy" && (
+                      <p
+                        onClick={openPerformanceModal}
+                        className="run-analysis-btn"
+                      >
+                        Performace
+                      </p>
+                    )}
                     <p className="run-analysis-btn" onClick={run_analysis}>
                       Run Analysis
                     </p>
@@ -1155,20 +1198,23 @@ const AssetAllocation = () => {
                   className="swift-accounts-content-stocks-show"
                   key={reRenderKey}
                 >
-                  {stockArray.map((asset, index) => (
-                    <StockesDropdown
-                      key={index}
-                      heading={asset.name}
-                      options={[asset]}
-                      id={strategyID}
-                      // isOpen={openDropdown === index}
-                      isOpen={openDropdown[index]}
-                      onToggle={() => handleDropdownToggle(index)}
-                      onStockSelect={handleStockSelect}
-                      getsum={handleGetSum}
-                      selectedStock={selectedStock}
-                    />
-                  ))}
+                  {stockArray.map((asset, index) => {
+                    console.log(asset);
+
+                    return (
+                      <StockesDropdown
+                        key={index}
+                        heading={asset.name}
+                        options={[asset]}
+                        id={strategyID}
+                        isOpen={openDropdown[index]}
+                        onToggle={() => handleDropdownToggle(index)}
+                        onStockSelect={handleStockSelect}
+                        getsum={handleGetSum}
+                        selectedStock={selectedStock}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1194,8 +1240,8 @@ const AssetAllocation = () => {
       {visibleModal && (
         <SwiftModal closeModal={closeModal} top="2%">
           <div className="swift-modal-content">
-            <div className="custom__alert__close" onClick={() => closeModal()}>
-              <img src={Close} alt="X" />
+            <div className="custom__alert__close">
+              <img src={Close} alt="X" onClick={() => closeModal()} />
             </div>
             <div className="swift-modal-main-content">
               <div className="swift-modal-content-left">
@@ -1526,99 +1572,127 @@ const AssetAllocation = () => {
 
       {per_visivleModal && (
         <SwiftModal closeModal={closeModal} top="2%">
-          <div className="swift-modal-content" style={{ width: "55vw" }}>
-            <div
-              className="custom__alert__close"
-              onClick={() => closePerformaceModal()}
-            >
-              <img src={Close} alt="X" />
+          <div className="swift-performance-modal-content">
+            <div className="custom__alert__close">
+              {performance_result && (
+                <p>
+                  Current Portfolio :{" "}
+                  {numberFormat(performance_result.totalPortfolio, 0)}
+                </p>
+              )}
+              <img src={Close} alt="X" onClick={() => closePerformaceModal()} />
             </div>
-            <div className="swift-modal-main-content">
-              <div
-                className="swift-modal-content-left"
-                style={{ width: "100%" }}
-              >
-                <div
-                  className="swift-modal-weights"
-                  style={{ height: "100vh" }}
-                >
-                  <div className="swift-modal-weights-content">
-                    <div className="swift-modal-weigts-table-heading">
-                      <p>Stock</p>
-                      <p>Predicted Retturn</p>
-                      <p>MarketCap</p>
-                      <p>Weight</p>
-                    </div>
-                    {performance_result ? (
-                      performance_result.map((info, index) => (
-                        <div
-                          key={index}
-                          className="swift-modal-weights-content-main"
-                        >
-                          <div className="swift-modal-weight-content-div">
-                            <p>{info.stock}</p>
-                            <p>{info.pred_percentage.toFixed(4)}</p>
-                            <p>
-                              {info.market_cap
-                                ? info.market_cap
-                                : "not found"}
-                            </p>
-                            <p>{info.weight
-                                ? `${info.weight.toFixed(2)}%`
-                                : "not found"}</p>
-                          </div>
 
-                          <div
-                            className="swift-modal-weights-content-details"
-                            title={
-                              stock_details
-                                ? stock_details.find(
-                                    (s) => s.stock === info.stock.trim()
-                                  )?.detailed_name
-                                : ""
-                            }
-                          >
-                            {stock_details
-                              ? stock_details.find(
-                                  (s) => s.stock === info.stock.trim()
-                                )?.detailed_name
-                              : ""}
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="swift-aseet-loader">
-                        <Pulse />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              {/* <div className="swift-modal-content-right">
-                <div className="swiftfolios-stock-performance">
-                  {performance_result ? (
-                    performance_result.map((info, index) => (
-                      <div
-                        key={index}
-                        className="swiftfolios-stock-performace-data"
-                      >
-                        <p>{info.stock}</p>
-                        <p>{info.pred_percentage.toFixed(3)}</p>
-                        <p>
-                          {info.market_cap.marketCap
-                            ? info.market_cap.marketCap.toFixed(3)
-                            : "not found"}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
+            <div className="swift-performance-modal-main-body">
+              <div className="swift-uk-table-container swift-performance-modal-container">
+                {performance_result ? (
+                  <>
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>Stock</td>
+                          <td>Predicted Return</td>
+                          <td>MarketCap(Cr.)</td>
+                          <td>Weight</td>
+                          <td>Current Price</td>
+                          <td>No. Of Shares</td>
+                          <td>Total Amount</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>CASH</td>
+                          <td>--</td>
+                          <td>--</td>
+                          <td>--</td>
+                          <td>1</td>
+                          <td>
+                            {numberFormat(performance_result.cashAmount, 0)}
+                          </td>
+                          <td>
+                            {numberFormat(performance_result.cashAmount, 0)}
+                          </td>
+                        </tr>
+                        {performance_result.data.map((info, index) => {
+                          return (
+                            <>
+                              <tr key={index}>
+                                <td>
+                                  <p>{info.symbol}</p>
+                                  <p>
+                                    {stock_details
+                                      ? stock_details.find(
+                                          (s) => s.stock === info.symbol.trim()
+                                        )?.detailed_name
+                                      : ""}
+                                  </p>
+                                </td>
+                                <td>{numberFormat(info.pred_percentage)}%</td>
+                                <td>
+                                  {info.market_cap
+                                    ? numberFormat(
+                                        info.market_cap / 10000000,
+                                        0
+                                      )
+                                    : "not found"}
+                                </td>
+                                <td>
+                                  {info.weight
+                                    ? `${numberFormat(info.weight)}%`
+                                    : "not found"}
+                                </td>
+                                <td>{numberFormat(info.currentPrice)}</td>
+                                <td>{numberFormat(info.noOfShares, 0)}</td>
+                                <td>{numberFormat(info.amount, 0)}</td>
+                              </tr>
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <>
                     <div className="swift-aseet-loader">
                       <Pulse />
+                      {runanalysis && (
+                        <p>It will take some time , please wait... </p>
+                      )}
                     </div>
+                  </>
+                )}
+              </div>
+            </div>
+            {performance_result && (
+              <div className="swift-performance-modal-footer">
+                <div>
+                  <p>
+                    Total Amount :{" "}
+                    {numberFormat(performance_result.totalInvestmentAmount, 0)}{" "}
+                  </p>
+                  {runanalysis && (
+                    <p>
+                      Remaining Amount :{" "}
+                      {numberFormat(performance_result.cashAmount, 0)}{" "}
+                    </p>
                   )}
                 </div>
-              </div> */}
-            </div>
+                <div>
+                  <CustomButton
+                    text="Run Analysis"
+                    classname="swift-accounts-content-button"
+                    onClick={runAnalysisHandler}
+                  />
+                  {runanalysis && (
+                    <CustomButton
+                      text="Update Portfolio"
+                      classname="swift-accounts-content-button"
+                      onClick={insertPortfolioHandler}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </SwiftModal>
       )}
