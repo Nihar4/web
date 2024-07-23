@@ -282,7 +282,7 @@ const StockesDropdown = ({
                             {stockDetailsArray[
                               stock
                             ].regularMarketPrice.toFixed(2)}
-                            {heading !== "eureka" && (
+                            {/* {heading !== "eureka" && (
                               <span
                                 className={
                                   stockDetailsArray[stock]
@@ -298,7 +298,7 @@ const StockesDropdown = ({
                                 ].regularMarketChangePercent.toFixed(3)}
                                 %)
                               </span>
-                            )}
+                            )} */}
                           </>
                         ) : (
                           ""

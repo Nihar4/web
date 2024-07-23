@@ -1,5 +1,6 @@
 import { timeFormat } from "d3-time-format";
 import { format } from "d3-format";
+import { numberFormat } from "../utils/utilsFunction";
 
 const fillColor = "#000000";
 const fontFamily = "Open Sans, sans-serif";
@@ -112,6 +113,29 @@ const tooltipContent = (range) => {
   };
 };
 
+const PerformancetooltipContent = () => {
+  let nf = numberFormat;
+  let df = timeFormat("%d %b %Y");
+
+  return ({ currentItem, xAccessor }) => {
+    return {
+      x: df(xAccessor(currentItem)),
+      y: [
+        {
+          label: "Portfolio",
+          value:
+            nf(currentItem.portfolioValue, 0)
+        },
+        {
+          label: "Nifty50",
+          value:
+            nf(currentItem.indexValue, 0)
+        },
+      ],
+    };
+  };
+};
+
 export {
   getXCoordinateProps,
   getYCoordinateProps,
@@ -120,4 +144,5 @@ export {
   getCompareXAxisProps,
   getCompareYAxisProps,
   tooltipContent,
+  PerformancetooltipContent
 };

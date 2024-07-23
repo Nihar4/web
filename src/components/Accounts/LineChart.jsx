@@ -16,7 +16,11 @@ import { tooltipContent } from "../../exports/ChartProps";
 import PriceMarkerCoordinate from "../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
 import PriceEdgeIndicator from "../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
 import Pulse from "../Loader/Pulse";
-import { LabelAnnotation, Label, Annotate } from "react-stockcharts/lib/annotation";
+import {
+  LabelAnnotation,
+  Label,
+  Annotate,
+} from "react-stockcharts/lib/annotation";
 
 const LineChart = ({
   data: initialData,
@@ -27,7 +31,6 @@ const LineChart = ({
   loading2,
   loading1,
   name,
-
 }) => {
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -35,7 +38,6 @@ const LineChart = ({
   ]);
   const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setloading] = useState(true);
-
 
   useEffect(() => {
     setloading(true);
@@ -63,10 +65,9 @@ const LineChart = ({
         new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
         lastDatePlusFiveDays,
       ]);
-    } 
-    else if (duration === "3Y") {
+    } else if (duration === "3Y") {
       setXevents([
-        new Date(Date.now() - 3*365 * 24 * 60 * 60 * 1000),
+        new Date(Date.now() - 3 * 365 * 24 * 60 * 60 * 1000),
         lastDatePlusFiveDays,
       ]);
     } else if (duration === "YTD") {
@@ -86,17 +87,15 @@ const LineChart = ({
     }, 2000);
   }, [duration, initialData]);
 
-
   const today = new Date();
   const oneDayAgo = new Date(today);
   oneDayAgo.setDate(today.getDate() - 1);
   let newestDate;
 
-  if(name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC"){
-    newestDate = new Date(initialData[initialData.length-13].date).setDate(0);
+  if (name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC") {
+    newestDate = new Date(initialData[initialData.length - 13].date).setDate(0);
     // console.log('nD',new Date(newestDate).toLocaleString());
-  }
-  else{
+  } else {
     newestDate = initialData.reduce((acc, cur) => {
       const currentDate = new Date(cur.date);
       if (currentDate <= oneDayAgo && currentDate > acc) {
@@ -109,107 +108,109 @@ const LineChart = ({
   const lastDate = new Date(initialData[initialData.length - 1]?.date);
 
   const newData = [];
-  if(duration == "1M" || duration == "3M" || duration == "6M" || duration=="YTD"){
-  for (let i = 1; i <= 15; i++) {
-    const nextDate = new Date(lastDate);
-    nextDate.setDate(lastDate.getDate() + i);
-    const newDataItem = {
-      date: nextDate.toISOString(),
-      close1: 0,
-      close2: 0,
-      close3: 0,
-      close4: 0,
-      close5: 0,
-      close6: 0,
-    };
-    newData.push(newDataItem);
+  if (
+    duration == "1M" ||
+    duration == "3M" ||
+    duration == "6M" ||
+    duration == "YTD"
+  ) {
+    for (let i = 1; i <= 15; i++) {
+      const nextDate = new Date(lastDate);
+      nextDate.setDate(lastDate.getDate() + i);
+      const newDataItem = {
+        date: nextDate.toISOString(),
+        close1: 0,
+        close2: 0,
+        close3: 0,
+        close4: 0,
+        close5: 0,
+        close6: 0,
+      };
+      newData.push(newDataItem);
+    }
+  } else {
+    for (let i = 5; i <= 75; i += 5) {
+      const nextDate = new Date(lastDate);
+      nextDate.setDate(lastDate.getDate() + i);
+      const newDataItem = {
+        date: nextDate.toISOString(),
+        close1: 0,
+        close2: 0,
+        close3: 0,
+        close4: 0,
+        close5: 0,
+        close6: 0,
+      };
+      newData.push(newDataItem);
+    }
   }
-}
-else{
-  for (let i = 5; i <= 75; i+=5) {
-    const nextDate = new Date(lastDate);
-    nextDate.setDate(lastDate.getDate() + i);
-    const newDataItem = {
-      date: nextDate.toISOString(),
-      close1: 0,
-      close2: 0,
-      close3: 0,
-      close4: 0,
-      close5: 0,
-      close6: 0,
-    };
-    newData.push(newDataItem);
-  }
-}
   initialData = [...initialData, ...newData];
 
-
-// console.log(initialData);
+  // console.log(initialData);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
-    
-    <ChartCanvas
-      width={width}
-      height={height - 20}
-      ratio={ratio}
-      margin={{ left: 20, right: 70, top: 10, bottom: 30 }}
-      seriesName="MSFT"
-      data={initialData}
-      clamp={"both"}
-      xAccessor={(d) => new Date(d.date)}
-      xScale={scaleTime()}
-      xExtents={xevents}
-      type={"svg"}
-    >
-      <Chart
-        id={1}
-        yExtents={(d) => {
-          const filteredData = initialData.filter(
-            (data) => new Date(data.date) <= lastDate
-          );
-
-          const closeValues = filteredData
-            .map((data) => [
-              data.close,
-              data.close1,
-              data.close2,
-              data.close3,
-              data.close4,
-              data.close5,
-              data.close6,
-            ])
-            .flat()
-            .filter((close) => close !== undefined);
-
-          if (closeValues.length === 0) {
-            return [0, 0];
-          }
-
-          const minClose = Math.min(...closeValues);
-          const maxClose = Math.max(...closeValues);
-
-          const minY = 0.8 * minClose;
-          const maxY = 1.2 * maxClose;
-
-          return [minY, maxY];
-        }}
+      <ChartCanvas
+        width={width}
+        height={height - 20}
+        ratio={ratio}
+        margin={{ left: 20, right: 70, top: 10, bottom: 30 }}
+        seriesName="MSFT"
+        data={initialData}
+        clamp={"both"}
+        xAccessor={(d) => new Date(d.date)}
+        xScale={scaleTime()}
+        xExtents={xevents}
+        type={"svg"}
       >
-        <XAxis
-          axisAt="bottom"
-          orient="bottom"
-          tickLabelAngle={-45}
-          ticks={6}
-          stroke="#f1f1f1"
-        />
-        <Label
-          x={(width - 15 - 70) / 2}
-          y={height - 45 }
-          fontSize="12"
-          text={`${name}`}
-        />
-        <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
+        <Chart
+          id={1}
+          yExtents={(d) => {
+            const filteredData = initialData.filter(
+              (data) => new Date(data.date) <= lastDate
+            );
 
-        {/* <PriceMarkerCoordinate
+            const closeValues = filteredData
+              .map((data) => [
+                data.close,
+                data.close1,
+                data.close2,
+                data.close3,
+                data.close4,
+                data.close5,
+                data.close6,
+              ])
+              .flat()
+              .filter((close) => close !== undefined);
+
+            if (closeValues.length === 0) {
+              return [0, 0];
+            }
+
+            const minClose = Math.min(...closeValues);
+            const maxClose = Math.max(...closeValues);
+
+            const minY = 0.8 * minClose;
+            const maxY = 1.2 * maxClose;
+
+            return [minY, maxY];
+          }}
+        >
+          <XAxis
+            axisAt="bottom"
+            orient="bottom"
+            tickLabelAngle={-45}
+            ticks={6}
+            stroke="#f1f1f1"
+          />
+          <Label
+            x={(width - 15 - 70) / 2}
+            y={height - 45}
+            fontSize="12"
+            text={`${name}`}
+          />
+          <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
+
+          {/* <PriceMarkerCoordinate
             at="left"
             orient="right"
             price={30000} 
@@ -227,73 +228,73 @@ else{
             opacity={0.6}
           /> */}
 
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
-          }
-          stroke="rgb(0 15 255 / 30%)"
-          highlightOnHover
-        />
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
-          }
-          stroke="rgb(0 15 255 / 30%)"
-          highlightOnHover
-        />
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
-          }
-          stroke="rgb(0 15 255 / 30%)"
-          highlightOnHover
-        />
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
-          }
-          stroke="rgb(0 15 255 / 30%)"
-          highlightOnHover
-        />
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
-          }
-          stroke="rgb(0 15 255 / 30%)"
-          highlightOnHover
-        />
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
-          }
-          stroke="rgb(0 15 255 / 80%)"
-          strokeWidth={2}
-          strokeDasharray={"Dash"}
-          highlightOnHover
-        />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
+            }
+            stroke="rgb(0 15 255 / 30%)"
+            highlightOnHover
+          />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
+            }
+            stroke="rgb(0 15 255 / 30%)"
+            highlightOnHover
+          />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
+            }
+            stroke="rgb(0 15 255 / 30%)"
+            highlightOnHover
+          />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
+            }
+            stroke="rgb(0 15 255 / 30%)"
+            highlightOnHover
+          />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
+            }
+            stroke="rgb(0 15 255 / 30%)"
+            highlightOnHover
+          />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
+            }
+            stroke="rgb(0 15 255 / 80%)"
+            strokeWidth={2}
+            strokeDasharray={"Dash"}
+            highlightOnHover
+          />
 
-        <LineSeries
-          yAccessor={(d) =>
-            new Date(d.date) <= new Date() ? d.close : undefined
-          }
-          strokeWidth={2}
-          stroke="#000fff"
-        />
+          <LineSeries
+            yAccessor={(d) =>
+              new Date(d.date) <= new Date() ? d.close : undefined
+            }
+            strokeWidth={2}
+            stroke="#000fff"
+          />
 
-        <HoverTooltip
-          tooltipContent={tooltipContent(duration)}
-          fontSize={11}
-          bgOpacity={0}
-          fill="#efefef"
-          opacity={1}
-          bgrx={15}
-          stroke="none"
-          isLabled={false}
-          isInline={true}
-          lastDate={lastDate.toISOString()}
-        />
+          <HoverTooltip
+            tooltipContent={tooltipContent(duration)}
+            fontSize={11}
+            bgOpacity={0}
+            fill="#efefef"
+            opacity={1}
+            bgrx={15}
+            stroke="none"
+            isLabled={false}
+            isInline={true}
+            lastDate={lastDate.toISOString()}
+          />
 
-        {/* <PriceEdgeIndicator
+          {/* <PriceEdgeIndicator
           orient="left"
           edgeAt="right"
           itemType="last"
@@ -313,11 +314,11 @@ else{
           fontWeight="700"
           dx={1}
         /> */}
-      </Chart>
+        </Chart>
 
-      {/* <CrossHairCursor /> */}
-    </ChartCanvas>
-    <div className="x-axis-label">{name}</div>
+        {/* <CrossHairCursor /> */}
+      </ChartCanvas>
+      <div className="x-axis-label">{name}</div>
     </>
   ) : (
     <div className="swift-aseet-loader">
