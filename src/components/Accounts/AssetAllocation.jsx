@@ -41,7 +41,7 @@ const AssetAllocation = () => {
   const [loading, setloading] = useState(true);
   const [pageLoading, setPageLoading] = useState(false);
   const [loading2, setloading2] = useState(true);
-  const [duration, setDuration] = useState("5Y");
+  const [duration, setDuration] = useState("1Y");
   const [openDropdown, setOpenDropdown] = useState();
 
   const [sum, setTotalsum] = useState(null);
@@ -120,9 +120,9 @@ const AssetAllocation = () => {
     setloading2(true);
     setSelectedStock(stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("5Y");
+      setDuration("1Y");
     } else {
-      setDuration("5Y");
+      setDuration("1Y");
     }
     setSelectedStockName(detailed_name);
     setTimeout(() => {
@@ -214,9 +214,9 @@ const AssetAllocation = () => {
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
         // console.log(stock);
         if (stock == stock.split(".")[0]) {
-          setDuration("5Y");
+          setDuration("1Y");
         } else {
-          setDuration("5Y");
+          setDuration("1Y");
         }
         // setLastupdated("abc");
         fetchDataAndUpdateState();
@@ -248,9 +248,9 @@ const AssetAllocation = () => {
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
     // console.log("click", stock);
     if (stock == stock.split(".")[0]) {
-      setDuration("5Y");
+      setDuration("1Y");
     } else {
-      setDuration("5Y");
+      setDuration("1Y");
     }
 
     // // console.log(initialStrategies[index].assetclass);
@@ -1120,6 +1120,13 @@ const AssetAllocation = () => {
                   >
                     1y
                   </p> */}
+                  <p
+                    onClick={() => handleDuraion("1Y")}
+                    style={{ cursor: "pointer" }}
+                    className={duration == "1Y" ? "selected_duration" : ""}
+                  >
+                    1y
+                  </p>
                   <p
                     onClick={() => handleDuraion("5Y")}
                     style={{ cursor: "pointer" }}

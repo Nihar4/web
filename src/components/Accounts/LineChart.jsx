@@ -232,44 +232,44 @@ const LineChart = ({
             yAccessor={(d) =>
               new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
             }
-            stroke="rgb(0 15 255 / 30%)"
+            stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
             }
-            stroke="rgb(0 15 255 / 30%)"
+            stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
             }
-            stroke="rgb(0 15 255 / 30%)"
+            stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
             }
-            stroke="rgb(0 15 255 / 30%)"
+            stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
             }
-            stroke="rgb(0 15 255 / 30%)"
+            stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
             }
-            stroke="rgb(0 15 255 / 80%)"
-            strokeWidth={2}
-            strokeDasharray={"Dash"}
+            stroke="#f84aa7"
+            strokeWidth={3}
+            strokeDasharray={"Solid"}
             highlightOnHover
           />
 
@@ -277,7 +277,7 @@ const LineChart = ({
             yAccessor={(d) =>
               new Date(d.date) <= new Date() ? d.close : undefined
             }
-            strokeWidth={2}
+            strokeWidth={3}
             stroke="#000fff"
           />
 
