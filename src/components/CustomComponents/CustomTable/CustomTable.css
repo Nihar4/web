@@ -118,11 +118,16 @@
 
 .swift-performance-modal-container table tr td {
     color: var(--text-color);
-    font-weight: 800 !important;
 }
 
 .swift-performance-modal-container table tbody tr td p:nth-child(1) {
-    font-weight: 800 !important;
+    font-weight: 700 !important;
+}
+
+.swift-performance-modal-container table tr td:nth-child(2),
+.swift-performance-modal-container table tr td:nth-child(6),
+.swift-performance-modal-container table tr td:nth-child(7) {
+    font-weight: 700 !important;
 }
 
 .swift-performance-modal-container table tbody tr td p:nth-child(2) {
