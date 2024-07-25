@@ -106,7 +106,7 @@ PerformanceHoverTooltip.contextTypes = {
 
 PerformanceHoverTooltip.defaultProps = {
   bgwidth: 150,
-  bgheight: 60,
+  bgheight: 80,
   tooltipSVG: tooltipSVG,
   tooltipCanvas: tooltipCanvas,
   origin: origin,
@@ -186,9 +186,15 @@ function tooltipSVG({ fontFamily, fontSize, fontFill, isLabled }, content) {
         {content.x}
       </tspan>
       <tspan x={X} y={startY + fontSize * 1.2}>
-        {content.y[0].label + ": " + content.y[0].value}
+        {content.y[2].label + ": " + content.y[2].value}
       </tspan>
       <tspan x={X} y={startY + fontSize * 2.4}>
+        {content.y[0].label + ": " + content.y[0].value}
+      </tspan>
+      <tspan x={X} y={startY + fontSize * 3.6}>
+        {content.y[3].label + ": " + content.y[3].value}
+      </tspan>
+      <tspan x={X} y={startY + fontSize * 4.8}>
         {content.y[1].label + ": " + content.y[1].value}
       </tspan>
     </text>
