@@ -131,6 +131,16 @@ const PerformancetooltipContent = () => {
           value:
             nf(currentItem.indexValue, 0)
         },
+        {
+          label: "IndexPortfolio",
+          value:
+            nf(currentItem.basePortfolioValue, 2)
+        },
+        {
+          label: "IndexNifty50",
+          value:
+            nf(currentItem.baseIndexValue, 2)
+        },
       ],
     };
   };

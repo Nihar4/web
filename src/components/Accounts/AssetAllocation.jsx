@@ -279,7 +279,7 @@ const AssetAllocation = () => {
         alert("error1");
       }
 
-      return data.data;
+      return data;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -291,13 +291,11 @@ const AssetAllocation = () => {
         if (initialStrategies.length !== 0) {
           setloading(true);
           // setIschartvisible(false);
-          const data = await fetchDlData(
+          const { data, isPending } = await fetchDlData(
             initialStrategies[selectedStrategy].id
           );
-          // // console.log(data);
-          const hasPendingStatus = data.some(
-            (item) => item.status === "Pending"
-          );
+          const hasPendingStatus = isPending;
+          console.log(hasPendingStatus, "Status");
           setIschartvisible(!hasPendingStatus);
           const dateCompletedArray = data.map((item) =>
             new Date(item.date_completed).toISOString()
@@ -459,7 +457,6 @@ const AssetAllocation = () => {
   };
 
   const [chart_data, setChartData] = useState([]);
-  console.log(chart_data, chart_data.length);
 
   const handleDuraion = (item) => {
     setDuration(item);

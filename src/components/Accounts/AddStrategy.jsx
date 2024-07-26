@@ -23,7 +23,9 @@ import moment from "moment-timezone";
 const AddStrategyMain = () => {
   const location = useLocation();
   // const email_id = location.state ? location.state.email_id : null;
-  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
+  const email_id = localStorage.getItem("userData")
+    ? localStorage.getItem("userData")
+    : null;
   // console.log("add strategy", email_id);
 
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ const AddStrategyMain = () => {
     });
     // console.log(result.data);
     return result.data.longname;
-  }
+  };
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -63,23 +65,23 @@ const AddStrategyMain = () => {
           const formData = data.data;
 
           for (const [assetIndex, asset] of formData.assetClasses.entries()) {
-            for (const [underlyingIndex, underlying] of asset.underlyings.entries()) {
-                // console.log("Stock:", underlying.stock);
-                const longNameValue = await fetchLongName(underlying.stock);
-                const name = `${underlying.stock.trim()}`
-                setLongName((prevLongName) => ({
-                  ...prevLongName,
-                  [name]: longNameValue,
-                }));
-
+            for (const [
+              underlyingIndex,
+              underlying,
+            ] of asset.underlyings.entries()) {
+              // console.log("Stock:", underlying.stock);
+              const longNameValue = await fetchLongName(underlying.stock);
+              const name = `${underlying.stock.trim()}`;
+              setLongName((prevLongName) => ({
+                ...prevLongName,
+                [name]: longNameValue,
+              }));
             }
-        }
-          
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-
         setTimeout(() => {
           setLoading(false);
         }, 3000);
@@ -87,7 +89,6 @@ const AddStrategyMain = () => {
     };
     fetchdata();
   }, [id]);
-
 
   const extractPropertyNameAndIndex = (path) => {
     const matches = path.match(/^(.+)\[(\d+)\]$/);
@@ -104,10 +105,9 @@ const AddStrategyMain = () => {
 
   const closeAlert = () => {
     setTimeout(() => {
-      
       setShowalert(false);
-    },100);
-};
+    }, 100);
+  };
 
   const handleInputChange = async (name, value) => {
     // console.log(1);
@@ -167,12 +167,15 @@ const AddStrategyMain = () => {
         //   setShowalert(false);
         // }, 2000);
         setShowalert(true);
-         Alert({
-          TitleText: "Error",
-          Message: `${stockValue}'s data is not sufficient for analysis, please choose another one. Minimum data points is 1200.`,
-          BandColor: "#e51a4b",
-          AutoClose: { Active: false, Time: 5 },
-      }, closeAlert)
+        Alert(
+          {
+            TitleText: "Error",
+            Message: `${stockValue}'s data is not sufficient for analysis, please choose another one. Minimum data points is 500.`,
+            BandColor: "#e51a4b",
+            AutoClose: { Active: false, Time: 5 },
+          },
+          closeAlert
+        );
 
         // if(document.getElementsByClassName("custom__alert__box").length==0){
         //   setShowalert(false);
@@ -226,15 +229,13 @@ const AddStrategyMain = () => {
       );
       // console.log(elements.length);
       const lastElement = elements[elements.length - 1];
-  
+
       if (lastElement) {
         lastElement.scrollIntoView({
           behavior: "smooth",
         });
       }
     }, 0);
-
-    
   };
 
   const handleAddUnderlying = (index) => {
@@ -257,7 +258,6 @@ const AddStrategyMain = () => {
       };
     });
 
-
     setTimeout(() => {
       const elements = document.getElementsByClassName(
         "swift-addstrategy-asset2"
@@ -266,14 +266,13 @@ const AddStrategyMain = () => {
       const lastElement = elements[index];
       // console.log(lastElement)
       // const lastUnderlying = lastElement[lastElement.length-1];
-  
+
       if (lastElement) {
         lastElement.scrollIntoView({
           behavior: "smooth",
         });
       }
     }, 0);
-
   };
 
   // const handleDeleteAssetClass = (index) => {
@@ -444,7 +443,6 @@ const AddStrategyMain = () => {
     }
 
     return hasError;
-
   };
 
   function checkForDuplicateStocks() {
@@ -462,8 +460,8 @@ const AddStrategyMain = () => {
 
   const handleSubmit = async () => {
     if (ValidateAll()) return;
-    const stock  = checkForDuplicateStocks(); 
-    if(stock != ""){
+    const stock = checkForDuplicateStocks();
+    if (stock != "") {
       Alert({
         TitleText: "Error",
         Message: `${stock} is multiple time`,
@@ -478,7 +476,6 @@ const AddStrategyMain = () => {
       });
       return;
     }
-
 
     // console.log("Submitting form data:", formValues);
 
@@ -502,12 +499,12 @@ const AddStrategyMain = () => {
       state: { id: data.data, email_id: email_id },
     });
   };
-  
+
   const handleUpdate = async () => {
     console.log("call");
     if (ValidateAll()) return;
-    const stock  = checkForDuplicateStocks(); 
-    if(stock != ""){
+    const stock = checkForDuplicateStocks();
+    if (stock != "") {
       Alert({
         TitleText: "Error",
         Message: `${stock} is multiple time`,
@@ -580,40 +577,37 @@ const AddStrategyMain = () => {
     </div>
   ) : (
     <>
-    <div className={`background-div ${showalert ? "blur-background" : ""}`}>
-    </div>
-    <div className="swift-addstrategy-main">
-      <Header email_id={email_id} setloading={setLoading}/>
       <div
-        className={`swift-addstrategy-content ${
-          showalert ? "" : ""
-        }`}
-      >
-        <div className="swift-addstrategy-content-wrap" id="scroll">
-          <BackButton />
-          <div className="swift-addstrategy-header">Add/ Edit Strategy</div>
-          <div className="swift-addstrategy-input">
-            <CustomInput
-              labelText="Strategy Name"
-              type="text"
-              classnameInput="swift-login-form-email-input swift-addstrategy-name-input"
-              name="strategyName"
-              placeholder="sample strategy"
-              styleInput={{ height: "50px" }}
-              onInputChange={handleInputChange}
-              value={formValues.strategyName}
-            />
-            <CustomError
-              errorText={strategyNameError}
-              style={{
-                visibility:
-                  strategyNameError !== "error" ? "visible" : "hidden",
-              }}
-            />
-          </div>
+        className={`background-div ${showalert ? "blur-background" : ""}`}
+      ></div>
+      <div className="swift-addstrategy-main">
+        <Header email_id={email_id} setloading={setLoading} />
+        <div className={`swift-addstrategy-content ${showalert ? "" : ""}`}>
+          <div className="swift-addstrategy-content-wrap" id="scroll">
+            <BackButton />
+            <div className="swift-addstrategy-header">Add/ Edit Strategy</div>
+            <div className="swift-addstrategy-input">
+              <CustomInput
+                labelText="Strategy Name"
+                type="text"
+                classnameInput="swift-login-form-email-input swift-addstrategy-name-input"
+                name="strategyName"
+                placeholder="sample strategy"
+                styleInput={{ height: "50px" }}
+                onInputChange={handleInputChange}
+                value={formValues.strategyName}
+              />
+              <CustomError
+                errorText={strategyNameError}
+                style={{
+                  visibility:
+                    strategyNameError !== "error" ? "visible" : "hidden",
+                }}
+              />
+            </div>
 
-          <div className="swift-addstrategy-input">
-            {/* <CustomInput
+            <div className="swift-addstrategy-input">
+              {/* <CustomInput
               labelText="Description"
               type="textarea"
               classnameInput="swift-addstrategy-description-input"
@@ -623,159 +617,171 @@ const AddStrategyMain = () => {
               onInputChange={handleInputChange}
               value={formValues.description}
             /> */}
-            <CustomLabel labelText={"Description"} />
-            <textarea
-              className="swift-addstrategy-description-input"
-              name="description"
-              placeholder="Add a little description to what this strategy is all about"
-              onChange={handleChange}
-              value={formValues.description}
-              style={{ height: "146px" }}
-            ></textarea>
-            <CustomError
-              errorText={descError}
-              style={{
-                visibility: descError !== "error" ? "visible" : "hidden",
-              }}
-            />
-          </div>
+              <CustomLabel labelText={"Description"} />
+              <textarea
+                className="swift-addstrategy-description-input"
+                name="description"
+                placeholder="Add a little description to what this strategy is all about"
+                onChange={handleChange}
+                value={formValues.description}
+                style={{ height: "146px" }}
+              ></textarea>
+              <CustomError
+                errorText={descError}
+                style={{
+                  visibility: descError !== "error" ? "visible" : "hidden",
+                }}
+              />
+            </div>
 
-          {/* <CustomButton
+            {/* <CustomButton
             text="Add Asset Class"
             classname="swift-addstrategy-btn"
             onClick={handleAddAssetClass}
           /> */}
-          <div
-            className="swift-custom-btn swift-addstrategy-btn"
-            onClick={handleAddAssetClass}
-          >
-            Add Asset Class
-          </div>
-          <div className="swift-addstrategy-assetclassdiv">
-            {formValues.assetClasses.map((assetClass, classIndex) => (
-              <div key={assetClass.name+classIndex} className="swift-addstrategy-asset">
-                <div className="swift-addstrategy-asset-1">
-                  {/* <div className="swift-addstrategy-asset-left"> */}
-                  <CustomInput
-                    type="text"
-                    classnameInput="swift-addstrategy-underlying-input"
-                    name={`assetClasses[${classIndex}].name`}
-                    placeholder="Asset Class Name"
-                    value={formValues.assetClasses[classIndex].name}
-                    onInputChange={handleInputChange}
-                    styleInput={{
-                      borderBottom: "none",
-                      width: "26vw",
-                      borderRadius: 0,
-                    }}
-                  />
-                  {/* </div>  */}
-                  <div className="swift-addstrategy-asset-right">
-                    <p
-                      className="swift-addstrategy-buttons"
-                      onClick={() => handleAddUnderlying(classIndex)}
-                    >
-                      Add Underlying
-                    </p>
-                    <p
-                      className="swift-addstrategy-buttons"
-                      onClick={() => handleDeleteAssetClass(classIndex)}
-                      style={{
-                        color: "rgba(1, 22, 39, 0.5)",
+            <div
+              className="swift-custom-btn swift-addstrategy-btn"
+              onClick={handleAddAssetClass}
+            >
+              Add Asset Class
+            </div>
+            <div className="swift-addstrategy-assetclassdiv">
+              {formValues.assetClasses.map((assetClass, classIndex) => (
+                <div
+                  key={assetClass.name + classIndex}
+                  className="swift-addstrategy-asset"
+                >
+                  <div className="swift-addstrategy-asset-1">
+                    {/* <div className="swift-addstrategy-asset-left"> */}
+                    <CustomInput
+                      type="text"
+                      classnameInput="swift-addstrategy-underlying-input"
+                      name={`assetClasses[${classIndex}].name`}
+                      placeholder="Asset Class Name"
+                      value={formValues.assetClasses[classIndex].name}
+                      onInputChange={handleInputChange}
+                      styleInput={{
+                        borderBottom: "none",
+                        width: "26vw",
+                        borderRadius: 0,
                       }}
-                    >
-                      Delete
-                    </p>
+                    />
+                    {/* </div>  */}
+                    <div className="swift-addstrategy-asset-right">
+                      <p
+                        className="swift-addstrategy-buttons"
+                        onClick={() => handleAddUnderlying(classIndex)}
+                      >
+                        Add Underlying
+                      </p>
+                      <p
+                        className="swift-addstrategy-buttons"
+                        onClick={() => handleDeleteAssetClass(classIndex)}
+                        style={{
+                          color: "rgba(1, 22, 39, 0.5)",
+                        }}
+                      >
+                        Delete
+                      </p>
+                    </div>
+                  </div>
+                  <div className="swift-addstrategy-asset2">
+                    {assetClass.underlyings.map(
+                      (underlying, underlyingIndex) => (
+                        <div>
+                          <div
+                            key={
+                              assetClass.name +
+                              classIndex +
+                              underlying.stock +
+                              underlyingIndex
+                            }
+                            className="swift-addstrategy-underlying"
+                          >
+                            {/* <div className="swift-addstrategy-underlying-left"> */}
+                            <SearchLive
+                              name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`}
+                              value={
+                                formValues.assetClasses[classIndex].underlyings[
+                                  underlyingIndex
+                                ].stock
+                              }
+                              onInputChange={handleInputChange}
+                            />
+
+                            <CustomInput
+                              type="number"
+                              classnameInput="swift-addstrategy-underlying-input"
+                              name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].percentage`}
+                              placeholder="Percentage"
+                              value={
+                                formValues.assetClasses[classIndex].underlyings[
+                                  underlyingIndex
+                                ].percentage
+                              }
+                              onInputChange={handleInputChange}
+                              styleInput={{ width: "12vw", borderRadius: 0 }}
+                            />
+                            {/* </div> */}
+                            <p
+                              className="swift-addstrategy-buttons"
+                              onClick={() =>
+                                handleDeleteUnderlying(
+                                  classIndex,
+                                  underlyingIndex
+                                )
+                              }
+                              style={{
+                                color: "rgba(1, 22, 39, 0.5)",
+                              }}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                          <div className="swift-addstrategy-longname">
+                            {
+                              longName[
+                                formValues.assetClasses[classIndex].underlyings[
+                                  underlyingIndex
+                                ].stock.trim()
+                              ]
+                            }
+                          </div>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
-                <div className="swift-addstrategy-asset2">
-                  {assetClass.underlyings.map((underlying, underlyingIndex) => (
-                    <div>
-                      <div
-                        key={assetClass.name+classIndex+underlying.stock+underlyingIndex}
-                        className="swift-addstrategy-underlying"
-                      >
-                        {/* <div className="swift-addstrategy-underlying-left"> */}
-                        <SearchLive
-                          name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`}
-                          value={
-                            formValues.assetClasses[classIndex].underlyings[
-                              underlyingIndex
-                            ].stock
-                          }
-                          onInputChange={handleInputChange}
-                        />
-
-                        <CustomInput
-                          type="number"
-                          classnameInput="swift-addstrategy-underlying-input"
-                          name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].percentage`}
-                          placeholder="Percentage"
-                          value={
-                            formValues.assetClasses[classIndex].underlyings[
-                              underlyingIndex
-                            ].percentage
-                          }
-                          onInputChange={handleInputChange}
-                          styleInput={{ width: "12vw", borderRadius: 0 }}
-                        />
-                        {/* </div> */}
-                        <p
-                          className="swift-addstrategy-buttons"
-                          onClick={() =>
-                            handleDeleteUnderlying(classIndex, underlyingIndex)
-                          }
-                          style={{
-                            color: "rgba(1, 22, 39, 0.5)",
-                          }}
-                        >
-                          Delete
-                        </p>
-                      </div>
-                      <div className="swift-addstrategy-longname">
-                        {
-                          longName[
-                            formValues.assetClasses[classIndex].underlyings[
-                              underlyingIndex
-                            ].stock.trim()
-                          ]
-                        }
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="swift-addstrategy-submit-btn">
-          {formValues.assetClasses.length > 0 && (
-            <div className="swift-addstrategy-total-div">
-              <p>Total</p>
-              <p>{totalPercentage}</p>
+              ))}
             </div>
-          )}
-          <div className="swift-addstrategy-error-btn">
-            <CustomError
-              errorText={totalError}
-              style={{
-                visibility: totalError !== "error" ? "visible" : "hidden",
-              }}
-            />
-            <CustomButton
-              text="Submit"
-              classname="swift-addstrategy-btn submitbtn"
-              onClick={() => {
-                // console.log(id);
-                if (id) handleUpdate();
-                else handleSubmit();
-              }}
-            />
+          </div>
+          <div className="swift-addstrategy-submit-btn">
+            {formValues.assetClasses.length > 0 && (
+              <div className="swift-addstrategy-total-div">
+                <p>Total</p>
+                <p>{totalPercentage}</p>
+              </div>
+            )}
+            <div className="swift-addstrategy-error-btn">
+              <CustomError
+                errorText={totalError}
+                style={{
+                  visibility: totalError !== "error" ? "visible" : "hidden",
+                }}
+              />
+              <CustomButton
+                text="Submit"
+                classname="swift-addstrategy-btn submitbtn"
+                onClick={() => {
+                  // console.log(id);
+                  if (id) handleUpdate();
+                  else handleSubmit();
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
     </>
   );
 };
@@ -785,9 +791,11 @@ const StrategyCreated = () => {
   const location = useLocation();
   const id = location.state ? location.state.id : null;
   // const email_id = location.state ? location.state.email_id : null;
-  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
+  const email_id = localStorage.getItem("userData")
+    ? localStorage.getItem("userData")
+    : null;
   const [dl_data, setDlData] = useState(null);
-  const [loading,setloading] = useState(true)
+  const [loading, setloading] = useState(true);
   // console.log("strategy", email_id);
 
   const fetchData = async (id) => {
@@ -813,7 +821,6 @@ const StrategyCreated = () => {
   };
 
   useEffect(() => {
-
     const fetchDataAndSetState = async () => {
       try {
         setloading(true);
@@ -842,7 +849,6 @@ const StrategyCreated = () => {
         // setDlData(data.data);
         // console.log(data.data);
         setTimeout(() => {
-          
           setloading(false);
         }, 3000);
       } catch (error) {
@@ -863,8 +869,9 @@ const StrategyCreated = () => {
 
   // console.log(dl_data);
 
-  return !loading ? (<div className="swift-addstrategy-main">
-      <Header email_id={email_id} setloading={setloading}  />
+  return !loading ? (
+    <div className="swift-addstrategy-main">
+      <Header email_id={email_id} setloading={setloading} />
       <div className="swift-addstrategy-content">
         <div className="swift-addstrategy-content-wrap strategy-created-wrap">
           <BackButton />
@@ -952,14 +959,13 @@ const StrategyCreated = () => {
           </div>
         </div>
       </div>
-    </div>) : (
-      <div className="swift-aseet-loader">
+    </div>
+  ) : (
+    <div className="swift-aseet-loader">
       <p>Loading</p>
       <Pulse />
     </div>
-    )
-  
+  );
 };
 
 export { AddStrategyMain, StrategyCreated };
-
