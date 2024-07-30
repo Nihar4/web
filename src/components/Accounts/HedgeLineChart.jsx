@@ -22,7 +22,7 @@ import {
   Annotate,
 } from "react-stockcharts/lib/annotation";
 
-const LineChart = ({
+const HedgeLineChart = ({
   data: initialData,
   width,
   ratio,
@@ -31,10 +31,7 @@ const LineChart = ({
   loading2,
   loading1,
   name,
-  lastupdated: updatedDate,
 }) => {
-  const lastupdated = new Date(updatedDate).toISOString().split("T")[0];
-  console.log(lastupdated);
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     new Date(),
@@ -149,7 +146,7 @@ const LineChart = ({
   }
   initialData = [...initialData, ...newData];
 
-  console.log(newestDate);
+  // console.log(initialData);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
       <ChartCanvas
@@ -213,56 +210,62 @@ const LineChart = ({
           />
           <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
 
+          {/* <PriceMarkerCoordinate
+            at="left"
+            orient="right"
+            price={30000} 
+            displayFormat={format(".2f")}
+            strokeDasharray="Dash"
+            dx={20}
+            fill="#d8d8d8"
+            textFill={"rgba(1, 22, 39, 0.70)"}
+            lineStroke="#404040"
+            lineOpacity={0.15}
+            rectWidth={65}
+            rectHeight={22}
+            fontSize={11}
+            fontWeight="700"
+            opacity={0.6}
+          /> */}
+
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close1 || d.close
-                : undefined
+              new Date(d.date) >= newestDate ? d.close1 || d.close : undefined
             }
             stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close2 || d.close
-                : undefined
+              new Date(d.date) >= newestDate ? d.close2 || d.close : undefined
             }
             stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close3 || d.close
-                : undefined
+              new Date(d.date) >= newestDate ? d.close3 || d.close : undefined
             }
             stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close4 || d.close
-                : undefined
+              new Date(d.date) >= newestDate ? d.close4 || d.close : undefined
             }
             stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close5 || d.close
-                : undefined
+              new Date(d.date) >= newestDate ? d.close5 || d.close : undefined
             }
             stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
           />
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close6 || d.close
-                : undefined
+              new Date(d.date) >= newestDate ? d.close6 || d.close : undefined
             }
             stroke="#f84aa7"
             strokeWidth={3}
@@ -272,20 +275,10 @@ const LineChart = ({
 
           <LineSeries
             yAccessor={(d) =>
-              new Date(d.date) <= new Date(lastupdated) ? d.close : undefined
+              new Date(d.date) <= new Date() ? d.close : undefined
             }
             strokeWidth={3}
             stroke="#000fff"
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated) &&
-              new Date(d.date) <= new Date()
-                ? d.close
-                : undefined
-            }
-            strokeWidth={3}
-            stroke="#000000"
           />
 
           <HoverTooltip
@@ -334,4 +327,4 @@ const LineChart = ({
   );
 };
 
-export default LineChart;
+export default HedgeLineChart;

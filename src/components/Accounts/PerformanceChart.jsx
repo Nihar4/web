@@ -162,10 +162,10 @@ const PerformanceChart = ({ data: initialData, ratio, loading2 }) => {
             tooltipContent={PerformancetooltipContent()}
             fontSize={11}
             bgOpacity={0}
-            fill="#efefef"
+            fill="#ffffff"
             opacity={1}
             bgrx={15}
-            stroke="none"
+            stroke="#f0f0f0"
             isLabled={false}
             isInline={true}
             lastDate={lastDate.toISOString()}

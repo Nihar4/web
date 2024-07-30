@@ -7,7 +7,7 @@ import StockesDropdown from "./StockesDropdown";
 import BackButton from "../AccessManagement/BackButton";
 import ServerRequest from "../../utils/ServerRequest";
 import { useNavigate } from "react-router-dom";
-import LineChart from "./LineChart";
+import HedgeLineChart from "./HedgeLineChart";
 import { useLocation } from "react-router-dom";
 import Pulse from "../Loader/Pulse";
 import moment from "moment-timezone";
@@ -50,7 +50,9 @@ const EdurekaHedge = () => {
 
   const location = useLocation();
   // const email_id = location.state ? location.state.email_id : null;
-  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
+  const email_id = localStorage.getItem("userData")
+    ? localStorage.getItem("userData")
+    : null;
 
   const [visibleModal, setVisibleModal] = useState(false);
 
@@ -775,7 +777,7 @@ const EdurekaHedge = () => {
               Math.max(
                 parseFloat(
                   (
-                    (stockArray[0].percentage.split(",")[index]) *
+                    stockArray[0].percentage.split(",")[index] *
                     (1 - dev)
                   ).toFixed(3)
                 ),
@@ -784,7 +786,7 @@ const EdurekaHedge = () => {
               Math.min(
                 parseFloat(
                   (
-                    (stockArray[0].percentage.split(",")[index]) *
+                    stockArray[0].percentage.split(",")[index] *
                     (1 + dev)
                   ).toFixed(3)
                 ),
@@ -969,7 +971,7 @@ const EdurekaHedge = () => {
                 </div>
                 <div className="swift-account-graph" ref={graphContainerRef}>
                   {graphDimensions.width > 0 && graphDimensions.height > 0 && (
-                    <LineChart
+                    <HedgeLineChart
                       data={chart_data}
                       width={graphDimensions.width}
                       height={graphDimensions.height}
@@ -1038,10 +1040,16 @@ const EdurekaHedge = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p2">
                           Price
                         </p>
- <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"13.5%"}}>
+                        <p
+                          className="swift-accounts-content-stocks-text-left-sub-div-p1"
+                          style={{ width: "13.5%" }}
+                        >
                           SAA
                         </p>
-                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"16%"}}>
+                        <p
+                          className="swift-accounts-content-stocks-text-left-sub-div-p1"
+                          style={{ width: "16%" }}
+                        >
                           <span>Pred.</span>
                           <br />
                           <span>(12 mth)</span>
@@ -1151,9 +1159,9 @@ const EdurekaHedge = () => {
                                     : Math.max(
                                         parseFloat(
                                           (
-                                            (stockArray[0].percentage.split(
-                                              ","
-                                            )[index]) *
+                                            stockArray[0].percentage.split(",")[
+                                              index
+                                            ] *
                                             (1 - dev)
                                           ).toFixed(3)
                                         ),
@@ -1190,9 +1198,9 @@ const EdurekaHedge = () => {
                                     : Math.min(
                                         parseFloat(
                                           (
-                                            (stockArray[0].percentage.split(
-                                              ","
-                                            )[index]) *
+                                            stockArray[0].percentage.split(",")[
+                                              index
+                                            ] *
                                             (1 + dev)
                                           ).toFixed(3)
                                         ),
@@ -1290,71 +1298,89 @@ const EdurekaHedge = () => {
                       </div>
                       {/* <p>risk - {OptData.risk}</p> */}
                       <div className="swift-modal-portfoli-weight">
-                      <div className="swift-modal-portfolio-weight-main-content">
-                        <p className="swift-modal-portfolio-heading">
-                          Portfolio Weights
-                        </p>
-                        <div className="swift-modal-portfolios-weights-heading">
-                          <p className="swift-modal-portfolio-heading1">
-                            Security
+                        <div className="swift-modal-portfolio-weight-main-content">
+                          <p className="swift-modal-portfolio-heading">
+                            Portfolio Weights
                           </p>
-                          <p className="swift-modal-portfolio-heading2">
-                            Proposed Wt.
-                          </p>
-                          <p className="swift-modal-portfolio-heading2">
-                            Actual Wt
-                          </p>
-                          <p className="swift-modal-portfolio-heading2">
-                            Diff.
-                          </p>
-                        </div>
-                        <div className="swift-modal-portfolio-weights-content">
-                          {stockArray[0].stock.split(",").map((item, index) => (
-                            <div
-                              key={index}
-                              className="swift-modal-portfolio-weight-stock"
-                            >
-                              <div className="swift-modal-portfolio-detailed-list">
-                                <p className="swift-modal-portfolio-title" style={{fontWeight:"800"}}>
-                                  {item}
-                                </p>
-                                <p className="swift-modal-weight-detailed-name">
-                                  {stock_details
-                                    ? stock_details.find(
-                                        (s) => s.stock == item.trim()
-                                      ).detailed_name
-                                    : ""}
-                                </p>
-                              </div>
-                              <p className="swift-modal-portfolio-title">
-                                {parseFloat(OptData.z[index] * 100).toFixed(2)}%
-                              </p>
-                              <p className="swift-modal-portfolio-title">
-                                {stockArray[0].percentage.split(",")[index]}%
-                              </p>
-                              <p className={`swift-modal-portfolio-title ${(
-                                  parseFloat(OptData.z[index] * 100).toFixed(
-                                    2
-                                  ) -
-                                  parseFloat(
-                                    stockArray[0].percentage.split(",")[index]
-                                  )
-                                ) <0 ? "red-text":""}`}>
-                                {(
-                                  parseFloat(OptData.z[index] * 100).toFixed(
-                                    2
-                                  ) -
-                                  parseFloat(
-                                    stockArray[0].percentage.split(",")[index]
-                                  )
-                                ).toFixed(2)}
-                                %
-                              </p>
-                            </div>
-                          ))}
-                          {/* </table> */}
-                        </div>
+                          <div className="swift-modal-portfolios-weights-heading">
+                            <p className="swift-modal-portfolio-heading1">
+                              Security
+                            </p>
+                            <p className="swift-modal-portfolio-heading2">
+                              Proposed Wt.
+                            </p>
+                            <p className="swift-modal-portfolio-heading2">
+                              Actual Wt
+                            </p>
+                            <p className="swift-modal-portfolio-heading2">
+                              Diff.
+                            </p>
                           </div>
+                          <div className="swift-modal-portfolio-weights-content">
+                            {stockArray[0].stock
+                              .split(",")
+                              .map((item, index) => (
+                                <div
+                                  key={index}
+                                  className="swift-modal-portfolio-weight-stock"
+                                >
+                                  <div className="swift-modal-portfolio-detailed-list">
+                                    <p
+                                      className="swift-modal-portfolio-title"
+                                      style={{ fontWeight: "800" }}
+                                    >
+                                      {item}
+                                    </p>
+                                    <p className="swift-modal-weight-detailed-name">
+                                      {stock_details
+                                        ? stock_details.find(
+                                            (s) => s.stock == item.trim()
+                                          ).detailed_name
+                                        : ""}
+                                    </p>
+                                  </div>
+                                  <p className="swift-modal-portfolio-title">
+                                    {parseFloat(OptData.z[index] * 100).toFixed(
+                                      2
+                                    )}
+                                    %
+                                  </p>
+                                  <p className="swift-modal-portfolio-title">
+                                    {stockArray[0].percentage.split(",")[index]}
+                                    %
+                                  </p>
+                                  <p
+                                    className={`swift-modal-portfolio-title ${
+                                      parseFloat(
+                                        OptData.z[index] * 100
+                                      ).toFixed(2) -
+                                        parseFloat(
+                                          stockArray[0].percentage.split(",")[
+                                            index
+                                          ]
+                                        ) <
+                                      0
+                                        ? "red-text"
+                                        : ""
+                                    }`}
+                                  >
+                                    {(
+                                      parseFloat(
+                                        OptData.z[index] * 100
+                                      ).toFixed(2) -
+                                      parseFloat(
+                                        stockArray[0].percentage.split(",")[
+                                          index
+                                        ]
+                                      )
+                                    ).toFixed(2)}
+                                    %
+                                  </p>
+                                </div>
+                              ))}
+                            {/* </table> */}
+                          </div>
+                        </div>
                         <div className="swift-accounts-content-btn modal-submit-btn-div">
                           <CustomButton
                             text="Update portfolio"
@@ -1372,8 +1398,8 @@ const EdurekaHedge = () => {
                   ) : (
                     // <p>Select the risk and return</p>
                     <div className="swift-aseet-loader">
-                    <Pulse />
-                  </div>
+                      <Pulse />
+                    </div>
                   )}
                 </div>
               </div>

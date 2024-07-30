@@ -68,7 +68,7 @@ export class PerformanceHoverTooltip extends Component {
             opacity={bgOpacity}
           />
           <g
-            className="react-stockcharts-tooltip-content"
+            // className="react-stockcharts-tooltip-content"
             transform={`translate(${x}, ${y})`}
           >
             {backgroundShapeSVG(this.props, bgShape)}
