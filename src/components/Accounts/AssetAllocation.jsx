@@ -56,14 +56,6 @@ const AssetAllocation = () => {
     : null;
   const [visibleModal, setVisibleModal] = useState(false);
 
-  const [per_visivleModal, setPer_visibleModal] = useState(false);
-  const [performance_result, setPerformace_result] = useState();
-
-  const [per_chartModal, setPer_ChartModal] = useState(false);
-  const [per_tableModal, setPer_TableModal] = useState(false);
-  const [per_chartData, setPer_ChartData] = useState();
-  const [per_chart_loading, setPer_Chart_Loading] = useState(false);
-
   const [weights, setWeights] = useState();
   const [scatter_data, setScatter_data] = useState();
   const [stock_weights, setStock_weights] = useState();
@@ -561,20 +553,6 @@ const AssetAllocation = () => {
     // setWeights();
   };
 
-  const openPerformanceModal = async () => {
-    setPer_visibleModal(true);
-    setPer_TableModal(true);
-    setPer_ChartModal(false);
-    performaceClick();
-  };
-
-  const closePerformaceModal = async () => {
-    setPer_visibleModal(false);
-    setPer_ChartModal(false);
-    setPer_TableModal(false);
-    setPerformace_result();
-    setPer_ChartData();
-  };
   const closeModal = async () => {
     setVisibleModal(false);
     setScatter_data();
@@ -858,126 +836,6 @@ const AssetAllocation = () => {
     }
   }, [dev]);
 
-  const insertPortfolioHandler = async () => {
-    try {
-      setPerformace_result();
-      setRunAnalysis(false);
-
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/update-portfolio`,
-        data: performance_result,
-      });
-      if (data1.server_error) {
-        alert("Server Error");
-      }
-
-      if (data1.error) {
-        alert("Update portfolio Error");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setTimeout(() => {
-      closePerformaceModal();
-    }, 2000);
-  };
-
-  const runAnalysisHandler = async () => {
-    try {
-      setPer_TableModal(true);
-      setPer_ChartModal(false);
-      setRunAnalysis(true);
-      setPerformace_result();
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/calculate-performance`,
-        data: { id: strategyID, email: email_id },
-        // data: stockArray,
-      });
-      if (data1.server_error) {
-        alert("performance error");
-      }
-      if (data1.error) {
-        alert("performance error");
-      }
-      const per_data = data1.data;
-      const sortedData = [...per_data.data].sort((a, b) => b.weight - a.weight);
-      setPerformace_result({ ...per_data, data: sortedData });
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  const performaceClick = async () => {
-    try {
-      setRunAnalysis(false);
-      const startTime = performance.now();
-
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/getPortfolio`,
-        data: { id: strategyID, email: email_id },
-        // data: stockArray,
-      });
-      if (data1.server_error) {
-        alert("performance error");
-      }
-
-      if (data1.error) {
-        alert("performance error");
-      }
-      const endTime = performance.now();
-      const duration = endTime - startTime;
-
-      const per_data = data1.data;
-      const sortedData = [...per_data.data].sort((a, b) => b.weight - a.weight);
-      if (duration < 1000) {
-        setTimeout(() => {
-          setPerformace_result({ ...per_data, data: sortedData });
-        }, 1500);
-      } else {
-        setPerformace_result({ ...per_data, data: sortedData });
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  const fetchChartData = async () => {
-    setPer_Chart_Loading(true);
-    try {
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/getPortfolio-Chart`,
-        data: { id: strategyID, email: email_id },
-        // data: stockArray,
-      });
-      if (data1.server_error) {
-        alert("performance Chart error");
-      }
-
-      if (data1.error) {
-        alert("performance Chart error");
-      }
-      setPer_ChartData(data1.data);
-    } catch (error) {
-      alert("performance Chart error", error);
-      console.log(error);
-    }
-    setPer_Chart_Loading(false);
-  };
-  const toggleHandler = () => {
-    if (per_tableModal) {
-      setPer_TableModal(false);
-      if (!per_chartData) fetchChartData();
-      setPer_ChartModal(true);
-    } else {
-      setPer_TableModal(true);
-      setPer_ChartModal(false);
-    }
-  };
-  // console.log(stockArray);
   return !loading &&
     (chart_data.length > 0 || loading2 == false) &&
     lastupdated ? (
@@ -1148,6 +1006,7 @@ const AssetAllocation = () => {
                       duration={duration}
                       loading2={loading2}
                       name={selectStockName}
+                      lastupdated={lastupdated}
                     />
                     // <p> {graphDimensions.width }</p>
                   )}
@@ -1198,15 +1057,7 @@ const AssetAllocation = () => {
                     {/* <button className="asset-div-btn" onClick={openModal}>
                       Optimization
                     </button> */}
-                    {initialStrategies[selectedStrategy].strategyname ==
-                      "Nifty Strategy" && (
-                      <p
-                        onClick={openPerformanceModal}
-                        className="run-analysis-btn"
-                      >
-                        Performace
-                      </p>
-                    )}
+
                     <p className="run-analysis-btn" onClick={run_analysis}>
                       Run Analysis
                     </p>
@@ -1605,167 +1456,6 @@ const AssetAllocation = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </SwiftModal>
-      )}
-
-      {per_visivleModal && (
-        <SwiftModal closeModal={closeModal} top="2%">
-          <div className="swift-performance-modal-content">
-            <div className="custom__alert__close">
-              {performance_result && (
-                <p>
-                  Current Portfolio :{" "}
-                  {numberFormat(performance_result.totalPortfolio, 0)}
-                </p>
-              )}
-              <img src={Close} alt="X" onClick={() => closePerformaceModal()} />
-            </div>
-
-            <div className="swift-performance-modal-main-body">
-              {per_tableModal ? (
-                <div className="swift-uk-table-container swift-performance-modal-container">
-                  {performance_result ? (
-                    <>
-                      <table>
-                        <thead>
-                          <tr>
-                            <td>Stock</td>
-                            <td>Predicted Return</td>
-                            <td>MarketCap(Cr.)</td>
-                            <td>Weight</td>
-                            <td>Current Price</td>
-                            <td>No. Of Shares</td>
-                            <td>Total Amount</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <p>CASH</p>
-                            </td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>1</td>
-                            <td>
-                              {numberFormat(performance_result.cashAmount, 0)}
-                            </td>
-                            <td>
-                              {numberFormat(performance_result.cashAmount, 0)}
-                            </td>
-                          </tr>
-                          {performance_result.data.map((info, index) => {
-                            return (
-                              <>
-                                <tr key={index}>
-                                  <td>
-                                    <p>{info.symbol}</p>
-                                    <p>
-                                      {stock_details
-                                        ? stock_details.find(
-                                            (s) =>
-                                              s.stock === info.symbol.trim()
-                                          )?.detailed_name
-                                        : ""}
-                                    </p>
-                                  </td>
-                                  <td>{numberFormat(info.pred_percentage)}%</td>
-                                  <td>
-                                    {info.market_cap
-                                      ? numberFormat(
-                                          info.market_cap / 10000000,
-                                          0
-                                        )
-                                      : "not found"}
-                                  </td>
-                                  <td>
-                                    {info.weight
-                                      ? `${numberFormat(info.weight)}%`
-                                      : "not found"}
-                                  </td>
-                                  <td>{numberFormat(info.currentPrice)}</td>
-                                  <td>{numberFormat(info.noOfShares, 0)}</td>
-                                  <td>{numberFormat(info.amount, 0)}</td>
-                                </tr>
-                              </>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </>
-                  ) : (
-                    <>
-                      <div className="swift-aseet-loader">
-                        <Pulse />
-                        {runanalysis && (
-                          <p>It will take some time , please wait... </p>
-                        )}
-                      </div>
-                    </>
-                  )}
-                </div>
-              ) : (
-                <>
-                  {per_chartData && (
-                    <>
-                      {per_chartData.length == 0 ? (
-                        <>
-                          The chart will be visible one day after updating the
-                          portfolio.
-                        </>
-                      ) : (
-                        <PerformanceChart
-                          data={per_chartData}
-                          width={graphDimensions.width}
-                          height={graphDimensions.height}
-                          loading2={per_chart_loading}
-                        />
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            </div>
-            {performance_result && (
-              <div className="swift-performance-modal-footer">
-                <div>
-                  <p>
-                    Total Amount :{" "}
-                    {numberFormat(performance_result.totalInvestmentAmount, 0)}{" "}
-                  </p>
-                  {runanalysis && (
-                    <p>
-                      Remaining Amount :{" "}
-                      {numberFormat(performance_result.cashAmount, 0)}{" "}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  {performance_result.data.length > 0 && !runanalysis && (
-                    <CustomButton
-                      text={
-                        per_tableModal ? "Performance Chart" : "Performance"
-                      }
-                      classname="swift-accounts-content-button"
-                      onClick={toggleHandler}
-                    />
-                  )}
-                  <CustomButton
-                    text="Run Analysis"
-                    classname="swift-accounts-content-button"
-                    onClick={runAnalysisHandler}
-                  />
-                  {runanalysis && (
-                    <CustomButton
-                      text="Update Portfolio"
-                      classname="swift-accounts-content-button"
-                      onClick={insertPortfolioHandler}
-                    />
-                  )}
-                </div>
-              </div>
-            )}
           </div>
         </SwiftModal>
       )}
