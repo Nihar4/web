@@ -648,7 +648,7 @@ const AddStrategyMain = () => {
             <div className="swift-addstrategy-assetclassdiv">
               {formValues.assetClasses.map((assetClass, classIndex) => (
                 <div
-                  key={assetClass.name + classIndex}
+                  key={`${classIndex}${formValues.assetClasses.length}`}
                   className="swift-addstrategy-asset"
                 >
                   <div className="swift-addstrategy-asset-1">

@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./CustomDropdown.css"; 
+import "./CustomDropdown.css";
 
-
-const CustomDropdown = ({ options, onSelect, style,default_value}) => {
+const CustomDropdown = ({ options, onSelect, style, default_value }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(default_value)
+  const [selectedOption, setSelectedOption] = useState(default_value);
   const dropdownRef = useRef(null);
 
   const handleToggleDropdown = () => {
@@ -34,9 +33,7 @@ const CustomDropdown = ({ options, onSelect, style,default_value}) => {
   return (
     <div className="custom-dropdown" ref={dropdownRef} style={style}>
       <div className="dropdown-header" onClick={handleToggleDropdown}>
-        <div style={{fontSize:"13px"}}>
-          {selectedOption}
-          </div>
+        <div style={{ fontSize: "13px" }}>{selectedOption}</div>
         <span className={`dropdown-icon ${isOpen ? "up-arrow" : "down-arrow"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

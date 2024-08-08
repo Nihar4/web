@@ -24,7 +24,9 @@ import SearchLiveEureka from "./SearchLiveEureka";
 const AddStrategyMain_Eureka = () => {
   const location = useLocation();
   // const email_id = location.state ? location.state.email_id : null;
-  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
+  const email_id = localStorage.getItem("userData")
+    ? localStorage.getItem("userData")
+    : null;
   // console.log("add strategy", email_id);
 
   const navigate = useNavigate();
@@ -344,7 +346,6 @@ const AddStrategyMain_Eureka = () => {
         assetClasses: updatedAssetClasses,
       };
     });
-
   };
   const totalPercentage =
     formValues.assetClasses.length > 0
@@ -474,8 +475,8 @@ const AddStrategyMain_Eureka = () => {
   }
   const handleSubmit = async () => {
     if (ValidateAll()) return;
-    const stock  = checkForDuplicateStocks(); 
-    if(stock != ""){
+    const stock = checkForDuplicateStocks();
+    if (stock != "") {
       Alert({
         TitleText: "Error",
         Message: `${stock} is multiple time`,
@@ -518,8 +519,8 @@ const AddStrategyMain_Eureka = () => {
   const handleUpdate = async () => {
     console.log("call");
     if (ValidateAll()) return;
-    const stock  = checkForDuplicateStocks(); 
-    if(stock != ""){
+    const stock = checkForDuplicateStocks();
+    if (stock != "") {
       Alert({
         TitleText: "Error",
         Message: `${stock} is multiple time`,
@@ -653,12 +654,15 @@ const AddStrategyMain_Eureka = () => {
           </p>
           <div className="swift-addstrategy-assetclassdiv">
             {formValues.assetClasses.map((assetClass, classIndex) => {
-              console.log(assetClass)
-              return(
-              <div key={assetClass.name+classIndex} className="swift-addstrategy-asset">
-                <div className="swift-addstrategy-asset-1">
-                  {/* <div className="swift-addstrategy-asset-left"> */}
-                  {/* <CustomInput
+              console.log(assetClass);
+              return (
+                <div
+                  key={`${classIndex}${formValues.assetClasses.length}`}
+                  className="swift-addstrategy-asset"
+                >
+                  <div className="swift-addstrategy-asset-1">
+                    {/* <div className="swift-addstrategy-asset-left"> */}
+                    {/* <CustomInput
                     type="text"
                     classnameInput="swift-addstrategy-underlying-input"
                     name={`assetClasses[${classIndex}].name`}
@@ -671,8 +675,8 @@ const AddStrategyMain_Eureka = () => {
                       borderRadius: 0,
                     }}
                   /> */}
-                  {/* </div>  */}
-                  {/* <div className="swift-addstrategy-asset-right">
+                    {/* </div>  */}
+                    {/* <div className="swift-addstrategy-asset-right">
                     <p
                       className="swift-addstrategy-buttons"
                       onClick={() => handleAddUnderlying(classIndex)}
@@ -689,66 +693,77 @@ const AddStrategyMain_Eureka = () => {
                       Delete
                     </p>
                   </div> */}
-                </div>
-                <div className="swift-addstrategy-asset2">
-                  {assetClass.underlyings.map((underlying, underlyingIndex) => (
-                 
-                    <div  key={assetClass.name+classIndex+underlying.stock+underlyingIndex}>
-                      <div
-                        key={underlyingIndex}
-                        className="swift-addstrategy-underlying"
-                      >
-                        {/* <div className="swift-addstrategy-underlying-left"> */}
-                        <SearchLiveEureka
-                          name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`}
-                          value={
-                            formValues.assetClasses[classIndex].underlyings[
-                              underlyingIndex
-                            ].stock
+                  </div>
+                  <div className="swift-addstrategy-asset2">
+                    {assetClass.underlyings.map(
+                      (underlying, underlyingIndex) => (
+                        <div
+                          key={
+                            assetClass.name +
+                            classIndex +
+                            underlying.stock +
+                            underlyingIndex
                           }
-                          onInputChange={handleInputChange}
-                        />
-
-                        <CustomInput
-                          type="number"
-                          classnameInput="swift-addstrategy-underlying-input"
-                          name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].percentage`}
-                          placeholder="Percentage"
-                          value={
-                            formValues.assetClasses[classIndex].underlyings[
-                              underlyingIndex
-                            ].percentage
-                          }
-                          onInputChange={handleInputChange}
-                          styleInput={{ width: "12vw", borderRadius: 0 }}
-                        />
-                        {/* </div> */}
-                        <p
-                          className="swift-addstrategy-buttons"
-                          onClick={() =>
-                            handleDeleteUnderlying(classIndex, underlyingIndex)
-                          }
-                          style={{
-                            color: "rgba(1, 22, 39, 0.5)",
-                          }}
                         >
-                          Delete
-                        </p>
-                      </div>
-                      <div className="swift-addstrategy-longname">
-                        {
-                          longName[
-                            formValues.assetClasses[classIndex].underlyings[
-                              underlyingIndex
-                            ].stock.trim()
-                          ]
-                        }
-                      </div>
-                    </div>
-                  ))}
+                          <div
+                            key={underlyingIndex}
+                            className="swift-addstrategy-underlying"
+                          >
+                            {/* <div className="swift-addstrategy-underlying-left"> */}
+                            <SearchLiveEureka
+                              name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`}
+                              value={
+                                formValues.assetClasses[classIndex].underlyings[
+                                  underlyingIndex
+                                ].stock
+                              }
+                              onInputChange={handleInputChange}
+                            />
+
+                            <CustomInput
+                              type="number"
+                              classnameInput="swift-addstrategy-underlying-input"
+                              name={`assetClasses[${classIndex}].underlyings[${underlyingIndex}].percentage`}
+                              placeholder="Percentage"
+                              value={
+                                formValues.assetClasses[classIndex].underlyings[
+                                  underlyingIndex
+                                ].percentage
+                              }
+                              onInputChange={handleInputChange}
+                              styleInput={{ width: "12vw", borderRadius: 0 }}
+                            />
+                            {/* </div> */}
+                            <p
+                              className="swift-addstrategy-buttons"
+                              onClick={() =>
+                                handleDeleteUnderlying(
+                                  classIndex,
+                                  underlyingIndex
+                                )
+                              }
+                              style={{
+                                color: "rgba(1, 22, 39, 0.5)",
+                              }}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                          <div className="swift-addstrategy-longname">
+                            {
+                              longName[
+                                formValues.assetClasses[classIndex].underlyings[
+                                  underlyingIndex
+                                ].stock.trim()
+                              ]
+                            }
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -787,7 +802,9 @@ const StrategyCreated_Eureka = () => {
   const location = useLocation();
   const id = location.state ? location.state.id : null;
   // const email_id = location.state ? location.state.email_id : null;
-  const email_id = localStorage.getItem('userData') ? localStorage.getItem('userData') : null;
+  const email_id = localStorage.getItem("userData")
+    ? localStorage.getItem("userData")
+    : null;
   const [dl_data, setDlData] = useState(null);
   const [loading, setloading] = useState(true);
   // console.log("strategy", email_id);
@@ -907,10 +924,10 @@ const StrategyCreated_Eureka = () => {
                         dl_data.map((item, index) => (
                           <tr key={index}>
                             {/* <td>{item.strategy_id}</td> */}
-                            <td style={{width:"25%"}}>
+                            <td style={{ width: "25%" }}>
                               <p>{item.security}</p>
                               <p>{item.longname}</p>
-                              </td>
+                            </td>
                             <td>
                               {!item.date_created
                                 ? ""
