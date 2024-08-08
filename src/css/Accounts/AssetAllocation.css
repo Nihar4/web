@@ -128,6 +128,7 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
+  overflow-y: auto;
 }
 
 .swift-accounts-content-div-1 {
@@ -424,21 +425,25 @@ width: 400px !important;
   overflow: auto;
 }
 
-.swift-accounts-content-stocks-show::-webkit-scrollbar {
+.swift-accounts-content-stocks-show::-webkit-scrollbar,
+.swift-account-content-content::-webkit-scrollbar {
   width: 5px;
 }
 
-.swift-accounts-content-stocks-show::-webkit-scrollbar-thumb {
+.swift-accounts-content-stocks-show::-webkit-scrollbar-thumb,
+.swift-account-content-content::-webkit-scrollbar-thumb {
   background-color: #e8e8e8;
   border-radius: 34px;
   height: 98px;
 }
 
-.swift-accounts-content-stocks-show::-webkit-scrollbar-track {
+.swift-accounts-content-stocks-show::-webkit-scrollbar-track,
+.swift-account-content-content::-webkit-scrollbar-track {
   background-color: #eee;
 }
 
-.swift-accounts-content-stocks-show::-webkit-scrollbar-thumb:hover {
+.swift-accounts-content-stocks-show::-webkit-scrollbar-thumb:hover,
+.swift-account-content-content::-webkit-scrollbar-thumb:hover {
   background-color: #ccc;
 }
 

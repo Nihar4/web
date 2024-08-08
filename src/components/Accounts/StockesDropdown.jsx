@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../css/Accounts/StocksDropdown.css";
 import ServerRequest from "../../utils/ServerRequest";
 import Pulse from "../Loader/Pulse";
+import { numberFormat } from "../../utils/utilsFunction";
 
 const StockesDropdown = ({
   heading,
@@ -216,7 +217,7 @@ const StockesDropdown = ({
             </svg>
           </div>
           <div className="stocks-dropdown-header-right">
-            <p>{totalPercentage}%</p>
+            <p>{numberFormat(totalPercentage)}%</p>
           </div>
         </div>
       )}

@@ -34,7 +34,6 @@ const LineChart = ({
   lastupdated: updatedDate,
 }) => {
   const lastupdated = new Date(updatedDate).toISOString().split("T")[0];
-  console.log(lastupdated);
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     new Date(),
@@ -97,7 +96,6 @@ const LineChart = ({
 
   if (name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC") {
     newestDate = new Date(initialData[initialData.length - 13].date).setDate(0);
-    // console.log('nD',new Date(newestDate).toLocaleString());
   } else {
     newestDate = initialData.reduce((acc, cur) => {
       const currentDate = new Date(cur.date);
@@ -149,7 +147,6 @@ const LineChart = ({
   }
   initialData = [...initialData, ...newData];
 
-  console.log(newestDate);
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
       <ChartCanvas
@@ -285,7 +282,7 @@ const LineChart = ({
                 : undefined
             }
             strokeWidth={3}
-            stroke="#000000"
+            stroke="#CCFF66"
           />
 
           <HoverTooltip

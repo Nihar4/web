@@ -1024,9 +1024,9 @@ const EdurekaHedge = () => {
                           .format("DD-MM-YYYY HH:mm:ss")}
                       </p>
                     )}
-                    <button className="asset-div-btn" onClick={openModal}>
+                    {/* <button className="asset-div-btn" onClick={openModal}>
                       Optimization
-                    </button>
+                    </button> */}
                     <p className="run-analysis-btn" onClick={run_analysis}>
                       Run Analysis
                     </p>

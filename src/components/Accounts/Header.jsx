@@ -3,15 +3,182 @@ import "../../css/Accounts/Header.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Pulse from "../Loader/Pulse";
 import CustomDropdown from "../CustomComponents/CustomDropdown/CustomDropdown";
+import ServerRequest from "../../utils/ServerRequest";
+import CustomStrategyDropdown from "../CustomComponents/CustomDropdown/CustomStrategyDropdown";
 
-const Header = ({ email_id, setloading }) => {
+const Header = ({
+  email_id,
+  setloading,
+  display = false,
+  handleStrategyClick,
+  setInitialStrategies,
+  change,
+}) => {
   const navigate = useNavigate();
-  const [loader, setloader] = useState(false);
+  const [loader, setloader] = useState(true);
   const location = useLocation();
   const pathname = location.pathname;
   let currentPage;
   const previousPath = location.state?.previousPath;
-  // console.log(previousPath);
+  const [Strategies, setStrategies] = useState([]);
+  const [strategyNames, setStrategyNames] = useState([]);
+  const [selectedIndex, setselectedIndex] = useState(0);
+
+  const fetchAssetData = async () => {
+    setloading(true);
+    setloader(true);
+
+    const data = await ServerRequest({
+      method: "get",
+      URL: `/strategy/get?email=${email_id}`,
+    });
+
+    if (data.server_error) {
+      alert("error");
+    }
+
+    if (data.error) {
+      alert("error1");
+    }
+
+    if (data.data.length > 0) {
+      const uniqueIds = new Set();
+
+      const filteredData = data.data.filter((item) => {
+        if (uniqueIds.has(item.id)) {
+          return false;
+        } else {
+          uniqueIds.add(item.id);
+          return true;
+        }
+      });
+
+      const strategiesArray = data.data.map((item) => ({
+        id: item.id,
+        strategyname: item.name,
+        description: item.description,
+        assetclass: [
+          {
+            name: item.asset_class_name,
+            stock: item.stock,
+            percentage: item.percentage,
+            min_weight: item.min_weight,
+            max_weight: item.max_weight,
+          },
+        ],
+      }));
+
+      const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
+        const existingStrategy = acc.find((item) => item.id === curr.id);
+
+        if (existingStrategy) {
+          curr.assetclass.forEach((asset) => {
+            const existingAsset = existingStrategy.assetclass.find(
+              (a) => a.name === asset.name
+            );
+            if (existingAsset) {
+              existingAsset.stock += `, ${asset.stock}`;
+              existingAsset.percentage += `, ${asset.percentage}`;
+              existingAsset.min_weight += `, ${asset.min_weight}`;
+              existingAsset.max_weight += `, ${asset.max_weight}`;
+            } else {
+              existingStrategy.assetclass.push(asset);
+            }
+          });
+        } else {
+          acc.push(curr);
+        }
+
+        return acc;
+      }, []);
+
+      setStrategies(combinedStrategiesArray);
+      const strategyNamesArray = combinedStrategiesArray.map(
+        (strategy) => strategy.strategyname
+      );
+      setStrategyNames(strategyNamesArray);
+      // setloading(false);
+      setloader(false);
+    }
+  };
+
+  const fetchHedgeData = async () => {
+    setloading(true);
+    setloader(true);
+
+    const data = await ServerRequest({
+      method: "get",
+      URL: `/strategy/getEureka?email=${email_id}`,
+    });
+
+    if (data.server_error) {
+      alert("error");
+    }
+
+    if (data.error) {
+      alert("error1");
+    }
+
+    if (data) {
+      const uniqueIds = new Set();
+
+      const filteredData = data.data.filter((item) => {
+        if (uniqueIds.has(item.id)) {
+          return false;
+        } else {
+          uniqueIds.add(item.id);
+          return true;
+        }
+      });
+
+      const strategiesArray = data.data.map((item) => ({
+        id: item.id,
+        strategyname: item.name,
+        description: item.description,
+        assetclass: [
+          {
+            name: item.asset_class_name,
+            stock: item.stock,
+            percentage: item.percentage,
+            min_weight: item.min_weight,
+            max_weight: item.max_weight,
+          },
+        ],
+      }));
+
+      const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
+        const existingStrategy = acc.find((item) => item.id === curr.id);
+
+        if (existingStrategy) {
+          curr.assetclass.forEach((asset) => {
+            const existingAsset = existingStrategy.assetclass.find(
+              (a) => a.name === asset.name
+            );
+            if (existingAsset) {
+              existingAsset.stock += `, ${asset.stock}`;
+              existingAsset.percentage += `, ${asset.percentage}`;
+              existingAsset.min_weight += `, ${asset.min_weight}`;
+              existingAsset.max_weight += `, ${asset.max_weight}`;
+            } else {
+              existingStrategy.assetclass.push(asset);
+            }
+          });
+        } else {
+          acc.push(curr);
+        }
+
+        return acc;
+      }, []);
+
+      setStrategies(combinedStrategiesArray);
+      const strategyNamesArray = combinedStrategiesArray.map(
+        (strategy) => strategy.strategyname
+      );
+      setStrategyNames(strategyNamesArray);
+      setloading(false);
+      setloader(false);
+    }
+  };
 
   const handleclick = () => {
     window.location.href = `mailto:hello@swiftfolios.com`;
@@ -19,54 +186,42 @@ const Header = ({ email_id, setloading }) => {
   const logOutHandler = () => {
     setloader(true);
     setloading(true);
-    localStorage.removeItem('userData'); 
+    localStorage.removeItem("userData");
 
     setTimeout(() => {
       window.history.pushState(null, null, window.location.href);
-      window.history.pushState(null, null, '/login');
-      window.history.replaceState(null, null, '/login');
-  
-      window.location.replace('/login');
+      window.history.pushState(null, null, "/login");
+      window.history.replaceState(null, null, "/login");
+
+      window.location.replace("/login");
     }, 3000);
     // setTimeout(() => {
     //   navigate("/login");
     // }, 3000);
   };
-  const dashboardHandler = (email_id) => {
+  const dashboardHandler = async (email_id) => {
     navigate("/accounts/dashboard/asset", {
       state: { email_id: email_id },
     });
+    await fetchAssetData();
   };
   const jobqueueHandler = (email_id) => {
     navigate("/accounts/dashboard/jobqueue", {
-      state: { email_id: email_id ,previousPath:pathname},
+      state: { email_id: email_id, previousPath: pathname },
     });
   };
-  const edurekaHedgeHandler = (email_id) => {
+  const edurekaHedgeHandler = async (email_id) => {
     navigate("/accounts/dashboard/edurekahedge", {
       state: { email_id: email_id },
     });
+    await fetchHedgeData();
   };
-
-
-  // if (
-  //   pathname == "/accounts/dashboard/asset" ||
-  //   pathname.startsWith("/accounts/dashboard/strategy") ||
-  //   pathname.startsWith("/accounts/dashboard/addstrategy")
-  // ) {
-  //   // console.log("hii")
-  //   currentPage = "Multi-asset";
-  // } else if (
-  //   pathname == "/accounts/dashboard/edurekahedge" ||
-  //   pathname.startsWith("/accounts/dashboard/eureka/addstrategy") ||
-  //   pathname.startsWith("/accounts/dashboard/eureka/strategy")
-  // ) {
-  //   // console.log("hello")
-  //   currentPage = "Hedged Strategies";
-  // } else {
-  //   currentPage = "Multi-asset";
-  // }
-  // console.log('path',pathname );
+  const portfolioHandler = async (email_id) => {
+    navigate("/accounts/dashboard/portfolio-management", {
+      state: { email_id: email_id },
+    });
+    await fetchAssetData();
+  };
 
   if (pathname === "/accounts/dashboard/jobqueue" && previousPath) {
     if (
@@ -81,6 +236,8 @@ const Header = ({ email_id, setloading }) => {
       previousPath.startsWith("/accounts/dashboard/eureka/strategy")
     ) {
       currentPage = "Hedged Strategies";
+    } else if (previousPath === "/accounts/dashboard/portfolio-management") {
+      currentPage = "Portfolio Management";
     } else {
       currentPage = "Multi-asset";
     }
@@ -97,30 +254,73 @@ const Header = ({ email_id, setloading }) => {
       pathname.startsWith("/accounts/dashboard/eureka/strategy")
     ) {
       currentPage = "Hedged Strategies";
+    } else if (pathname === "/accounts/dashboard/portfolio-management") {
+      currentPage = "Portfolio Management";
     } else {
       currentPage = "Multi-asset";
     }
   }
 
+  useEffect(() => {
+    if (display) {
+      if (
+        currentPage == "Multi-asset" ||
+        currentPage == "Portfolio Management"
+      ) {
+        fetchAssetData();
+      } else {
+        fetchHedgeData();
+      }
+    } else {
+      setloader(false);
+    }
+  }, [change]);
+
+  useEffect(() => {
+    if (!loader && display) {
+      console.log(Strategies, selectedIndex);
+      setInitialStrategies(Strategies);
+      // setTimeout(() => {
+      handleStrategyClick(selectedIndex, Strategies);
+      // }, 1000);
+    }
+  }, [Strategies, selectedIndex, loader]);
+
+  // useEffect(() => {
+  //   handleStrategyClick(selectedIndex);
+  // }, [selectedIndex]);
+
   const onDropdownSelect = (option) => {
     if (option == "Multi-asset") {
       dashboardHandler(email_id);
+    } else if (option == "Portfolio Management") {
+      portfolioHandler(email_id);
     } else {
       edurekaHedgeHandler(email_id);
     }
   };
 
+  const onDropdownStrategySelect = (option) => {
+    const index = Strategies.findIndex(
+      (strategy) => strategy.strategyname === option.strategyname
+    );
+    setselectedIndex(index);
+  };
+
   return !loader ? (
-    <div className="swift-accounts-header">
+    <div
+      className="swift-accounts-header"
+      // style={{ height: display ? "10%" : "5%" }}
+    >
       <div className="swift-accounts-header-left">
         <p className="swift-accounts-heading">
           <i style={{ fontWeight: 400 }}>swift</i>
           folios
         </p>
         <CustomDropdown
-          options={["Multi-asset", "Hedged Strategies"]}
+          options={["Multi-asset", "Hedged Strategies", "Portfolio Management"]}
           style={{
-            width: "176px",
+            width: "220px",
             color: "var(--text-color)",
             fontSize: "var(--font-heading)",
             fontStyle: "normal",
@@ -132,6 +332,25 @@ const Header = ({ email_id, setloading }) => {
           onSelect={onDropdownSelect}
           default_value={currentPage}
         />
+
+        {display && (
+          <CustomStrategyDropdown
+            options={Strategies}
+            style={{
+              width: "auto",
+              color: "var(--text-color)",
+              fontSize: "var(--font-heading)",
+              fontStyle: "normal",
+              fontWeight: "var(--font-weight-heavy)",
+              lineHeight: "normal",
+              letterSpacing: "-0.7px",
+              cursor: "pointer",
+            }}
+            onSelect={onDropdownStrategySelect}
+            default_value={Strategies[selectedIndex]}
+          />
+        )}
+
         {/* <p className="swift-accounts-heading-2" onClick={() =>dashboardHandler(email_id)}>Dashboard</p> */}
         <p
           className="swift-accounts-heading-2"
