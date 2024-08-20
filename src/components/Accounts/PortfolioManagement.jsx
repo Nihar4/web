@@ -19,10 +19,10 @@ import ScatterChart from "./ScatterChart";
 import Close from "../../assets/crossicon.svg";
 import { numberFormat } from "../../utils/utilsFunction";
 import PerformanceChart from "./PerformanceChart";
+import PortfolioStockesDropdown from "./PortfolioStockesDropdown";
 
-const AssetAllocationNew = () => {
+const PortfolioManagement = () => {
   const [initialStrategies, setInitialStrategies] = useState([]);
-  console.log("Asset", initialStrategies);
 
   const [selectedStrategy, setSelectedStrategy] = useState(0);
   const [clickedStrategy, setClickedStrategy] = useState(initialStrategies[0]);
@@ -63,22 +63,25 @@ const AssetAllocationNew = () => {
   const [runanalysis, setRunAnalysis] = useState(false);
   const [chartModal, setchartModal] = useState(false);
 
+  const [inflow, setInflow] = useState(0);
+  const [portfolio_value, setPortfolio_Value] = useState(0);
+
   const handleDeleteStrategy = async (id) => {
     alert("Delete");
-    // const data = await ServerRequest({
-    //   method: "delete",
-    //   URL: `/strategy/`,
-    //   data: { id: id },
-    // });
+    const data = await ServerRequest({
+      method: "delete",
+      URL: `/strategy/portfolio`,
+      data: { id: id },
+    });
 
-    // if (data.server_error) {
-    //   alert("error");
-    // }
+    if (data.server_error) {
+      alert("error");
+    }
 
-    // if (data.error) {
-    //   alert("error1");
-    // }
-    // setChange(Math.random());
+    if (data.error) {
+      alert("error1");
+    }
+    setChange(Math.random());
   };
 
   const handleEditStrategy = async (id) => {
@@ -111,7 +114,6 @@ const AssetAllocationNew = () => {
   };
 
   const handleStockSelect = (stock, detailed_name) => {
-    // // console.log(stock,detailed_name, "stock");
     setloading2(true);
     setchartModal(true);
     setSelectedStock(stock);
@@ -130,7 +132,7 @@ const AssetAllocationNew = () => {
     // setloading(true);
     const data = await ServerRequest({
       method: "get",
-      URL: `/strategy/get?email=${email_id}`,
+      URL: `/strategy/portfolio/get?email=${email_id}`,
     });
 
     if (data.server_error) {
@@ -141,7 +143,6 @@ const AssetAllocationNew = () => {
       alert("error1");
     }
 
-    // console.log(data);
     if (data.data.length > 0) {
       const uniqueIds = new Set();
 
@@ -168,7 +169,6 @@ const AssetAllocationNew = () => {
           },
         ],
       }));
-      // console.log(strategiesArray);
 
       const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
         const existingStrategy = acc.find((item) => item.id === curr.id);
@@ -193,10 +193,8 @@ const AssetAllocationNew = () => {
 
         return acc;
       }, []);
-      // console.log(combinedStrategiesArray);
 
       setInitialStrategies(combinedStrategiesArray);
-      // // console.log(combinedStrategiesArray);
 
       if (combinedStrategiesArray.length > 0) {
         setClickedStrategy(combinedStrategiesArray[0]);
@@ -208,7 +206,6 @@ const AssetAllocationNew = () => {
         setStrategyid(combinedStrategiesArray[0].id);
         let stock =
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
-        // console.log(stock);
         if (stock == stock.split(".")[0]) {
           setDuration("1Y");
         } else {
@@ -226,7 +223,6 @@ const AssetAllocationNew = () => {
   const handleStrategyClick = (index, initialStrategies) => {
     setCnt((prev) => prev + 1);
     const strategyClicked = initialStrategies[index];
-    console.log("Index", index, strategyClicked);
     setSelectedStrategy(index);
     setClickedStrategy(strategyClicked);
     setStockArray(initialStrategies[index].assetclass);
@@ -236,17 +232,13 @@ const AssetAllocationNew = () => {
     );
     setIschartvisible(false);
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
-    // console.log("click", stock);
     if (stock == stock.split(".")[0]) {
       setDuration("1Y");
     } else {
       setDuration("1Y");
     }
 
-    // // console.log(initialStrategies[index].assetclass);
-
     // setStockArray(initialStrategies[index])
-    // // console.log(stockArray);
 
     if (window.innerWidth <= 768) {
       setIsLeftVisible(false);
@@ -285,7 +277,6 @@ const AssetAllocationNew = () => {
             initialStrategies[selectedStrategy].id
           );
           const hasPendingStatus = isPending;
-          console.log(hasPendingStatus, "Status");
           setIschartvisible(!hasPendingStatus);
           const dateCompletedArray = data.map((item) =>
             new Date(item.date_completed).toISOString()
@@ -296,7 +287,6 @@ const AssetAllocationNew = () => {
           );
           setLastupdated(latestDate);
           // setLastupdated("abc");
-          // // console.log(hasPendingStatus);
 
           setTimeout(() => {
             setloading(false);
@@ -314,11 +304,6 @@ const AssetAllocationNew = () => {
   };
 
   const handleDropdownToggle = (dropdownIndex) => {
-    // if (openDropdown === dropdownIndex) {
-    //   setOpenDropdown(null);
-    // } else {
-    //   setOpenDropdown(dropdownIndex);
-    // }
     setOpenDropdown((prevOpenDropdown) => {
       const newOpenDropdown = [...prevOpenDropdown];
       newOpenDropdown[dropdownIndex] = !newOpenDropdown[dropdownIndex];
@@ -357,7 +342,6 @@ const AssetAllocationNew = () => {
       if (data1.error) {
         alert("error1 jobqueue");
       }
-      // // console.log(data1);
     } catch (error) {
       console.error(error);
     }
@@ -384,12 +368,14 @@ const AssetAllocationNew = () => {
   const handleDuraion = (item) => {
     setDuration(item);
   };
-  // console.log(selectedStock);
 
   const handleEdit = async () => {
-    navigate(`/accounts/dashboard/addstrategy/${strategyID}`, {
-      state: { email_id: email_id },
-    });
+    navigate(
+      `/accounts/dashboard/portfolio-management/addstrategy/${strategyID}`,
+      {
+        state: { email_id: email_id },
+      }
+    );
   };
 
   const protfolio = [];
@@ -421,8 +407,6 @@ const AssetAllocationNew = () => {
       }
     }, 5);
   };
-
-  // // console.log(lastupdated);
 
   let currentIndex = 0;
   const openModal = async () => {
@@ -461,7 +445,6 @@ const AssetAllocationNew = () => {
       if (data.error) {
         alert("error1");
       }
-      // // console.log(stock,data.data);
       return data.data;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -473,7 +456,6 @@ const AssetAllocationNew = () => {
 
   const handleResultclick = async () => {
     // const data=weights;
-    // // console.log("wei", weights);
     if (weights) {
       try {
         // setLoadingChart(true);
@@ -511,7 +493,6 @@ const AssetAllocationNew = () => {
             },
           });
         }
-        // // console.log(data1);
         setScatter_data(data1.data);
         // setLoadingChart(false);
       } catch (error) {
@@ -548,7 +529,6 @@ const AssetAllocationNew = () => {
     const apiData = [];
     let valueIndex = 0;
     for (let stockObj of stockArray) {
-      // // console.log(stockObj);
       stockObj.stock.split(",").forEach(async (value, index) => {
         const stock = stockObj.name + "+" + value.trim();
         const percentage = OptData.z[valueIndex];
@@ -556,7 +536,6 @@ const AssetAllocationNew = () => {
         apiData.push({ [stock]: percentage });
       });
     }
-    // // console.log(apiData);
     // const apiData = stockArray[0].stock.split(",").map((value, index) => ({
     //   [value.trim()]: OptData.z[index],
     // }));
@@ -610,23 +589,13 @@ const AssetAllocationNew = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     setloading(true);
-  //     fetchdata();
-  //     setTimeout(() => {
-  //       setloading(false);
-  //     }, 1000);
-  //   }, [change]);
-
   useEffect(() => {
     const updateDimensions = () => {
       const container = graphContainerRef.current;
-      // // console.log("container",container);
 
       if (container) {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        // // console.log("wh", containerHeight,containerWidth)
 
         setGraphDimensions({ width: containerWidth, height: containerHeight });
         // setRadarKey((prevKey) => prevKey + 1);
@@ -652,12 +621,10 @@ const AssetAllocationNew = () => {
   useEffect(() => {
     const updateDimensions = () => {
       const container = scatterRef.current;
-      // // console.log("container",container);
 
       if (container) {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        // // console.log("wh", containerHeight,containerWidth)
 
         setScatterDimensions({
           width: containerWidth,
@@ -701,7 +668,6 @@ const AssetAllocationNew = () => {
         setloading2(true);
 
         const name = await fetchStockData(selectedStock);
-        // // console.log("name", name);
         // const name = "abc";
         setSelectedStockName(name);
 
@@ -729,7 +695,6 @@ const AssetAllocationNew = () => {
   }, [selectedStock, strategyID, duration, ischartvisible]);
 
   useEffect(() => {
-    console.log("Yes Change");
     fetchDataAndUpdateState();
   }, [selectedStrategy, reRenderKey, initialStrategies, ischartvisible]);
 
@@ -849,9 +814,32 @@ const AssetAllocationNew = () => {
     }
   }, [stockArray]);
 
+  const fieldNames = [
+    "Target Wt.",
+    "Curr. Price",
+    "Target Qty.",
+    "Curr. Qty.",
+    "Curr. Value",
+    "Curr. Wt.",
+    "Active Wt.",
+    "Prop. Inv. Qty.",
+    "Prop. Inv. Value.",
+    "Eff. Wt.",
+    "Inv. Px.",
+    "Inv. Value",
+    "Total Ret",
+    "Today's Ret.",
+    "Today's Cont.",
+    "Real. Gains",
+    "Unreal. Gains",
+    "Total Gains",
+    "Mtd. Ret.",
+    "3Mth. Pred. Ret.",
+  ];
+
   return (
     <>
-      <div className="swift-accounts-main">
+      <div className="swift-accounts-main swift-accounts-portfolio-main">
         <Header
           email_id={email_id}
           setloading={setloading}
@@ -951,26 +939,43 @@ const AssetAllocationNew = () => {
                             Run Analysis
                           </p>
                         </div>
+                        <div className="swift-accounts-inflow-portfolio-row">
+                          <CustomInput
+                            labelText="Today's Inflow"
+                            type="number"
+                            // classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
+                            name="inflow"
+                            placeholder=""
+                            styleInput={{
+                              marginTop: "4px",
+                              width: "150px",
+                              padding: "3px 8px",
+                              fontSize: "12px",
+                            }}
+                            onInputChange={(symbol, value) =>
+                              setInflow(value ? value : 0)
+                            }
+                            value={inflow}
+                          />
+                          <p>
+                            Portfolio Value :-{" "}
+                            {numberFormat(portfolio_value, 0)}
+                          </p>
+                        </div>
                         <div className="swift-accounts-content-stocks-text">
                           <div className="swift-accounts-content-stocks-text-left">
-                            <div className="swift-accounts-content-stocks-text-left-sub-div">
-                              <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
-                                MTD
-                              </p>
-                              <p className="swift-accounts-content-stocks-text-left-sub-div-p2">
-                                Price
-                              </p>
-                              <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
-                                SAA
-                              </p>
-                              <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
-                                <span>Pred.</span>
-                                <br />
-                                <span>(3 mth)</span>
-                              </p>
-                              {/* <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
-                          Conf.
-                        </p> */}
+                            <div
+                              className="swift-accounts-content-stocks-text-left-sub-div"
+                              style={{ width: "92%" }}
+                            >
+                              {fieldNames.map((item, index) => (
+                                <p
+                                  key={index}
+                                  className={`swift-accounts-content-stocks-text-left-sub-div-p1 portfolio-dropdown-column`}
+                                >
+                                  {item}
+                                </p>
+                              ))}
                             </div>
                           </div>
                         </div>
@@ -979,21 +984,16 @@ const AssetAllocationNew = () => {
                         className="swift-accounts-content-stocks-show"
                         key={reRenderKey}
                       >
-                        {stockArray.map((asset, index) => {
-                          return (
-                            <StockesDropdown
-                              key={index}
-                              heading={asset.name}
-                              options={[asset]}
-                              id={strategyID}
-                              isOpen={openDropdown[index]}
-                              onToggle={() => handleDropdownToggle(index)}
-                              onStockSelect={handleStockSelect}
-                              getsum={handleGetSum}
-                              selectedStock={selectedStock}
-                            />
-                          );
-                        })}
+                        <PortfolioStockesDropdown
+                          id={strategyID}
+                          isOpen={openDropdown}
+                          onToggle={handleDropdownToggle}
+                          onStockSelect={handleStockSelect}
+                          selectedStock={selectedStock}
+                          setPortfolio_Value={setPortfolio_Value}
+                          inflow={inflow}
+                          setTotalsum={setTotalsum}
+                        />
                       </div>
                     </div>
                   </div>
@@ -1377,7 +1377,7 @@ const AssetAllocationNew = () => {
                       isRightVisible ? "showdiv-1" : ""
                     }`}
                   >
-                    <div className="swift-accounts-content-details">
+                    {/* <div className="swift-accounts-content-details">
                       <p className="swift-account-content-heading">
                         {clickedStrategy != null &&
                           clickedStrategy.strategyname}
@@ -1385,11 +1385,12 @@ const AssetAllocationNew = () => {
                       <p className="swift-account-content-content">
                         {clickedStrategy != null && clickedStrategy.description}
                       </p>
-                    </div>
+                    </div> */}
                     <div
                       className={`swift-account-content-graph ${
                         isRightVisible ? "showgraph" : ""
                       }`}
+                      style={{ height: "100%" }}
                     >
                       <div className="swift-asset-range-buttons">
                         {/* {selectedStock &&
@@ -1504,4 +1505,4 @@ const AssetAllocationNew = () => {
   );
 };
 
-export default AssetAllocationNew;
+export default PortfolioManagement;

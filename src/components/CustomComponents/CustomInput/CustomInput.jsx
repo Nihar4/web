@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomLabel from "../CustomLabel/CustomLabel";
 import CustomInputBox from "../CustomInputBox/CustomInputBox";
 import "../CustomInput/CustomInput.css";
@@ -11,6 +11,7 @@ const CustomInput = ({
   value,
   maxLength = 100,
   onInputChange,
+  onClick,
   classnameDiv,
   classnameLabel,
   classnameInput,
@@ -19,8 +20,11 @@ const CustomInput = ({
   styleLabel = {},
   onKeyUp,
 }) => {
-  // console.log(value, name);
   const [value1, setValue1] = useState(value);
+  useEffect(() => {
+    setValue1(value);
+  }, [value]);
+
   // setValue1(value);
   // console.log(value1);
   const handleChange = (e) => {
@@ -28,6 +32,9 @@ const CustomInput = ({
 
     if (type === "number" && maxLength) {
       inputValue = inputValue.slice(0, maxLength);
+    }
+    if (type === "number") {
+      inputValue = parseFloat(inputValue);
     }
     onInputChange && onInputChange(name, inputValue);
     setValue1(inputValue);
@@ -47,6 +54,7 @@ const CustomInput = ({
         classname={classnameInput}
         placeholder={placeholder}
         onChange={handleChange}
+        onClick={onClick}
         maxLength={maxLength}
         style={styleInput}
         onKeyUp={onKeyUp}

@@ -180,6 +180,84 @@ const Header = ({
     }
   };
 
+  const fetchPortfolioData = async () => {
+    setloading(true);
+    setloader(true);
+
+    const data = await ServerRequest({
+      method: "get",
+      URL: `/strategy/portfolio/get?email=${email_id}`,
+    });
+
+    if (data.server_error) {
+      alert("error");
+    }
+
+    if (data.error) {
+      alert("error1");
+    }
+
+    if (data.data.length > 0) {
+      const uniqueIds = new Set();
+
+      const filteredData = data.data.filter((item) => {
+        if (uniqueIds.has(item.id)) {
+          return false;
+        } else {
+          uniqueIds.add(item.id);
+          return true;
+        }
+      });
+
+      const strategiesArray = data.data.map((item) => ({
+        id: item.id,
+        strategyname: item.name,
+        description: item.description,
+        assetclass: [
+          {
+            name: item.asset_class_name,
+            stock: item.stock,
+            percentage: item.percentage,
+            // min_weight: item.min_weight,
+            // max_weight: item.max_weight,
+          },
+        ],
+      }));
+
+      const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
+        const existingStrategy = acc.find((item) => item.id === curr.id);
+
+        if (existingStrategy) {
+          curr.assetclass.forEach((asset) => {
+            const existingAsset = existingStrategy.assetclass.find(
+              (a) => a.name === asset.name
+            );
+            if (existingAsset) {
+              existingAsset.stock += `, ${asset.stock}`;
+              existingAsset.percentage += `, ${asset.percentage}`;
+              // existingAsset.min_weight += `, ${asset.min_weight}`;
+              // existingAsset.max_weight += `, ${asset.max_weight}`;
+            } else {
+              existingStrategy.assetclass.push(asset);
+            }
+          });
+        } else {
+          acc.push(curr);
+        }
+
+        return acc;
+      }, []);
+
+      setStrategies(combinedStrategiesArray);
+      const strategyNamesArray = combinedStrategiesArray.map(
+        (strategy) => strategy.strategyname
+      );
+      setStrategyNames(strategyNamesArray);
+      // setloading(false);
+      setloader(false);
+    }
+  };
+
   const handleclick = () => {
     window.location.href = `mailto:hello@swiftfolios.com`;
   };
@@ -220,7 +298,7 @@ const Header = ({
     navigate("/accounts/dashboard/portfolio-management", {
       state: { email_id: email_id },
     });
-    await fetchAssetData();
+    await fetchPortfolioData();
   };
 
   if (pathname === "/accounts/dashboard/jobqueue" && previousPath) {
@@ -254,7 +332,13 @@ const Header = ({
       pathname.startsWith("/accounts/dashboard/eureka/strategy")
     ) {
       currentPage = "Hedged Strategies";
-    } else if (pathname === "/accounts/dashboard/portfolio-management") {
+    } else if (
+      pathname === "/accounts/dashboard/portfolio-management" ||
+      pathname.startsWith("/accounts/dashboard/portfolio-management") ||
+      pathname.startsWith(
+        "/accounts/dashboard/portfolio-management/addstrategy"
+      )
+    ) {
       currentPage = "Portfolio Management";
     } else {
       currentPage = "Multi-asset";
@@ -263,11 +347,10 @@ const Header = ({
 
   useEffect(() => {
     if (display) {
-      if (
-        currentPage == "Multi-asset" ||
-        currentPage == "Portfolio Management"
-      ) {
+      if (currentPage == "Multi-asset") {
         fetchAssetData();
+      } else if (currentPage == "Portfolio Management") {
+        fetchPortfolioData();
       } else {
         fetchHedgeData();
       }
@@ -278,7 +361,6 @@ const Header = ({
 
   useEffect(() => {
     if (!loader && display) {
-      console.log(Strategies, selectedIndex);
       setInitialStrategies(Strategies);
       // setTimeout(() => {
       handleStrategyClick(selectedIndex, Strategies);
@@ -348,6 +430,7 @@ const Header = ({
             }}
             onSelect={onDropdownStrategySelect}
             default_value={Strategies[selectedIndex]}
+            email={email_id}
           />
         )}
 

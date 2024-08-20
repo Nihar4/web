@@ -13,9 +13,8 @@ import {
   AddStrategyMain_Eureka,
   StrategyCreated_Eureka,
 } from "../Accounts/AddStrategyEureka";
-import Auth from "../AccessManagement/Auth";
-import AssetAllocationNew from "../Accounts/AssetAllocationNew";
-import Header from "../Accounts/Header";
+import PortfolioManagement from "../Accounts/PortfolioManagement";
+import { AddStrategyPortfolio } from "../Accounts/AddStrategyPortfolio";
 
 const Dashboard = () => {
   const email_id = localStorage.getItem("userData")
@@ -24,10 +23,20 @@ const Dashboard = () => {
   return (
     <Routes>
       <Route path="/dashboard/asset" element={<AssetAllocation />} />
+
       <Route
         path="/dashboard/portfolio-management"
-        element={<AssetAllocationNew />}
+        element={<PortfolioManagement />}
       />
+      <Route
+        path="/dashboard/portfolio-management/addstrategy/:id"
+        element={<AddStrategyPortfolio />}
+      />
+      <Route
+        path="/dashboard/portfolio-management/addstrategy/"
+        element={<AddStrategyPortfolio />}
+      />
+
       <Route path="/dashboard" element={<DashboardMain />} />
       <Route path="/dashboard/addstrategy/:id" element={<AddStrategyMain />} />
       <Route path="/dashboard/addstrategy/" element={<AddStrategyMain />} />

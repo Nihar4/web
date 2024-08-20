@@ -13,12 +13,10 @@ export const numberFormat = (number, frac = 2) => {
     if (!number) {
         number = 0;
     }
-
     if (typeof number === "string") {
         number = number.replace(/,/g, "");
     }
-
-    if (isNaN(number)) {
+    if (isNaN(number) || !isFinite(number)) {
         number = 0;
     }
 

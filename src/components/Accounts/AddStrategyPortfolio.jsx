@@ -20,7 +20,7 @@ import CustomLabel from "../CustomComponents/CustomLabel/CustomLabel";
 import Pulse from "../Loader/Pulse";
 import moment from "moment-timezone";
 
-const AddStrategyMain = () => {
+const AddStrategyPortfolio = () => {
   const location = useLocation();
   // const email_id = location.state ? location.state.email_id : null;
   const email_id = localStorage.getItem("userData")
@@ -36,11 +36,14 @@ const AddStrategyMain = () => {
     description: "",
     assetClasses: [],
   });
+
   const [strategyNameError, setStrategyNameError] = useState("error");
   const [descError, setDescError] = useState("error");
   const [totalError, settotalError] = useState("error");
   const [loading, setLoading] = useState(true);
   const [longName, setLongName] = useState({});
+  const [cash, setCash] = useState(0);
+  const [totalPercentage, setTotalPercentage] = useState(0);
 
   const fetchLongName = async (stock) => {
     const result = await ServerRequest({
@@ -58,7 +61,7 @@ const AddStrategyMain = () => {
         if (id) {
           const data = await ServerRequest({
             method: "get",
-            URL: `/strategy/getone/?id=${id}`,
+            URL: `/strategy/portfolio/getone/?id=${id}`,
           });
           setFormValues(data.data);
           // console.log("form daa",data.data);
@@ -274,11 +277,6 @@ const AddStrategyMain = () => {
       }
     }, 0);
   };
-  //   setFormValues((prevValues) => ({
-  //     ...prevValues,
-  //     assetClasses: prevValues.assetClasses.filter((_, i) => i !== index),
-  //   }));
-  // };
 
   const handleDeleteAssetClass = (index) => {
     setFormValues((prevValues) => {
@@ -303,31 +301,6 @@ const AddStrategyMain = () => {
       };
     });
   };
-  //   // console.log("hii", classIndex,underlyingIndex);
-  //   // console.log("prev",formValues);
-  //   // setLongName(longName[`assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`]) = "";
-  //   setFormValues((prevValues) => {
-  //     const updatedAssetClasses = prevValues.assetClasses.map(
-  //       (assetClass, i) => {
-  //         if (i === classIndex) {
-  //           return {
-  //             ...assetClass,
-  //             underlyings: assetClass.underlyings.filter(
-  //               (_, j) => j !== underlyingIndex
-  //             ),
-  //           };
-  //         }
-  //         return assetClass;
-  //       }
-  //     );
-  //     return {
-  //       ...prevValues,
-  //       assetClasses: updatedAssetClasses,
-  //     };
-  //   });
-
-  //   // console.log("new",formValues)
-  // };
 
   const handleDeleteUnderlying = (classIndex, underlyingIndex) => {
     setFormValues((prevValues) => {
@@ -356,18 +329,25 @@ const AddStrategyMain = () => {
       };
     });
   };
-  const totalPercentage =
-    formValues.assetClasses.length > 0
-      ? formValues.assetClasses.reduce((total, assetClass) => {
-          return (
-            total +
-            assetClass.underlyings.reduce((acc, underlying) => {
-              const percentage = parseFloat(underlying.percentage) || 0;
-              return acc + percentage;
-            }, 0)
-          );
-        }, 0)
-      : 0;
+
+  useEffect(() => {
+    const totalPercentage =
+      formValues.assetClasses.length > 0
+        ? formValues.assetClasses.reduce((total, assetClass) => {
+            return (
+              total +
+              assetClass.underlyings.reduce((acc, underlying) => {
+                const percentage = parseFloat(underlying.percentage) || 0;
+                return acc + percentage;
+              }, 0)
+            );
+          }, 0)
+        : 0;
+
+    const cash = 100 - totalPercentage > 0 ? 100 - totalPercentage : 0;
+    setCash(cash);
+    setTotalPercentage(totalPercentage + cash);
+  }, [formValues]);
 
   const ValidateAll = () => {
     let hasError = false;
@@ -473,11 +453,9 @@ const AddStrategyMain = () => {
       return;
     }
 
-    // console.log("Submitting form data:", formValues);
-
     const data = await ServerRequest({
       method: "post",
-      URL: `/strategy/insert`,
+      URL: `/strategy/portfolio/insert`,
       data: { ...formValues, email_id: email_id },
     });
 
@@ -488,8 +466,6 @@ const AddStrategyMain = () => {
     if (data.error) {
       alert("error1");
     }
-    // console.log("for id",data.data);
-    //  await insertStocks(data.data);
 
     navigate("/accounts/dashboard/strategy", {
       state: { id: data.data, email_id: email_id },
@@ -518,7 +494,7 @@ const AddStrategyMain = () => {
 
     const data = await ServerRequest({
       method: "delete",
-      URL: `/strategy/`,
+      URL: `/strategy/portfolio`,
       data: { id: id },
     });
 
@@ -532,7 +508,7 @@ const AddStrategyMain = () => {
 
     const data1 = await ServerRequest({
       method: "post",
-      URL: `/strategy/insert?strategy_id=${id}`,
+      URL: `/strategy/portfolio/insert?strategy_id=${id}`,
       data: { ...formValues, email_id: email_id },
     });
 
@@ -543,8 +519,7 @@ const AddStrategyMain = () => {
     if (data1.error) {
       alert("error1");
     }
-    // alert("data add");
-    // await insertStocks(id);
+
     navigate("/accounts/dashboard/strategy", {
       state: { id: id, email_id: email_id },
     });
@@ -640,6 +615,10 @@ const AddStrategyMain = () => {
               onClick={handleAddAssetClass}
             >
               Add Asset Class
+            </div>
+            <div className="swift-addstrategy-cash-row">
+              <p>CASH</p>
+              <p>{cash}</p>
             </div>
             <div className="swift-addstrategy-assetclassdiv">
               {formValues.assetClasses.map((assetClass, classIndex) => (
@@ -752,12 +731,11 @@ const AddStrategyMain = () => {
             </div>
           </div>
           <div className="swift-addstrategy-submit-btn">
-            {formValues.assetClasses.length > 0 && (
-              <div className="swift-addstrategy-total-div">
-                <p>Total</p>
-                <p>{totalPercentage}</p>
-              </div>
-            )}
+            <div className="swift-addstrategy-total-div">
+              <p>Total</p>
+              <p>{totalPercentage}</p>
+            </div>
+
             <div className="swift-addstrategy-error-btn">
               <CustomError
                 errorText={totalError}
@@ -964,4 +942,4 @@ const StrategyCreated = () => {
   );
 };
 
-export { AddStrategyMain, StrategyCreated };
+export { AddStrategyPortfolio, StrategyCreated };
