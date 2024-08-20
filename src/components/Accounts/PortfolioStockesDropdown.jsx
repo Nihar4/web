@@ -47,7 +47,7 @@ const PortfolioStockesDropdown = ({
 
   const fetchData = async (id, loader) => {
     try {
-      setTotalsum(0);
+      if (loader) setTotalsum(0);
       setloading(loader);
 
       const data = await ServerRequest({
@@ -67,7 +67,7 @@ const PortfolioStockesDropdown = ({
       setPortfolioValue(data.data.portfolio_value);
       setTotalPortfolioValue(data.data.portfolio_value + parseFloat(inflow));
       setPortfolio_Value(data.data.portfolio_value + parseFloat(inflow));
-      setTotalsum(data.data.totalPredictedPercentage);
+      if (loader) setTotalsum(data.data.totalPredictedPercentage);
       setloading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -286,7 +286,7 @@ const Dropdown = ({
     let total_today_cont = 0;
     let final_return = 0;
 
-    const updatedStocks = data.stocks.map((stock, index) => {
+    const updatedStocks = item.stocks.map((stock, index) => {
       let target_qty =
         (portfolio_value * stock.percentage) / 100 / stock.regularMarketPrice;
 
@@ -324,7 +324,7 @@ const Dropdown = ({
       total_today_cont,
       final_return,
     }));
-  }, [portfolio_value, data.stocks, index]);
+  }, [portfolio_value, index, item]);
 
   const handleInputChangeQty = (symbol, value, price) => {
     setPropInvQty((prev) => ({
