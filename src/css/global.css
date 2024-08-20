@@ -24,8 +24,8 @@ body {
 }
 
 :root {
-  --text-color: #011627b3;
-  /* --text-color: #011627; */
+  /* --text-color: #011627b3; */
+  --text-color: #011627;
   --font-btn: 14px;
   --font-large: 16px;
   --font-heading: 13px;

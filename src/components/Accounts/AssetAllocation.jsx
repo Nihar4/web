@@ -913,13 +913,52 @@ const AssetAllocation = () => {
                 isRightVisible ? "showdiv-1" : ""
               }`}
             >
-              <div className="swift-accounts-content-details">
-                <p className="swift-account-content-heading">
-                  {clickedStrategy != null && clickedStrategy.strategyname}
-                </p>
-                <p className="swift-account-content-content">
-                  {clickedStrategy != null && clickedStrategy.description}
-                </p>
+              <div
+                className="swift-accounts-content-details"
+                style={{ rowGap: "16px" }}
+              >
+                <div className="swift-accounts-content-stocks-header">
+                  <div className="swift-accounts-content-stocks-left">
+                    <p>
+                      Portfolio
+                      <span style={{ fontSize: "12px" }}>
+                        {` (3m exp. ret `}
+
+                        <span
+                          className={
+                            animatedValue >= 0 ? "green-text" : "red-text"
+                          }
+                        >
+                          {animatedValue.toFixed(2)}%
+                        </span>
+                        {")"}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="swift-accounts-content-stocks-right">
+                    {/* <p onClick={openPerformanceModal}>Performace</p> */}
+                    <p onClick={handleEdit}>Change</p>
+                  </div>
+                </div>
+                <div className="swift-accounts-content-stocks-checkbox">
+                  {lastupdated && (
+                    <p>
+                      Last Run date:{" "}
+                      {moment
+                        .tz(moment(lastupdated), moment.tz.guess())
+                        // .add(5, "hours")
+                        // .add(30, "minutes")
+                        .format("DD-MM-YYYY HH:mm:ss")}
+                    </p>
+                  )}
+                  {/* <button className="asset-div-btn" onClick={openModal}>
+                      Optimization
+                    </button> */}
+
+                  <p className="run-analysis-btn" onClick={run_analysis}>
+                    Run Analysis
+                  </p>
+                </div>
               </div>
               <div
                 className={`swift-account-content-graph ${
@@ -1020,48 +1059,6 @@ const AssetAllocation = () => {
             >
               <div className="swift-accounts-content-stocks-info">
                 <div className="swift-accounts-content-stocks-details">
-                  <div className="swift-accounts-content-stocks-header">
-                    <div className="swift-accounts-content-stocks-left">
-                      <p>
-                        Portfolio
-                        <span style={{ fontSize: "12px" }}>
-                          {` (3m exp. ret `}
-
-                          <span
-                            className={
-                              animatedValue >= 0 ? "green-text" : "red-text"
-                            }
-                          >
-                            {animatedValue.toFixed(2)}%
-                          </span>
-                          {")"}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="swift-accounts-content-stocks-right">
-                      {/* <p onClick={openPerformanceModal}>Performace</p> */}
-                      <p onClick={handleEdit}>Change</p>
-                    </div>
-                  </div>
-                  <div className="swift-accounts-content-stocks-checkbox">
-                    {lastupdated && (
-                      <p>
-                        Last Run date:{" "}
-                        {moment
-                          .tz(moment(lastupdated), moment.tz.guess())
-                          // .add(5, "hours")
-                          // .add(30, "minutes")
-                          .format("DD-MM-YYYY HH:mm:ss")}
-                      </p>
-                    )}
-                    {/* <button className="asset-div-btn" onClick={openModal}>
-                      Optimization
-                    </button> */}
-
-                    <p className="run-analysis-btn" onClick={run_analysis}>
-                      Run Analysis
-                    </p>
-                  </div>
                   <div className="swift-accounts-content-stocks-text">
                     <div className="swift-accounts-content-stocks-text-left">
                       <div className="swift-accounts-content-stocks-text-left-sub-div">
@@ -1076,8 +1073,8 @@ const AssetAllocation = () => {
                         </p>
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
                           <span>Pred.</span>
-                          <br />
-                          <span>(3 mth)</span>
+                          {/* <br /> */}
+                          <span>(3M)</span>
                         </p>
                         {/* <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
                           Conf.

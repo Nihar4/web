@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./CustomDropdown.css";
+import CustomButton from "../CustomButton/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 const CustomStrategyDropdown = ({
   options,
   onSelect,
   style,
   default_value,
+  email,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(default_value);
@@ -34,6 +37,8 @@ const CustomStrategyDropdown = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <div className="custom-dropdown" ref={dropdownRef} style={style}>
@@ -140,6 +145,21 @@ const CustomStrategyDropdown = ({
               </div> */}
             </div>
           ))}
+
+          <div className="swift-accounts-content-btn">
+            <CustomButton
+              text="Add Strategy"
+              classname="swift-accounts-content-button"
+              onClick={() => {
+                navigate(
+                  "/accounts/dashboard/portfolio-management/addstrategy",
+                  {
+                    state: { email_id: email },
+                  }
+                );
+              }}
+            />
+          </div>
         </ul>
       )}
     </div>

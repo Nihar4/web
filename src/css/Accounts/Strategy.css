@@ -8,7 +8,8 @@
 
 
 }
-.swift-accounts-strategy-active{
+
+.swift-accounts-strategy-active {
   border: 1px solid #0116270d;
   border-radius: 10px;
   cursor: pointer;
@@ -46,11 +47,28 @@
   line-height: normal;
   margin-top: 5px;
 }
+
 .swift-accounts-strategy-delete div {
   display: flex;
-  column-gap: 25px;
+  column-gap: 20px;
 }
 
 .swift-accounts-strategy-delete p:hover {
   cursor: pointer;
+}
+
+.swift-accounts-inflow-portfolio-row {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  /* align-items: flex-end; */
+}
+
+.swift-accounts-inflow-portfolio-row>p {
+  color: rgba(1, 22, 39, 0.9);
+  font-size: var(--font-btn);
+  font-style: normal;
+  font-weight: var(--font-weight-medium);
+  line-height: normal;
+  letter-spacing: -0.7px;
 }

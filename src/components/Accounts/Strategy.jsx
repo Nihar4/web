@@ -13,7 +13,7 @@ const Strategy = ({
   setChange,
   email_id,
   edithandler,
-  deletehandler
+  deletehandler,
 }) => {
   const navigate = useNavigate();
   const handleDelete = async () => {
@@ -44,25 +44,28 @@ const Strategy = ({
     // });
     // setChange(Math.random());
     edithandler(id);
-  }
-  
+  };
+
   return (
-<div className={`swift-accounts-strategy ${isClicked ? 'swift-accounts-strategy-active' : ''}`}>
+    <div
+      className={`swift-accounts-strategy ${
+        isClicked ? "swift-accounts-strategy-active" : ""
+      }`}
+    >
       <div
         className="swift-accounts-strategy-content"
         style={style}
         onClick={onClick}
       >
         <p style={{ fontWeight: 700, fontSize: 13 }}>{heading}</p>
-        <p>{content}</p>
+        <p style={{ whiteSpace: "normal" }}>{content}</p>
       </div>
       {isClicked && (
-        
         <div className="swift-accounts-strategy-delete">
           <p>Strategy ID: {id}</p>
           <div>
-          <p onClick={handleEdit}>Edit</p>
-          <p onClick={handleDelete}>Delete</p>
+            <p onClick={handleEdit}>Edit</p>
+            <p onClick={handleDelete}>Delete</p>
           </div>
         </div>
       )}

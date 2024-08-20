@@ -282,7 +282,7 @@ const LineChart = ({
                 : undefined
             }
             strokeWidth={3}
-            stroke="#CCFF66"
+            stroke="#cccccc"
           />
 
           <HoverTooltip

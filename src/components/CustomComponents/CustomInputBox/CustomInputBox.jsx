@@ -6,6 +6,7 @@ const CustomInputBox = ({
   value,
   placeholder,
   onChange,
+  onClick,
   style,
   name,
   maxLength,
@@ -20,6 +21,7 @@ const CustomInputBox = ({
       value={value}
       name={name}
       onChange={onChange}
+      onClick={onClick}
       placeholder={placeholder}
       maxLength={maxLength}
       className={"swift-custom-input-box " + classname}
