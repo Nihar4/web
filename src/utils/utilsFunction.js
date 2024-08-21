@@ -25,3 +25,21 @@ export const numberFormat = (number, frac = 2) => {
         maximumFractionDigits: frac,
     });
 };
+
+export const numberFormatMatrix = (number, frac = 2) => {
+
+    if (!number) {
+        number = 0;
+    }
+    if (typeof number === "string") {
+        number = number.replace(/,/g, "");
+    }
+    if (isNaN(number) || !isFinite(number)) {
+        number = 0;
+    }
+
+    return parseFloat(number).toLocaleString("en-US", {
+        minimumFractionDigits: frac,
+        maximumFractionDigits: frac,
+    });
+};
