@@ -17,7 +17,7 @@ import CustomDropdown from "../CustomComponents/CustomDropdown/CustomDropdown";
 import CustomInput from "../CustomComponents/CustomInput/CustomInput";
 import ScatterChart from "./ScatterChart";
 import Close from "../../assets/crossicon.svg";
-import { numberFormat } from "../../utils/utilsFunction";
+import { numberFormat, numberFormatMatrix } from "../../utils/utilsFunction";
 import PerformanceChart from "./PerformanceChart";
 import PortfolioStockesDropdown from "./PortfolioStockesDropdown";
 
@@ -286,6 +286,7 @@ const PortfolioManagement = () => {
             Math.max(...filteredDates.map((date) => new Date(date)))
           );
           setLastupdated(latestDate);
+
           // setLastupdated("abc");
 
           setTimeout(() => {
@@ -835,6 +836,7 @@ const PortfolioManagement = () => {
     "Total Gains",
     "Mtd. Ret.",
     "3Mth. Pred. Ret.",
+    "",
   ];
 
   return (
@@ -951,6 +953,8 @@ const PortfolioManagement = () => {
                               width: "150px",
                               padding: "3px 8px",
                               fontSize: "12px",
+                              border: "none",
+                              borderBottom: "1px solid #f0f0f0",
                             }}
                             onInputChange={(symbol, value) =>
                               setInflow(value ? value : 0)
@@ -959,7 +963,7 @@ const PortfolioManagement = () => {
                           />
                           <p>
                             Portfolio Value :-{" "}
-                            {numberFormat(portfolio_value, 0)}
+                            {numberFormatMatrix(portfolio_value, 0)}
                           </p>
                         </div>
                         <div className="swift-accounts-content-stocks-text">
@@ -972,6 +976,10 @@ const PortfolioManagement = () => {
                                 <p
                                   key={index}
                                   className={`swift-accounts-content-stocks-text-left-sub-div-p1 portfolio-dropdown-column`}
+                                  style={{
+                                    fontSize: "10px",
+                                    fontWeight: "700",
+                                  }}
                                 >
                                   {item}
                                 </p>
