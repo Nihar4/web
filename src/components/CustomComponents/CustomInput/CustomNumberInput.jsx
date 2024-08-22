@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import CustomLabel from "../CustomLabel/CustomLabel";
 import CustomInputBox from "../CustomInputBox/CustomInputBox";
 import "../CustomInput/CustomInput.css";
+import {
+  numberFormatMatrix,
+  parseFormattedNumber,
+} from "../../../utils/utilsFunction";
 
-const CustomInput = ({
+const CustomNumberInput = ({
   labelText,
   type,
   name,
@@ -20,23 +24,23 @@ const CustomInput = ({
   styleLabel = {},
   onKeyUp,
 }) => {
-  const [value1, setValue1] = useState(value);
+  const [formattedValue, setFormattedValue] = useState(value);
+
   useEffect(() => {
-    setValue1(value);
+    setFormattedValue(numberFormatMatrix(value, 0));
   }, [value]);
 
-  // setValue1(value);
   const handleChange = (e) => {
     let inputValue = e.target.value;
 
     if (type === "number" && maxLength) {
       inputValue = inputValue.slice(0, maxLength);
     }
-    if (type === "number") {
-      inputValue = parseFloat(inputValue);
-    }
-    onInputChange && onInputChange(name, inputValue);
-    setValue1(inputValue);
+    const unformattedValue = parseFormattedNumber(inputValue);
+    const formatted = numberFormatMatrix(unformattedValue, 0);
+
+    onInputChange && onInputChange(name, unformattedValue);
+    setFormattedValue(formatted);
   };
 
   return (
@@ -48,7 +52,7 @@ const CustomInput = ({
       />
       <CustomInputBox
         type={type}
-        value={value1}
+        value={formattedValue}
         name={name}
         classname={classnameInput}
         placeholder={placeholder}
@@ -62,4 +66,4 @@ const CustomInput = ({
   );
 };
 
-export default CustomInput;
+export default CustomNumberInput;

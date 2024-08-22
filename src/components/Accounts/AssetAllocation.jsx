@@ -525,17 +525,21 @@ const AssetAllocation = () => {
   const [animatedValue, setAnimatedValue] = useState(0);
   const animationDuration = 2000;
   const animateValue = (finalValue) => {
-    let start = 0;
-    const increment = (finalValue / animationDuration) * 5;
+    const startTime = performance.now();
 
-    const intervalId = setInterval(() => {
-      start += increment;
-      setAnimatedValue(start);
+    const step = (currentTime) => {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / animationDuration, 1);
+      const newValue = progress * finalValue;
 
-      if (start >= finalValue) {
-        clearInterval(intervalId);
+      setAnimatedValue(newValue);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
       }
-    }, 5);
+    };
+
+    requestAnimationFrame(step);
   };
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import "../../css/Accounts/StocksDropdown.css";
 import ServerRequest from "../../utils/ServerRequest";
 import Pulse from "../Loader/Pulse";
 import { numberFormatMatrix } from "../../utils/utilsFunction";
-import CustomInput from "../CustomComponents/CustomInput/CustomInput";
+import CustomNumberInput from "../CustomComponents/CustomInput/CustomNumberInput";
 import Select from "../../assets/icons/select-graph.svg";
 
 const PortfolioStockesDropdown = ({
@@ -147,7 +147,10 @@ const PortfolioStockesDropdown = ({
                 ""
               )}
               {getParaComponent(
-                numberFormatMatrix(data.cashData.target_qty, 0),
+                numberFormatMatrix(
+                  (data.cashData.percentage * TotalPortfolio_value) / 100,
+                  0
+                ),
                 false,
                 true,
                 ""
@@ -185,29 +188,6 @@ const PortfolioStockesDropdown = ({
                 true,
                 "%"
               )}
-              {getParaComponent("--", false, false, "")}
-
-              {getParaComponent(
-                numberFormatMatrix(
-                  data.cashData.current_qty + inflow - totalPropInvValue,
-                  0
-                ),
-                false,
-                true,
-                ""
-              )}
-              {getParaComponent(
-                numberFormatMatrix(
-                  ((data.cashData.current_qty +
-                    inflow +
-                    parseFloat(-totalPropInvValue || 0)) /
-                    TotalPortfolio_value) *
-                    100
-                ),
-                false,
-                true,
-                "%"
-              )}
 
               {getParaComponent(numberFormatMatrix(1), false, true, "")}
 
@@ -233,6 +213,30 @@ const PortfolioStockesDropdown = ({
               {getParaComponent("--", false, false, "")}
               {getParaComponent("--", false, false, "")}
               {getParaComponent("--", false, false, "")}
+              {getParaComponent("--", false, false, "")}
+
+              {getParaComponent(
+                numberFormatMatrix(
+                  data.cashData.current_qty + inflow - totalPropInvValue,
+                  0
+                ),
+                false,
+                true,
+                ""
+              )}
+              {getParaComponent(
+                numberFormatMatrix(
+                  ((data.cashData.current_qty +
+                    inflow +
+                    parseFloat(-totalPropInvValue || 0)) /
+                    TotalPortfolio_value) *
+                    100
+                ),
+                false,
+                true,
+                "%"
+              )}
+
               {getParaComponent("--", false, false, "")}
               {getParaComponent("--", false, false, "")}
               {getParaComponent("", false, false, "")}
@@ -290,6 +294,11 @@ const Dropdown = ({
     let total_inv_value = 0;
     let total_today_cont = 0;
     let final_return = 0;
+    let total_target_qty = 0;
+    let total_curr_qty = 0;
+    let total_active_weight = 0;
+    let total_real_gain = 0;
+    let total_unreal_gain = 0;
 
     const updatedStocks = item.stocks.map((stock, index) => {
       let target_qty =
@@ -307,6 +316,11 @@ const Dropdown = ({
       total_current_weight += current_weight;
       total_inv_value += stock.inv_value;
       total_today_cont += today_cont;
+      total_target_qty += target_qty;
+      total_curr_qty += stock.current_qty;
+      total_active_weight += active_weight;
+      total_real_gain += stock.real_gain;
+      total_unreal_gain += stock.unreal_gain;
 
       return {
         ...stock,
@@ -328,6 +342,11 @@ const Dropdown = ({
       total_percentage,
       total_today_cont,
       final_return,
+      total_target_qty,
+      total_curr_qty,
+      total_active_weight,
+      total_real_gain,
+      total_unreal_gain,
     }));
   }, [portfolio_value, index, item]);
 
@@ -392,7 +411,10 @@ const Dropdown = ({
     <div className="stocks-dropdown-main">
       {data.name !== "eureka" && (
         <div className="stocks-dropdown-header">
-          <div className="stocks-dropdown-header-left" style={{ width: "8%" }}>
+          <div
+            className="stocks-dropdown-header-left"
+            style={{ width: "8%", marginRight: "10px" }}
+          >
             <div
               className="stocks-dropdown-heading"
               onClick={() => onToggle(index)}
@@ -427,6 +449,8 @@ const Dropdown = ({
               width: "92%",
               justifyContent: "space-between",
               columnGap: "0px",
+              paddingRight: "10px",
+              // marginRight: "10px",
             }}
           >
             {getParaComponent(
@@ -435,18 +459,25 @@ const Dropdown = ({
               true,
               "%"
             )}
-
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-
+            {getParaComponent(
+              numberFormatMatrix(data.total_target_qty, 0),
+              false,
+              true,
+              ""
+            )}
+            {getParaComponent(
+              numberFormatMatrix(data.total_curr_qty, 0),
+              false,
+              true,
+              ""
+            )}
             {getParaComponent(
               numberFormatMatrix(data.total_current_value, 0),
               false,
               true,
               ""
             )}
-
             {getParaComponent(
               numberFormatMatrix(data.total_current_weight),
               false,
@@ -454,33 +485,25 @@ const Dropdown = ({
               "%"
             )}
 
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-
             {getParaComponent(
-              numberFormatMatrix(totalEffWeight),
+              numberFormatMatrix(data.total_active_weight),
               false,
               true,
               "%"
             )}
-
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-
             {getParaComponent(
               numberFormatMatrix(data.total_inv_value, 0),
               false,
               true,
               ""
             )}
-
             {getParaComponent(
               numberFormatMatrix(data.final_return),
               false,
               true,
               "%"
             )}
-
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
             {getParaComponent(
               numberFormatMatrix(data.total_today_cont),
@@ -488,9 +511,35 @@ const Dropdown = ({
               true,
               "%"
             )}
+            {getParaComponent(
+              numberFormatMatrix(data.total_real_gain, 0),
+              false,
+              true,
+              ""
+            )}
+            {getParaComponent(
+              numberFormatMatrix(data.total_unreal_gain, 0),
+              false,
+              true,
+              ""
+            )}
+            {getParaComponent(
+              numberFormatMatrix(
+                data.total_real_gain + data.total_unreal_gain,
+                0
+              ),
+              false,
+              true,
+              ""
+            )}
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
+            {getParaComponent(
+              numberFormatMatrix(totalEffWeight),
+              false,
+              true,
+              "%"
+            )}
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
@@ -557,66 +606,6 @@ const Dropdown = ({
                         "%"
                       )}
 
-                      <CustomInput
-                        labelText=""
-                        type="number"
-                        classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
-                        name={stock.symbol}
-                        placeholder=""
-                        styleInput={{
-                          margin: "0",
-                          width: "90%",
-                          padding: "2px 5px",
-                          fontSize: "12px",
-                          border: "none",
-                          borderBottom: "1px solid #f0f0f0",
-                        }}
-                        onInputChange={(symbol, value) =>
-                          handleInputChangeQty(
-                            symbol,
-                            value,
-                            stock.regularMarketPrice
-                          )
-                        }
-                        onClick={(e) => e.stopPropagation()}
-                        value={propInvQty[stock.symbol]}
-                      />
-                      <CustomInput
-                        labelText=""
-                        type="number"
-                        classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
-                        name={stock.symbol}
-                        placeholder=""
-                        styleInput={{
-                          margin: "0",
-                          width: "90%",
-                          padding: "2px 5px",
-                          fontSize: "12px",
-                          border: "none",
-                          borderBottom: "1px solid #f0f0f0",
-                        }}
-                        onInputChange={(symbol, value) =>
-                          handleInputChangeValue(
-                            symbol,
-                            value,
-                            stock.regularMarketPrice
-                          )
-                        }
-                        onClick={(e) => e.stopPropagation()}
-                        value={propInvValue[stock.symbol]}
-                      />
-
-                      {getParaComponent(
-                        numberFormatMatrix(
-                          ((stock.current_value +
-                            parseFloat(propInvValue[stock.symbol] || 0)) /
-                            portfolio_value) *
-                            100
-                        ),
-                        false,
-                        true,
-                        "%"
-                      )}
                       {getParaComponent(
                         numberFormatMatrix(stock.inv_prive),
                         false,
@@ -668,6 +657,71 @@ const Dropdown = ({
                         true,
                         ""
                       )}
+
+                      <CustomNumberInput
+                        labelText=""
+                        type="text"
+                        classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
+                        name={stock.symbol}
+                        placeholder=""
+                        styleDiv={{ paddingLeft: "10px" }}
+                        styleInput={{
+                          margin: "0",
+                          width: "100%",
+                          padding: "5px 5px",
+                          fontSize: "12px",
+                          border: "none",
+                          // borderBottom: "1px solid #f0f0f0",
+                          backgroundColor: "#f1f1f1",
+                        }}
+                        onInputChange={(symbol, value) =>
+                          handleInputChangeQty(
+                            symbol,
+                            value ? value : 0,
+                            stock.regularMarketPrice
+                          )
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                        value={propInvQty[stock.symbol]}
+                      />
+                      <CustomNumberInput
+                        labelText=""
+                        type="text"
+                        classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
+                        name={stock.symbol}
+                        placeholder=""
+                        styleInput={{
+                          margin: "0",
+                          width: "100%",
+                          padding: "5px 5px",
+                          fontSize: "12px",
+                          border: "none",
+                          // borderBottom: "1px solid #f0f0f0",
+                          backgroundColor: "#f1f1f1",
+                        }}
+                        onInputChange={(symbol, value) =>
+                          handleInputChangeValue(
+                            symbol,
+                            value ? value : 0,
+                            stock.regularMarketPrice
+                          )
+                        }
+                        onClick={(e) => e.stopPropagation()}
+                        value={propInvValue[stock.symbol]}
+                      />
+
+                      {getParaComponent(
+                        numberFormatMatrix(
+                          ((stock.current_value +
+                            parseFloat(propInvValue[stock.symbol] || 0)) /
+                            portfolio_value) *
+                            100
+                        ),
+                        false,
+                        true,
+                        "%"
+                      )}
+
                       {getParaComponent(
                         numberFormatMatrix(stock.percentage_change),
                         true,

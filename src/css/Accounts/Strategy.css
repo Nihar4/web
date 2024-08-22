@@ -57,18 +57,6 @@
   cursor: pointer;
 }
 
-.swift-accounts-inflow-portfolio-row {
-  display: flex;
-  /* flex-direction: column; */
-  justify-content: space-between;
-  /* align-items: flex-end; */
-}
-
-.swift-accounts-inflow-portfolio-row>p {
-  color: rgba(1, 22, 39, 0.9);
-  font-size: var(--font-btn);
-  font-style: normal;
-  font-weight: var(--font-weight-medium);
-  line-height: normal;
-  letter-spacing: -0.7px;
-}
+/* .swift-accounts-content-stocks-text-left-sub-div .portfolio-dropdown-column {
+  width: 40px !important;
+} */
