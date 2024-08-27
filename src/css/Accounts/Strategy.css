@@ -1,22 +1,22 @@
 .swift-accounts-strategy {
-  width: 100%;
+  width: 97%;
   flex-shrink: 0;
   border-radius: 10px;
   border: 1px solid rgba(1, 22, 39, 0.05);
   padding: 10px 13px;
   cursor: pointer;
-
-
+  /* margin-right: 10px; */
 }
 
 .swift-accounts-strategy-active {
-  border: 1px solid #0116270d;
   border-radius: 10px;
   cursor: pointer;
   flex-shrink: 0;
   padding: 10px 13px;
-  width: 100%;
-  background: #fafafa;
+  width: 97%;
+  background: #ffffff;
+  box-shadow: 1px 3px 5px #e8e8e8;
+  border: 1px solid #e8e8e8;
 }
 
 .swift-accounts-strategy-content {
@@ -33,6 +33,10 @@
 
 .swift-accounts-strategy-content.isClicked {
   color: rgba(1, 22, 39, 0.3);
+}
+
+.swift-accounts-strategy-content p {
+  white-space: normal;
 }
 
 .swift-accounts-strategy-delete {

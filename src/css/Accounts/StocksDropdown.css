@@ -47,33 +47,28 @@
 }
 
 .stocks-dropdown-option-details {
-  /* padding: 6px 0px 6px 0px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column; */
-
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 10px 10px;
-  margin: 3px 0px;
+  margin: 3px;
   background: #ffffff;
   border-radius: 10px;
-  BORDER: 1px solid #ffffff;
+  border-bottom: 1px solid #f1f1f1 !important;
+  font-weight: 500;
 }
 
-/* border-bottom: 0.5px solid rgba(1, 22, 39, 0.1); */
 
 .stock-dropdown-option-details-active {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 10px 10px;
-  margin: 3px 0px;
+  margin: 3px;
   background: #fafafa;
   border-radius: 10px;
-  BORDER: 1px solid #E8E8E8;
+  border-bottom: 1px solid #f1f1f1 !important;
+  font-weight: 500;
 }
 
 .stocks-dropdown-option-left {
@@ -283,29 +278,49 @@
 .portfolio-dropdown-column {
   width: 4% !important;
   text-align: right !important;
+  /* display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 2px; */
 }
 
 .portfolio-dropdown-column:nth-child(1),
 .portfolio-dropdown-column:nth-child(6),
 .portfolio-dropdown-column:nth-child(7),
-.portfolio-dropdown-column:nth-child(18) {
-  width: 3.4% !important;
-}
-
 .portfolio-dropdown-column:nth-child(16) {
-  width: 6% !important;
+  width: 4% !important;
 }
 
-.portfolio-dropdown-column:nth-child(17) {
+.portfolio-dropdown-column:nth-child(14) {
+  width: 8% !important;
+}
+
+.portfolio-dropdown-column:nth-child(4) {
+  width: 6% !important;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  column-gap: 4px;
+}
+
+.portfolio-dropdown-column:nth-child(4)>img {
+  width: 15px !important;
+  height: 15px !important;
+  display: flex;
+  align-self: center;
+}
+
+.portfolio-dropdown-column:nth-child(15) {
   width: 10% !important;
 }
 
 .portfolio-dropdown-column:nth-child(5),
-.portfolio-dropdown-column:nth-child(9),
-.portfolio-dropdown-column:nth-child(13),
-.portfolio-dropdown-column:nth-child(14),
-.portfolio-dropdown-column:nth-child(15) {
+.portfolio-dropdown-column:nth-child(9) {
   width: 5.5% !important;
+}
+
+.portfolio-dropdown-column:nth-child(13) {
+  width: 11% !important;
 }
 
 .portfolio-dropdown-column label {
@@ -316,9 +331,9 @@
 .portfolio-dropdown-column:nth-child(1),
 .portfolio-dropdown-column:nth-child(7),
 .portfolio-dropdown-column:nth-child(12),
-.portfolio-dropdown-column:nth-child(18) {
+.portfolio-dropdown-column:nth-child(16) {
   font-size: 10px !important;
-  width: 2.5% !important;
+  width: 3% !important;
   /* opacity: 0.7 !important; */
 }
 
@@ -330,8 +345,8 @@
 .portfolio-dropdown-column:last-child {
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 3.4% !important;
+  align-items: flex-start;
+  width: 30px !important;
 }
 
 .portfolio-dropdown-column>img {
@@ -356,6 +371,16 @@
   letter-spacing: -.55px;
   line-height: 20px;
   font-weight: 500;
+}
+
+.stocks-portfolio-dropdown-option-info p {
+  flex: none !important;
+
+}
+
+.stocks-portfolio-dropdown-option-info {
+  padding: 0 !important;
+  column-gap: 0 !important;
 }
 
 @media screen and (max-width: 1325px) {

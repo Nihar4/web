@@ -920,13 +920,45 @@ const EdurekaHedge = () => {
                 <button className="asset-div-btn">Optimization</button>
               </div> */}
               {/* eureka-graph */}
-              <div className="swift-accounts-content-details">
-                <p className="swift-account-content-heading">
-                  {clickedStrategy != null && clickedStrategy.strategyname}
-                </p>
-                <p className="swift-account-content-content">
-                  {clickedStrategy != null && clickedStrategy.description}
-                </p>
+              <div
+                className="swift-accounts-content-details"
+                style={{ rowGap: "16px" }}
+              >
+                <div className="swift-accounts-content-stocks-header">
+                  <div className="swift-accounts-content-stocks-left">
+                    {lastupdated && (
+                      <p>
+                        Last Run date:{" "}
+                        {moment
+                          .tz(moment(lastupdated), moment.tz.guess())
+                          // .add(5, "hours")
+                          // .add(30, "minutes")
+                          .format("DD-MM-YYYY HH:mm:ss")}
+                      </p>
+                    )}
+                    <p>
+                      Portfolio
+                      <span style={{ fontSize: "12px" }}>
+                        {` (3m exp. ret `}
+
+                        <span
+                          className={
+                            animatedValue >= 0 ? "green-text" : "red-text"
+                          }
+                        >
+                          {animatedValue.toFixed(2)}%
+                        </span>
+                        {")"}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="swift-accounts-content-stocks-right">
+                    <p onClick={handleEdit}>Change</p>
+                    <p className="run-analysis-btn" onClick={run_analysis}>
+                      Run Analysis
+                    </p>
+                  </div>
+                </div>
               </div>
               <div
                 className={`swift-account-content-graph   ${
@@ -995,46 +1027,6 @@ const EdurekaHedge = () => {
             >
               <div className="swift-accounts-content-stocks-info">
                 <div className="swift-accounts-content-stocks-details">
-                  <div className="swift-accounts-content-stocks-header">
-                    <div className="swift-accounts-content-stocks-left">
-                      <p>
-                        Portfolio
-                        <span style={{ fontSize: "12px" }}>
-                          {` (12m exp. ret `}
-
-                          <span
-                            className={
-                              animatedValue >= 0 ? "green-text" : "red-text"
-                            }
-                          >
-                            {animatedValue.toFixed(2)}%
-                          </span>
-                          {")"}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="swift-accounts-content-stocks-right">
-                      <p onClick={handleEdit}>Change</p>
-                    </div>
-                  </div>
-                  <div className="swift-accounts-content-stocks-checkbox">
-                    {lastupdated && (
-                      <p>
-                        Last Run date:{" "}
-                        {moment
-                          .tz(moment(lastupdated), moment.tz.guess())
-                          // .add(5, "hours")
-                          // .add(30, "minutes")
-                          .format("DD-MM-YYYY HH:mm:ss")}
-                      </p>
-                    )}
-                    {/* <button className="asset-div-btn" onClick={openModal}>
-                      Optimization
-                    </button> */}
-                    <p className="run-analysis-btn" onClick={run_analysis}>
-                      Run Analysis
-                    </p>
-                  </div>
                   <div className="swift-accounts-content-stocks-text">
                     <div className="swift-accounts-content-stocks-text-left">
                       <div className="swift-accounts-content-stocks-text-left-sub-div">
@@ -1044,19 +1036,13 @@ const EdurekaHedge = () => {
                         <p className="swift-accounts-content-stocks-text-left-sub-div-p2">
                           Price
                         </p>
-                        <p
-                          className="swift-accounts-content-stocks-text-left-sub-div-p1"
-                          style={{ width: "13.5%" }}
-                        >
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
                           SAA
                         </p>
-                        <p
-                          className="swift-accounts-content-stocks-text-left-sub-div-p1"
-                          style={{ width: "16%" }}
-                        >
+                        <p className="swift-accounts-content-stocks-text-left-sub-div-p1">
                           <span>Pred.</span>
-                          <br />
-                          <span>(12 mth)</span>
+                          {/* <br /> */}
+                          <span>(12M)</span>
                         </p>
                         {/* <p className="swift-accounts-content-stocks-text-left-sub-div-p1" style={{width:"17%"}}>
                           Conf.

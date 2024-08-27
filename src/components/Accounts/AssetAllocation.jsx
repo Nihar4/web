@@ -287,7 +287,6 @@ const AssetAllocation = () => {
             initialStrategies[selectedStrategy].id
           );
           const hasPendingStatus = isPending;
-          console.log(hasPendingStatus, "Status");
           setIschartvisible(!hasPendingStatus);
           const dateCompletedArray = data.map((item) =>
             new Date(item.date_completed).toISOString()
@@ -923,6 +922,16 @@ const AssetAllocation = () => {
               >
                 <div className="swift-accounts-content-stocks-header">
                   <div className="swift-accounts-content-stocks-left">
+                    {lastupdated && (
+                      <p>
+                        Last Run date:{" "}
+                        {moment
+                          .tz(moment(lastupdated), moment.tz.guess())
+                          // .add(5, "hours")
+                          // .add(30, "minutes")
+                          .format("DD-MM-YYYY HH:mm:ss")}
+                      </p>
+                    )}
                     <p>
                       Portfolio
                       <span style={{ fontSize: "12px" }}>
@@ -940,28 +949,11 @@ const AssetAllocation = () => {
                     </p>
                   </div>
                   <div className="swift-accounts-content-stocks-right">
-                    {/* <p onClick={openPerformanceModal}>Performace</p> */}
                     <p onClick={handleEdit}>Change</p>
-                  </div>
-                </div>
-                <div className="swift-accounts-content-stocks-checkbox">
-                  {lastupdated && (
-                    <p>
-                      Last Run date:{" "}
-                      {moment
-                        .tz(moment(lastupdated), moment.tz.guess())
-                        // .add(5, "hours")
-                        // .add(30, "minutes")
-                        .format("DD-MM-YYYY HH:mm:ss")}
+                    <p className="run-analysis-btn" onClick={run_analysis}>
+                      Run Analysis
                     </p>
-                  )}
-                  {/* <button className="asset-div-btn" onClick={openModal}>
-                      Optimization
-                    </button> */}
-
-                  <p className="run-analysis-btn" onClick={run_analysis}>
-                    Run Analysis
-                  </p>
+                  </div>
                 </div>
               </div>
               <div

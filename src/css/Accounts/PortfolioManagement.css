@@ -1,0 +1,71 @@
+.swift-accounts-sub-menu {
+    display: flex;
+    column-gap: 20px;
+    padding: 10px 10px 0 10px;
+}
+
+.swift-accounts-sub-menu>p {
+    font-size: var(--font-heading);
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.65px;
+    cursor: pointer;
+    color: #011627;
+    font-weight: 400;
+}
+
+.swift-accounts-sub-menu>p.active {
+    font-weight: 700;
+}
+
+.swift-portfolio-trades {
+    color: #011627;
+    font-style: normal;
+    font-weight: var(--font-weight-light);
+    letter-spacing: -1px;
+    line-height: normal;
+    text-align: center;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.swift-portfolio-trades>p {
+    font-weight: 600;
+    text-align: center;
+    font-size: 14px;
+}
+
+.swift-input-modal-content {
+    background-color: white;
+    height: 100%;
+    column-gap: 14px;
+    width: 400px;
+    border-radius: 10px;
+    padding: 10px;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.swift-modal-cash-input {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    width: 95%;
+}
+
+.swift-modal-apply-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0 5px 0;
+}
+
+.swift-modal-apply-btn>button {
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    padding: 10px 30px;
+}

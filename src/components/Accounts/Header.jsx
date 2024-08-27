@@ -400,7 +400,7 @@ const Header = ({
           folios
         </p>
         <CustomDropdown
-          options={["Multi-asset", "Hedged Strategies", "Portfolio Management"]}
+          options={["Multi-asset", "Portfolio Management"]}
           style={{
             width: "220px",
             color: "var(--text-color)",

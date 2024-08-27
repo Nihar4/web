@@ -151,7 +151,7 @@ const LineChart = ({
     <>
       <ChartCanvas
         width={width}
-        height={height - 20}
+        height={height - 70}
         ratio={ratio}
         margin={{ left: 20, right: 70, top: 10, bottom: 30 }}
         seriesName="MSFT"
@@ -322,7 +322,43 @@ const LineChart = ({
 
         {/* <CrossHairCursor /> */}
       </ChartCanvas>
+
       <div className="x-axis-label">{name}</div>
+      <div
+        className="x-axis-label"
+        style={{ display: "flex", columnGap: "10px" }}
+      >
+        <div style={{ display: "flex", columnGap: "5px" }}>
+          <div
+            style={{
+              width: "20px",
+              height: "15px",
+              backgroundColor: "#000fff",
+            }}
+          ></div>
+          Actual data till run date
+        </div>
+        <div style={{ display: "flex", columnGap: "5px" }}>
+          <div
+            style={{
+              width: "20px",
+              height: "15px",
+              backgroundColor: "#cccccc",
+            }}
+          ></div>
+          Actual data since run date
+        </div>
+        <div style={{ display: "flex", columnGap: "5px" }}>
+          <div
+            style={{
+              width: "20px",
+              height: "15px",
+              backgroundColor: "#f84aa7",
+            }}
+          ></div>
+          Predicted path probability
+        </div>
+      </div>
     </>
   ) : (
     <div className="swift-aseet-loader">
