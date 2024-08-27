@@ -26,6 +26,7 @@ const CustomInputBox = ({
       maxLength={maxLength}
       className={"swift-custom-input-box " + classname}
       onKeyUp={onKeyUp}
+      autoComplete="off"
     />
   );
 };

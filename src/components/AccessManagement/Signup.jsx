@@ -15,9 +15,7 @@ const {
 
 const Signup = () => {
   const location = useLocation();
-  useEffect(() => {
-    console.log(location.pathname);
-  }, [location.pathname]);
+  useEffect(() => {}, [location.pathname]);
 
   return (
     <>
@@ -99,7 +97,6 @@ const SignupMain = () => {
         URL: `/access/generate-otp`,
         data: { email_id: formValues["email"] },
       });
-      // console.log(data1);
       if (data1.server_error) {
         setError(true);
       }
@@ -136,7 +133,6 @@ const SignupMain = () => {
         URL: `/access/validate-otp`,
         data: { email_id: formValues["email"], otp: formValues["otp"] },
       });
-      console.log(data1);
       if (data1.server_error) {
         setError(true);
       }
@@ -150,18 +146,14 @@ const SignupMain = () => {
     } else {
       setOtpError("OTP should be 6 length");
     }
-
-    console.log(formValues);
   };
   function KeyUp1(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleGenerateOtp();
     }
   }
   function KeyUp2(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleSubmit();
     }
   }
@@ -171,15 +163,15 @@ const SignupMain = () => {
       <div className="swift-login-form-div-1">
         <div className="swift-login-loginform-heading">
           <div className="swift-login-form-logo">
-          <a href="/" className="logo">
-                <div className="logo"></div>
+            <a href="/" className="logo">
+              <div className="logo"></div>
+            </a>
+            <p>
+              <a href="/">
+                <i style={{ fontWeight: 400 }}>swift</i>
+                folios
               </a>
-              <p>
-                <a href="/">
-                  <i style={{ fontWeight: 400 }}>swift</i>
-                  folios
-                </a>
-              </p>
+            </p>
           </div>
 
           <BackButton />
@@ -292,7 +284,6 @@ const SignupPin = () => {
             URL: `/access/signup/set-pin?email_id=${email}&pin=${formValues["pin"]}`,
           });
 
-          console.log(data1);
           if (data1.server_error) {
             setError(true);
           }
@@ -301,7 +292,6 @@ const SignupPin = () => {
           }
           if (data1.error == false) {
             formValues["user_data"] = data1.data;
-            console.log(formValues["user_data"]);
             navigate("/signup/status", {
               state: { user_data: formValues["user_data"] },
             });
@@ -314,13 +304,9 @@ const SignupPin = () => {
     } else {
       setPinError("PIN should be atleast 4 digits");
     }
-
-    // console.log(formValues);
-    
   };
   function KeyUp1(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleSubmit();
     }
   }
@@ -329,16 +315,16 @@ const SignupPin = () => {
     <div className="swift-login-form">
       <div className="swift-login-form-div-1">
         <div className="swift-login-loginform-heading">
-        <div className="swift-login-form-logo">
-        <a href="/" className="logo">
-                <div className="logo"></div>
+          <div className="swift-login-form-logo">
+            <a href="/" className="logo">
+              <div className="logo"></div>
+            </a>
+            <p>
+              <a href="/">
+                <i style={{ fontWeight: 400 }}>swift</i>
+                folios
               </a>
-              <p>
-                <a href="/">
-                  <i style={{ fontWeight: 400 }}>swift</i>
-                  folios
-                </a>
-              </p>
+            </p>
           </div>
           <BackButton />
         </div>
@@ -392,7 +378,7 @@ const SignupPin = () => {
 const SignupStatus = () => {
   // const navigate = useNavigate();
   const clickHandler = () => {
-    window.location.href = 'https://www.swiftfolios.co.uk/';
+    window.location.href = "https://www.swiftfolios.co.uk/";
   };
   return (
     <div className="swift-signup-status-main">
@@ -402,16 +388,16 @@ const SignupStatus = () => {
           folios
         </p> */}
         <div className="swift-login-form-logo">
-        <a href="/" className="logo">
-                <div className="logo"></div>
-              </a>
-              <p>
-                <a href="/">
-                  <i style={{ fontWeight: 400 }}>swift</i>
-                  folios
-                </a>
-              </p>
-          </div>
+          <a href="/" className="logo">
+            <div className="logo"></div>
+          </a>
+          <p>
+            <a href="/">
+              <i style={{ fontWeight: 400 }}>swift</i>
+              folios
+            </a>
+          </p>
+        </div>
       </div>
       <div className="swift-signup-status-info">
         <div className="swift-signup-status-info-1">

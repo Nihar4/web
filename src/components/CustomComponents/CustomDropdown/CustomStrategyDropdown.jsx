@@ -116,7 +116,7 @@ const CustomStrategyDropdown = ({
             flexDirection: "column",
             rowGap: "5px",
             padding: "2px 5px",
-            boxShadow: "none",
+            // boxShadow: "none",
           }}
         >
           {options.map((option, index) => (

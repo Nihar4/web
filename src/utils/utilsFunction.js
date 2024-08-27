@@ -43,3 +43,8 @@ export const numberFormatMatrix = (number, frac = 2) => {
         maximumFractionDigits: frac,
     });
 };
+
+export const parseFormattedNumber = (formattedString) => {
+    const numberString = formattedString.replace(/,/g, '');
+    return parseFloat(numberString);
+}

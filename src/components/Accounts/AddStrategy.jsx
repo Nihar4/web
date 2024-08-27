@@ -26,11 +26,9 @@ const AddStrategyMain = () => {
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
     : null;
-  // console.log("add strategy", email_id);
 
   const navigate = useNavigate();
   const { id } = useParams();
-  // console.log("id", id);
   const [formValues, setFormValues] = useState({
     strategyName: "",
     description: "",
@@ -47,7 +45,6 @@ const AddStrategyMain = () => {
       method: "get",
       URL: `/strategy/getlongname?stock=${stock}`,
     });
-    // console.log(result.data);
     return result.data.longname;
   };
 
@@ -61,7 +58,6 @@ const AddStrategyMain = () => {
             URL: `/strategy/getone/?id=${id}`,
           });
           setFormValues(data.data);
-          // console.log("form daa",data.data);
           const formData = data.data;
 
           for (const [assetIndex, asset] of formData.assetClasses.entries()) {
@@ -69,7 +65,6 @@ const AddStrategyMain = () => {
               underlyingIndex,
               underlying,
             ] of asset.underlyings.entries()) {
-              // console.log("Stock:", underlying.stock);
               const longNameValue = await fetchLongName(underlying.stock);
               const name = `${underlying.stock.trim()}`;
               setLongName((prevLongName) => ({
@@ -110,9 +105,6 @@ const AddStrategyMain = () => {
   };
 
   const handleInputChange = async (name, value) => {
-    // console.log(1);
-    // console.log("addstraegy", name, value);
-
     const updateNestedProperty = (obj, path, newValue) => {
       const keys = path.split(".");
 
@@ -128,11 +120,8 @@ const AddStrategyMain = () => {
     };
 
     if (name.slice(-5) == "stock") {
-      console.log(name, value);
       const stockValue = value.split(",")[0];
       const longNameValue = value.split(",")[1];
-      console.log(stockValue, longName);
-      // console.log("name", name[13],name[28]);
       const data = await ServerRequest({
         method: "get",
         URL: `/strategy/validatestock?stock=${stockValue}`,
@@ -204,7 +193,6 @@ const AddStrategyMain = () => {
     }
 
     setShowalert(false);
-    console.log(name, value);
     if (name.includes(".")) {
       setFormValues((prevValues) =>
         updateNestedProperty(prevValues, name, value)
@@ -215,9 +203,7 @@ const AddStrategyMain = () => {
         [name]: value,
       }));
     }
-    // console.log("formvalues",formValues);
   };
-  // console.log(longName);
   const handleAddAssetClass = () => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -227,7 +213,6 @@ const AddStrategyMain = () => {
       const elements = document.getElementsByClassName(
         "swift-addstrategy-asset-1"
       );
-      // console.log(elements.length);
       const lastElement = elements[elements.length - 1];
 
       if (lastElement) {
@@ -240,7 +225,6 @@ const AddStrategyMain = () => {
 
   const handleAddUnderlying = (index) => {
     // const ele = document.getElementById("scroll");
-    // console.log(ele);
     // ele.scrollIntoView({ behavior: "smooth" });
 
     setFormValues((prevValues) => {
@@ -262,9 +246,7 @@ const AddStrategyMain = () => {
       const elements = document.getElementsByClassName(
         "swift-addstrategy-asset2"
       );
-      // console.log(elements.length);
       const lastElement = elements[index];
-      // console.log(lastElement)
       // const lastUnderlying = lastElement[lastElement.length-1];
 
       if (lastElement) {
@@ -303,31 +285,6 @@ const AddStrategyMain = () => {
       };
     });
   };
-  //   // console.log("hii", classIndex,underlyingIndex);
-  //   // console.log("prev",formValues);
-  //   // setLongName(longName[`assetClasses[${classIndex}].underlyings[${underlyingIndex}].stock`]) = "";
-  //   setFormValues((prevValues) => {
-  //     const updatedAssetClasses = prevValues.assetClasses.map(
-  //       (assetClass, i) => {
-  //         if (i === classIndex) {
-  //           return {
-  //             ...assetClass,
-  //             underlyings: assetClass.underlyings.filter(
-  //               (_, j) => j !== underlyingIndex
-  //             ),
-  //           };
-  //         }
-  //         return assetClass;
-  //       }
-  //     );
-  //     return {
-  //       ...prevValues,
-  //       assetClasses: updatedAssetClasses,
-  //     };
-  //   });
-
-  //   // console.log("new",formValues)
-  // };
 
   const handleDeleteUnderlying = (classIndex, underlyingIndex) => {
     setFormValues((prevValues) => {
@@ -423,7 +380,6 @@ const AddStrategyMain = () => {
         }
         if (parseFloat(underlying.percentage) < 1) {
           settotalError("Minimum percentage for each stock should be 1");
-          // console.log("hello");
           totalPercentageError = true;
         }
       });
@@ -473,8 +429,6 @@ const AddStrategyMain = () => {
       return;
     }
 
-    // console.log("Submitting form data:", formValues);
-
     const data = await ServerRequest({
       method: "post",
       URL: `/strategy/insert`,
@@ -488,7 +442,6 @@ const AddStrategyMain = () => {
     if (data.error) {
       alert("error1");
     }
-    // console.log("for id",data.data);
     //  await insertStocks(data.data);
 
     navigate("/accounts/dashboard/strategy", {
@@ -497,7 +450,6 @@ const AddStrategyMain = () => {
   };
 
   const handleUpdate = async () => {
-    console.log("call");
     if (ValidateAll()) return;
     const stock = checkForDuplicateStocks();
     if (stock != "") {
@@ -552,7 +504,6 @@ const AddStrategyMain = () => {
 
   const [value1, setValue1] = useState();
   // setValue1(value);
-  // console.log(value1);
   const handleChange = (e) => {
     let inputValue;
     if (e.target.value.length > 500) {
@@ -565,7 +516,6 @@ const AddStrategyMain = () => {
     setValue1(inputValue);
   };
 
-  console.log(formValues);
   return loading ? (
     <div className="swift-aseet-loader">
       <p>Loading</p>
@@ -769,7 +719,6 @@ const AddStrategyMain = () => {
                 text="Submit"
                 classname="swift-addstrategy-btn submitbtn"
                 onClick={() => {
-                  // console.log(id);
                   if (id) handleUpdate();
                   else handleSubmit();
                 }}
@@ -792,7 +741,6 @@ const StrategyCreated = () => {
     : null;
   const [dl_data, setDlData] = useState(null);
   const [loading, setloading] = useState(true);
-  // console.log("strategy", email_id);
 
   const fetchData = async (id) => {
     try {
@@ -843,7 +791,6 @@ const StrategyCreated = () => {
         });
         setDlData(sortedData);
         // setDlData(data.data);
-        // console.log(data.data);
         setTimeout(() => {
           setloading(false);
         }, 3000);
@@ -862,8 +809,6 @@ const StrategyCreated = () => {
       state: { email_id: email_id },
     });
   };
-
-  // console.log(dl_data);
 
   return !loading ? (
     <div className="swift-addstrategy-main">

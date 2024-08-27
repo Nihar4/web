@@ -12,9 +12,7 @@ import { checkLength, isEmpty, validateEmail } from "../../utils/Validation";
 
 const Login = () => {
   const location = useLocation();
-  useEffect(() => {
-    console.log(location.pathname);
-  }, [location.pathname]);
+  useEffect(() => {}, [location.pathname]);
 
   return (
     <div className="swift-login-main">
@@ -74,7 +72,7 @@ const LoginMain = () => {
   };
 
   const handleGenerateOtp = async () => {
-    if(formValues["email"] == "demo@swiftfolios.co.uk"){
+    if (formValues["email"] == "demo@swiftfolios.co.uk") {
       setEmailError("error");
       setOtpVisible(true);
       // setCountdown(30);
@@ -127,21 +125,18 @@ const LoginMain = () => {
   }, [countdown]);
 
   const handleSubmit = async (e) => {
-
-    if(formValues["email"] == "demo@swiftfolios.co.uk" ){
-      if(formValues["otp"] == "128314"){
+    if (formValues["email"] == "demo@swiftfolios.co.uk") {
+      if (formValues["otp"] == "128314") {
         localStorage.setItem("userData", formValues["email"]);
         navigate("/accounts/dashboard/asset", {
           state: { email_id: formValues["email"] },
         });
         return;
-      }
-      else{
-        if(formValues.otp.length != 6){
+      } else {
+        if (formValues.otp.length != 6) {
           setOtpError("OTP must be 6 length");
-        }
-        else{
-          setOtpError("Incorrect OTP")
+        } else {
+          setOtpError("Incorrect OTP");
         }
         return;
       }
@@ -173,13 +168,11 @@ const LoginMain = () => {
 
   function KeyUp1(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleGenerateOtp();
     }
   }
   function KeyUp2(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleSubmit();
     }
   }
@@ -308,19 +301,18 @@ const LoginPin = () => {
       if (data1.server_error) {
         setError(true);
       }
-      if (data1.error == false){
+      if (data1.error == false) {
         localStorage.setItem("userData", email);
         navigate("/accounts/dashboard/asset", {
           state: { email_id: email },
         });
-      } 
+      }
     } else {
       setPinError("Pin should be 4 digit");
     }
   };
   function KeyUp1(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleSubmit();
     }
   }
@@ -331,7 +323,7 @@ const LoginPin = () => {
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
             <div className="swift-login-form-logo">
-            <a href="/" className="logo">
+              <a href="/" className="logo">
                 <div className="logo"></div>
               </a>
               <p>
@@ -520,13 +512,11 @@ const LoginReset = () => {
 
   function KeyUp1(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleValidate();
     }
   }
   function KeyUp2(e) {
     if (e.key === "Enter") {
-      // console.log("hello")
       handleSubmit();
     }
   }
@@ -536,7 +526,7 @@ const LoginReset = () => {
         <div className="swift-reset-form-div-1">
           <div className="swift-login-form-heading">
             <div className="swift-login-form-logo">
-            <a href="/" className="logo">
+              <a href="/" className="logo">
                 <div className="logo"></div>
               </a>
               <p>
@@ -658,7 +648,7 @@ const LoginResetSuccessful = () => {
         <div className="swift-login-form-div-1">
           <div className="swift-login-loginform-heading">
             <div className="swift-login-form-logo">
-            <a href="/" className="logo">
+              <a href="/" className="logo">
                 <div className="logo"></div>
               </a>
               <p>

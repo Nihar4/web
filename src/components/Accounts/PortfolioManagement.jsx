@@ -20,13 +20,16 @@ import Close from "../../assets/crossicon.svg";
 import { numberFormat, numberFormatMatrix } from "../../utils/utilsFunction";
 import PerformanceChart from "./PerformanceChart";
 import PortfolioStockesDropdown from "./PortfolioStockesDropdown";
+import CustomNumberInput from "../CustomComponents/CustomInput/CustomNumberInput";
+import "../../css/Accounts/PortfolioManagement.css";
+import PortfolioTrades from "./PortfolioTrades";
+import PortfolioCash from "./PortfolioCash";
 
 const PortfolioManagement = () => {
   const [initialStrategies, setInitialStrategies] = useState([]);
 
   const [selectedStrategy, setSelectedStrategy] = useState(0);
   const [clickedStrategy, setClickedStrategy] = useState(initialStrategies[0]);
-  const [optionSelect, setOptionSelect] = useState(null);
   const [cnt, setCnt] = useState(0);
 
   const [isLeftVisible, setIsLeftVisible] = useState(true);
@@ -40,7 +43,6 @@ const PortfolioManagement = () => {
   const [stockArray, setStockArray] = useState([]);
   const [reRenderKey, setReRenderKey] = useState(0);
   const [loading, setloading] = useState(true);
-  const [pageLoading, setPageLoading] = useState(false);
   const [loading2, setloading2] = useState(true);
   const [duration, setDuration] = useState("1Y");
   const [openDropdown, setOpenDropdown] = useState();
@@ -50,21 +52,19 @@ const PortfolioManagement = () => {
   const [selectedStock, setSelectedStock] = useState(null);
   const [selectStockName, setSelectedStockName] = useState(null);
 
-  const location = useLocation();
-  // const email_id = location.state ? location.state.email_id : null;
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
     : null;
-  const [visibleModal, setVisibleModal] = useState(false);
 
   const [weights, setWeights] = useState();
   const [scatter_data, setScatter_data] = useState();
-  const [stock_weights, setStock_weights] = useState();
-  const [runanalysis, setRunAnalysis] = useState(false);
   const [chartModal, setchartModal] = useState(false);
 
   const [inflow, setInflow] = useState(0);
   const [portfolio_value, setPortfolio_Value] = useState(0);
+  const [pred_return, setPred_Return] = useState(0);
+
+  const [current_tab, setCurrent_Tab] = useState("portfolio");
 
   const handleDeleteStrategy = async (id) => {
     alert("Delete");
@@ -82,13 +82,6 @@ const PortfolioManagement = () => {
       alert("error1");
     }
     setChange(Math.random());
-  };
-
-  const handleEditStrategy = async (id) => {
-    navigate(`/accounts/dashboard/addstrategy/${id}`, {
-      state: { email_id: email_id },
-    });
-    // setChange(Math.random());
   };
 
   const fetchStockData = async (stock) => {
@@ -113,7 +106,7 @@ const PortfolioManagement = () => {
     }
   };
 
-  const handleStockSelect = (stock, detailed_name) => {
+  const handleStockSelect = (stock, detailed_name, pred_return) => {
     setloading2(true);
     setchartModal(true);
     setSelectedStock(stock);
@@ -123,101 +116,10 @@ const PortfolioManagement = () => {
       setDuration("1Y");
     }
     setSelectedStockName(detailed_name);
+    setPred_Return(pred_return);
     setTimeout(() => {
       setloading2(false);
     }, 1000);
-  };
-
-  const fetchdata = async () => {
-    // setloading(true);
-    const data = await ServerRequest({
-      method: "get",
-      URL: `/strategy/portfolio/get?email=${email_id}`,
-    });
-
-    if (data.server_error) {
-      alert("error");
-    }
-
-    if (data.error) {
-      alert("error1");
-    }
-
-    if (data.data.length > 0) {
-      const uniqueIds = new Set();
-
-      const filteredData = data.data.filter((item) => {
-        if (uniqueIds.has(item.id)) {
-          return false;
-        } else {
-          uniqueIds.add(item.id);
-          return true;
-        }
-      });
-
-      const strategiesArray = data.data.map((item) => ({
-        id: item.id,
-        strategyname: item.name,
-        description: item.description,
-        assetclass: [
-          {
-            name: item.asset_class_name,
-            stock: item.stock,
-            percentage: item.percentage,
-            min_weight: item.min_weight,
-            max_weight: item.max_weight,
-          },
-        ],
-      }));
-
-      const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
-        const existingStrategy = acc.find((item) => item.id === curr.id);
-
-        if (existingStrategy) {
-          curr.assetclass.forEach((asset) => {
-            const existingAsset = existingStrategy.assetclass.find(
-              (a) => a.name === asset.name
-            );
-            if (existingAsset) {
-              existingAsset.stock += `, ${asset.stock}`;
-              existingAsset.percentage += `, ${asset.percentage}`;
-              existingAsset.min_weight += `, ${asset.min_weight}`;
-              existingAsset.max_weight += `, ${asset.max_weight}`;
-            } else {
-              existingStrategy.assetclass.push(asset);
-            }
-          });
-        } else {
-          acc.push(curr);
-        }
-
-        return acc;
-      }, []);
-
-      setInitialStrategies(combinedStrategiesArray);
-
-      if (combinedStrategiesArray.length > 0) {
-        setClickedStrategy(combinedStrategiesArray[0]);
-        setSelectedStrategy(0);
-        setStockArray(combinedStrategiesArray[0].assetclass);
-        setSelectedStock(
-          combinedStrategiesArray[0].assetclass[0].stock.split(",")[0]
-        );
-        setStrategyid(combinedStrategiesArray[0].id);
-        let stock =
-          combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
-        if (stock == stock.split(".")[0]) {
-          setDuration("1Y");
-        } else {
-          setDuration("1Y");
-        }
-        // setLastupdated("abc");
-        fetchDataAndUpdateState();
-      }
-      // setTimeout(() => {
-      // setloading(false);
-      // }, 1000);
-    }
   };
 
   const handleStrategyClick = (index, initialStrategies) => {
@@ -278,9 +180,9 @@ const PortfolioManagement = () => {
           );
           const hasPendingStatus = isPending;
           setIschartvisible(!hasPendingStatus);
-          const dateCompletedArray = data.map((item) =>
-            new Date(item.date_completed).toISOString()
-          );
+          const dateCompletedArray = data.map((item) => {
+            return new Date(item.date_completed).toISOString();
+          });
           const filteredDates = dateCompletedArray.filter((date) => date);
           const latestDate = new Date(
             Math.max(...filteredDates.map((date) => new Date(date)))
@@ -380,54 +282,33 @@ const PortfolioManagement = () => {
   };
 
   const protfolio = [];
-  const handleGetSum = (value) => {
-    const existingItem = protfolio.find(
-      (item) => item.heading === value.heading
-    );
-
-    if (existingItem) {
-      existingItem.total = value.total;
-    } else {
-      protfolio.push(value);
-    }
-    setTotalsum(protfolio.reduce((sum, item) => sum + item.total, 0));
-  };
 
   const [animatedValue, setAnimatedValue] = useState(0);
   const animationDuration = 2000;
   const animateValue = (finalValue) => {
-    let start = 0;
-    const increment = (finalValue / animationDuration) * 5;
+    const startTime = performance.now();
 
-    const intervalId = setInterval(() => {
-      start += increment;
-      setAnimatedValue(start);
+    const step = (currentTime) => {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / animationDuration, 1);
+      const newValue = progress * finalValue;
 
-      if (start >= finalValue) {
-        clearInterval(intervalId);
+      setAnimatedValue(newValue);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
       }
-    }, 5);
+    };
+
+    requestAnimationFrame(step);
   };
+
+  useEffect(() => {
+    animateValue(sum * 100);
+  }, [sum]);
 
   let currentIndex = 0;
-  const openModal = async () => {
-    setVisibleModal(true);
-    setScatter_data();
-    setOptData();
-    handleResultclick();
-    currentIndex = 0;
-    // setWeights();
-  };
 
-  const closeModal = async () => {
-    setVisibleModal(false);
-    setScatter_data();
-    setOptData();
-    currentIndex = 0;
-    setDev("Select");
-    // setChange((prev) => prev + 1);
-    // setWeights();
-  };
   const closeChartModal = () => {
     setchartModal(false);
   };
@@ -453,142 +334,8 @@ const PortfolioManagement = () => {
   };
   const [stock_details, setStock_details] = useState([]);
   const [loadingStock, setLoadingStock] = useState(true);
-  // const [loadingChart,setLoadingChart] = useState(true);
 
-  const handleResultclick = async () => {
-    // const data=weights;
-    if (weights) {
-      try {
-        // setLoadingChart(true);
-        const data1 = await ServerRequest({
-          method: "post",
-          URL: `/strategy/insertdldata-asset?id=${strategyID}`,
-          data: weights,
-        });
-        if (data1.server_error) {
-          Alert({
-            TitleText: "Error",
-            Message: `Optimization is not possible for this weights`,
-            BandColor: "#e51a4b",
-
-            AutoClose: {
-              Active: true,
-              Line: true,
-              LineColor: "#e51a4b",
-              Time: 2,
-            },
-          });
-        }
-
-        if (data1.error) {
-          Alert({
-            TitleText: "Error",
-            Message: `Optimization is not possible for this weights1`,
-            BandColor: "#e51a4b",
-
-            AutoClose: {
-              Active: true,
-              Line: true,
-              LineColor: "#e51a4b",
-              Time: 2,
-            },
-          });
-        }
-        setScatter_data(data1.data);
-        // setLoadingChart(false);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const handleSaveclick = async () => {
-    try {
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/updateWeights-asset?id=${strategyID}`,
-        data: weights,
-      });
-      if (data1.server_error) {
-        alert("Server Error");
-      }
-
-      if (data1.error) {
-        alert("Update  weight Error");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setVisibleModal(false);
-    setScatter_data();
-    setOptData();
-    currentIndex = 0;
-    setChange((prev) => prev + 1);
-  };
-
-  const handleUpdatePortfolio = async () => {
-    const apiData = [];
-    let valueIndex = 0;
-    for (let stockObj of stockArray) {
-      stockObj.stock.split(",").forEach(async (value, index) => {
-        const stock = stockObj.name + "+" + value.trim();
-        const percentage = OptData.z[valueIndex];
-        valueIndex++;
-        apiData.push({ [stock]: percentage });
-      });
-    }
-    // const apiData = stockArray[0].stock.split(",").map((value, index) => ({
-    //   [value.trim()]: OptData.z[index],
-    // }));
-    try {
-      const data1 = await ServerRequest({
-        method: "post",
-        URL: `/strategy/updatePercentage-asset?id=${strategyID}`,
-        data: apiData,
-      });
-      if (data1.server_error) {
-        alert("Server Error");
-      }
-
-      if (data1.error) {
-        alert("Update  weight Error");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setVisibleModal(false);
-    setScatter_data();
-    setOptData();
-    setChange((prev) => prev + 1);
-  };
-
-  const [OptData, setOptData] = useState();
-  const HandleOptData = (array) => {
-    setOptData(array);
-  };
   const [dev, setDev] = useState("Select");
-  const devationDropdownSelect = async (option) => {
-    if (option == "Select") {
-      setLoadingStock(true);
-      setDev("Select");
-      setTimeout(() => {
-        setLoadingStock(false);
-      }, 1000);
-    } else if (option == "Unconstrained") {
-      setLoadingStock(true);
-      setDev("Unconstrained");
-      setTimeout(() => {
-        setLoadingStock(false);
-      }, 1000);
-    } else {
-      let x = option.split("%")[0];
-      setLoadingStock(true);
-      setDev(parseFloat(x / 100));
-      setTimeout(() => {
-        setLoadingStock(false);
-      }, 1000);
-    }
-  };
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -643,10 +390,6 @@ const PortfolioManagement = () => {
       window.removeEventListener("resize", updateDimensions);
     };
   }, [scatter_data]);
-
-  useEffect(() => {
-    animateValue(sum * 100);
-  }, [sum]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -816,25 +559,22 @@ const PortfolioManagement = () => {
   }, [stockArray]);
 
   const fieldNames = [
-    "Target Wt.",
+    "Target Weight",
     "Curr. Price",
     "Target Qty.",
     "Curr. Qty.",
     "Curr. Value",
-    "Curr. Wt.",
-    "Active Wt.",
-    "Prop. Inv. Qty.",
-    "Prop. Inv. Value.",
-    "Eff. Wt.",
-    "Inv. Px.",
+    "Curr. Weight",
+    "Active Weight",
+    "Inv. Price",
     "Inv. Value",
     "Total Ret",
-    "Today's Ret.",
+    "Today's Return",
     "Today's Cont.",
-    "Real. Gains",
-    "Unreal. Gains",
-    "Total Gains",
-    "Mtd. Ret.",
+    "Total Gains (Real. + Unreal.)",
+    "Prop. Invesment Qty.",
+    "Prop. Invesment Value",
+    "Eff. Weight",
     "3Mth. Pred. Ret.",
     "",
   ];
@@ -856,7 +596,7 @@ const PortfolioManagement = () => {
           <>
             <div
               className="swift-accounts-content"
-              // style={{ height: "calc(90% - 14px)" }}
+              style={{ padding: "0 10px 10px 10px" }}
             >
               {initialStrategies.length == 0 ? (
                 <div className="analysis-pending">
@@ -867,7 +607,7 @@ const PortfolioManagement = () => {
                   className={`swift-accounts-content-right ${
                     isRightVisible ? "showright" : ""
                   }`}
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", padding: "0px" }}
                   id="right"
                 >
                   <div
@@ -883,127 +623,171 @@ const PortfolioManagement = () => {
                     }`}
                     style={{ width: "100%" }}
                   >
-                    <div className="swift-accounts-content-stocks-info">
-                      <div className="swift-accounts-content-stocks-details">
-                        <div
-                          className="swift-accounts-content-stocks-header"
-                          style={{ flexDirection: "row-reverse" }}
-                        >
-                          <div className="swift-accounts-content-stocks-left">
-                            <p>
-                              Portfolio
-                              <span style={{ fontSize: "12px" }}>
-                                {` (3m exp. ret `}
-
-                                <span
-                                  className={
-                                    animatedValue >= 0
-                                      ? "green-text"
-                                      : "red-text"
-                                  }
-                                >
-                                  {animatedValue.toFixed(2)}%
-                                </span>
-                                {")"}
-                              </span>
-                            </p>
-                          </div>
-                          <div className="swift-accounts-content-stocks-right">
-                            {/* <p onClick={openPerformanceModal}>Performace</p> */}
-                            <p onClick={handleEdit}>Change</p>
-                            <p onClick={() => handleDeleteStrategy(strategyID)}>
-                              Delete
-                            </p>
-                          </div>
-                        </div>
-                        <div
-                          className="swift-accounts-content-stocks-checkbox"
-                          style={{ flexDirection: "row-reverse" }}
-                        >
-                          {lastupdated && (
-                            <p>
-                              Last Run date:{" "}
-                              {moment
-                                .tz(moment(lastupdated), moment.tz.guess())
-                                // .add(5, "hours")
-                                // .add(30, "minutes")
-                                .format("DD-MM-YYYY HH:mm:ss")}
-                            </p>
-                          )}
-                          {/* <button className="asset-div-btn" onClick={openModal}>
-                      Optimization
-                    </button> */}
-
-                          <p
-                            className="run-analysis-btn"
-                            onClick={run_analysis}
-                          >
-                            Run Analysis
-                          </p>
-                        </div>
-                        <div className="swift-accounts-inflow-portfolio-row">
-                          <CustomInput
-                            labelText="Today's Inflow"
-                            type="number"
-                            // classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
-                            name="inflow"
-                            placeholder=""
-                            styleInput={{
-                              marginTop: "4px",
-                              width: "150px",
-                              padding: "3px 8px",
-                              fontSize: "12px",
-                              border: "none",
-                              borderBottom: "1px solid #f0f0f0",
-                            }}
-                            onInputChange={(symbol, value) =>
-                              setInflow(value ? value : 0)
-                            }
-                            value={inflow}
-                          />
-                          <p>
-                            Portfolio Value :-{" "}
-                            {numberFormatMatrix(portfolio_value, 0)}
-                          </p>
-                        </div>
-                        <div className="swift-accounts-content-stocks-text">
-                          <div className="swift-accounts-content-stocks-text-left">
+                    <div className="swift-accounts-sub-menu">
+                      <p
+                        className={current_tab === "portfolio" ? "active" : ""}
+                        onClick={() => setCurrent_Tab("portfolio")}
+                      >
+                        Portfolio
+                      </p>
+                      <p
+                        className={current_tab === "trade" ? "active" : ""}
+                        onClick={() => setCurrent_Tab("trade")}
+                      >
+                        Trades
+                      </p>
+                      <p
+                        className={current_tab === "cash" ? "active" : ""}
+                        onClick={() => setCurrent_Tab("cash")}
+                      >
+                        Cash
+                      </p>
+                    </div>
+                    {current_tab == "portfolio" ? (
+                      <div
+                        className="swift-accounts-content-stocks-info"
+                        style={{
+                          border: "none",
+                          padding: "0px 10px 10px 10px",
+                        }}
+                      >
+                        <div className="swift-accounts-content-stocks-details">
+                          <div className="swift-accounts-content-stocks-header">
                             <div
-                              className="swift-accounts-content-stocks-text-left-sub-div"
-                              style={{ width: "92%" }}
+                              className="swift-accounts-content-stocks-left"
+                              style={{ columnGap: "15px" }}
                             >
-                              {fieldNames.map((item, index) => (
-                                <p
-                                  key={index}
-                                  className={`swift-accounts-content-stocks-text-left-sub-div-p1 portfolio-dropdown-column`}
-                                  style={{
-                                    fontSize: "10px",
-                                    fontWeight: "700",
-                                  }}
-                                >
-                                  {item}
+                              {lastupdated && (
+                                <p>
+                                  Last Run date:
+                                  {moment
+                                    .tz(moment(lastupdated), moment.tz.guess())
+                                    // .add(5, "hours")
+                                    // .add(30, "minutes")
+                                    .format("DD-MM-YYYY HH:mm:ss")}
                                 </p>
-                              ))}
+                              )}
+                              <p>
+                                Portfolio
+                                <span style={{ paddingLeft: "5px" }}>
+                                  {numberFormatMatrix(portfolio_value, 0)}
+                                </span>
+                                <span style={{ paddingLeft: "2px" }}>
+                                  {` (3m exp. ret `}
+
+                                  <span
+                                    className={
+                                      animatedValue >= 0
+                                        ? "green-text"
+                                        : "red-text"
+                                    }
+                                  >
+                                    {animatedValue.toFixed(2)}%
+                                  </span>
+                                  {")"}
+                                </span>
+                              </p>
+                            </div>
+                            <div className="swift-accounts-content-stocks-right">
+                              <p onClick={handleEdit}>Change</p>
+                              <p
+                                onClick={() => handleDeleteStrategy(strategyID)}
+                              >
+                                Delete
+                              </p>
+                              <p
+                                className="run-analysis-btn"
+                                onClick={run_analysis}
+                              >
+                                Run Analysis
+                              </p>
+                              <CustomNumberInput
+                                labelText="Today's Inflow"
+                                type="text"
+                                classnameDiv="swift-accounts-portfolio-inflow-input"
+                                name="inflow"
+                                placeholder=""
+                                styleInput={{
+                                  marginTop: "4px",
+                                  width: "150px",
+                                  padding: "5px 8px",
+                                  fontSize: "12px",
+                                  border: "none",
+                                  // borderBottom: "1px solid #f0f0f0",
+                                  backgroundColor: "#f1f1f1",
+                                }}
+                                onInputChange={(symbol, value) =>
+                                  setInflow(value)
+                                }
+                                value={inflow}
+                              />
+                            </div>
+                          </div>
+
+                          <div
+                            className="swift-accounts-content-stocks-text"
+                            style={{
+                              borderBottom: "0.5px solid rgba(1, 22, 39, 0.1)",
+                              paddingBottom: "8px",
+                            }}
+                          >
+                            <div className="swift-accounts-content-stocks-text-left">
+                              <div
+                                className="swift-accounts-content-stocks-text-left-sub-div"
+                                style={{ width: "92%" }}
+                              >
+                                {fieldNames.map((item, index) => {
+                                  const words = item.split(" ");
+                                  let firstPart, secondPart;
+                                  if (index === 12 && words.length > 2) {
+                                    firstPart = words.slice(0, 2).join(" ");
+                                    secondPart = words.slice(2).join(" ");
+                                  } else {
+                                    firstPart = words.slice(0, -1).join(" ");
+                                    secondPart = words[words.length - 1];
+                                  }
+
+                                  return (
+                                    <p
+                                      key={index}
+                                      className={`swift-accounts-content-stocks-text-left-sub-div-p1 portfolio-dropdown-column`}
+                                      style={{
+                                        fontSize: "10px",
+                                        fontWeight: "700",
+                                        lineHeight: "1.5em",
+                                      }}
+                                    >
+                                      {firstPart}
+                                      <br />
+                                      {secondPart}
+                                    </p>
+                                  );
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
+                        <div
+                          className="swift-accounts-content-stocks-show"
+                          key={reRenderKey}
+                        >
+                          <PortfolioStockesDropdown
+                            id={strategyID}
+                            isOpen={openDropdown}
+                            onToggle={handleDropdownToggle}
+                            onStockSelect={handleStockSelect}
+                            selectedStock={selectedStock}
+                            setPortfolio_Value={setPortfolio_Value}
+                            inflow={inflow ? inflow : 0}
+                            setTotalsum={setTotalsum}
+                          />
+                        </div>
                       </div>
-                      <div
-                        className="swift-accounts-content-stocks-show"
-                        key={reRenderKey}
-                      >
-                        <PortfolioStockesDropdown
-                          id={strategyID}
-                          isOpen={openDropdown}
-                          onToggle={handleDropdownToggle}
-                          onStockSelect={handleStockSelect}
-                          selectedStock={selectedStock}
-                          setPortfolio_Value={setPortfolio_Value}
-                          inflow={inflow}
-                          setTotalsum={setTotalsum}
-                        />
-                      </div>
-                    </div>
+                    ) : current_tab == "trade" ? (
+                      <PortfolioTrades id={strategyID} />
+                    ) : (
+                      <PortfolioCash id={strategyID} />
+                    )}
                   </div>
                 </div>
               ) : (
@@ -1011,6 +795,7 @@ const PortfolioManagement = () => {
                   className={`swift-accounts-content-right ${
                     isRightVisible ? "showright" : ""
                   }`}
+                  style={{ width: "100%", padding: "0px" }}
                   id="right"
                 >
                   <div className="analysis-pending">
@@ -1024,356 +809,28 @@ const PortfolioManagement = () => {
                 </div>
               )}
             </div>
-            {visibleModal && (
-              <SwiftModal closeModal={closeModal} top="2%">
-                <div className="swift-modal-content">
-                  <div className="custom__alert__close">
-                    <img src={Close} alt="X" onClick={() => closeModal()} />
-                  </div>
-                  <div className="swift-modal-main-content">
-                    <div className="swift-modal-content-left">
-                      <div className="swift-modal-weights">
-                        <div className="swift-modal-dropdown">
-                          <p>Select Deviation</p>
-                          <CustomDropdown
-                            options={[
-                              "Select",
-                              "Unconstrained",
-                              "10%",
-                              "20%",
-                              "30%",
-                              "40%",
-                              "50%",
-                              "60%",
-                              "70%",
-                              "80%",
-                              "90%",
-                              "100%",
-                            ]}
-                            onSelect={devationDropdownSelect}
-                            default_value={"Select"}
-                            style={{ width: "150px" }}
-                          />
-                        </div>
-                        <div className="swift-modal-weights-heading">
-                          {/* <p>AssetClass</p> */}
-                          <p>Stock</p>
-                          <p>Weight</p>
-                          <p>Min. Wt.(%)</p>
-                          <p>Max. Wt.(%)</p>
-                        </div>
-                        {!loadingStock ? (
-                          <div className="swift-modal-weights-content">
-                            {stockArray.map((stockObj, stockIndex) => (
-                              <>
-                                {stockObj.stock
-                                  .split(",")
-                                  .map((item, index) => (
-                                    <div
-                                      className="swift-modal-weights-content-main"
-                                      key={`${stockIndex}-${index}`}
-                                    >
-                                      <div className="swift-modal-weight-content-div">
-                                        {/* <p>{stockObj.name}</p> */}
-                                        <div>
-                                          <p>{item}</p>
-                                        </div>
-                                        <p>
-                                          {
-                                            stockObj.percentage.split(",")[
-                                              index
-                                            ]
-                                          }
-                                          %
-                                        </p>
-                                        <p>
-                                          <CustomInput
-                                            classnameInput={
-                                              "swift-modal-input-weight"
-                                            }
-                                            type="number"
-                                            value={
-                                              dev === "Select"
-                                                ? weights[item.trim()] &&
-                                                  weights[item.trim()][0]
-                                                : dev == "Unconstrained"
-                                                ? 0
-                                                : Math.max(
-                                                    parseFloat(
-                                                      (
-                                                        stockObj.percentage.split(
-                                                          ","
-                                                        )[index] *
-                                                        (1 - dev)
-                                                      ).toFixed(3)
-                                                    ),
-                                                    0
-                                                  )
-                                            }
-                                            styleInput={{
-                                              width: "100%",
-                                              height: "10px",
-                                            }}
-                                            name={item.trim()}
-                                            onInputChange={(name, value) => {
-                                              setWeights((prevValues) => ({
-                                                ...prevValues,
-                                                [name]: [
-                                                  parseFloat(value),
-                                                  prevValues[name]
-                                                    ? prevValues[name][1]
-                                                    : 0,
-                                                ],
-                                              }));
-                                            }}
-                                          />
-                                        </p>
-                                        <p>
-                                          <CustomInput
-                                            type="number"
-                                            classnameInput={
-                                              "swift-modal-input-weight"
-                                            }
-                                            styleInput={{
-                                              width: "100%",
-                                              height: "10px",
-                                            }}
-                                            value={
-                                              dev === "Select"
-                                                ? weights[item.trim()] &&
-                                                  weights[item.trim()][1]
-                                                : dev == "Unconstrained"
-                                                ? 100
-                                                : Math.min(
-                                                    parseFloat(
-                                                      (
-                                                        stockObj.percentage.split(
-                                                          ","
-                                                        )[index] *
-                                                        (1 + dev)
-                                                      ).toFixed(3)
-                                                    ),
-                                                    100
-                                                  )
-                                            }
-                                            name={item.trim()}
-                                            onInputChange={(name, value) => {
-                                              setWeights((prevValues) => ({
-                                                ...prevValues,
-                                                [name]: [
-                                                  prevValues[name]
-                                                    ? prevValues[name][0]
-                                                    : 0,
-                                                  parseFloat(value),
-                                                ],
-                                              }));
-                                            }}
-                                          />
-                                        </p>
-                                      </div>
-                                      <div
-                                        className="swift-modal-weights-content-details"
-                                        title={
-                                          stock_details
-                                            ? stock_details.find(
-                                                (s) => s.stock === item.trim()
-                                              )?.detailed_name
-                                            : ""
-                                        }
-                                      >
-                                        {stock_details
-                                          ? stock_details.find(
-                                              (s) => s.stock === item.trim()
-                                            )?.detailed_name
-                                          : ""}
-                                      </div>
-                                    </div>
-                                  ))}
-                              </>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="swift-aseet-loader">
-                            {/* <p>Loading</p> */}
-                            <Pulse />
-                          </div>
-                        )}
-                      </div>
-                      <div className="swift-accounts-content-btn modal-submit-btn-div">
-                        <CustomButton
-                          text="Submit"
-                          classname="swift-accounts-content-button modal-btn"
-                          onClick={handleResultclick}
-                        />
-                      </div>
-                    </div>
-                    <div className="swift-modal-content-right">
-                      <div className="swift-modal-graph" ref={scatterRef}>
-                        {scatter_data &&
-                        scatter_data.length > 0 &&
-                        scatterDimensions.width > 0 &&
-                        scatterDimensions.height > 0 ? (
-                          <ScatterChart
-                            initialData={scatter_data}
-                            width={scatterDimensions.width}
-                            height={scatterDimensions.height}
-                            HandleOptData={HandleOptData}
-                            // chartload = {loadingChart}
-                          />
-                        ) : (
-                          // <p>Please provide weights for optimization</p>
-                          <></>
-                        )}
-                      </div>
-                      <div className="swift-modal-optData">
-                        {OptData ? (
-                          <div className="swift-modal-portfolio">
-                            <p className="swift-modal-portfolio-heading">
-                              Selected Portfolio
-                            </p>
-                            <div>
-                              <p className="swift-modal-portfolio-title">
-                                Extected Return
-                              </p>
-                              <p className="swift-modal-portfolio-heading">
-                                {parseFloat(OptData.y).toFixed(2)}%
-                              </p>
-                            </div>
-                            <div>
-                              <p className="swift-modal-portfolio-title">
-                                Extected Risk
-                              </p>
-                              <p className="swift-modal-portfolio-heading">
-                                {parseFloat(OptData.x).toFixed(2)}%
-                              </p>
-                            </div>
-                            {/* <p>risk - {OptData.risk}</p> */}
-                            <div className="swift-modal-portfoli-weight">
-                              <div className="swift-modal-portfolio-weight-main-content">
-                                <p className="swift-modal-portfolio-heading">
-                                  Portfolio Weights
-                                </p>
-                                <div className="swift-modal-portfolios-weights-heading">
-                                  <p className="swift-modal-portfolio-heading1">
-                                    Security
-                                  </p>
-                                  <p className="swift-modal-portfolio-heading2">
-                                    Proposed Wt.
-                                  </p>
-                                  <p className="swift-modal-portfolio-heading2">
-                                    Actual Wt
-                                  </p>
-                                  <p className="swift-modal-portfolio-heading2">
-                                    Diff.
-                                  </p>
-                                </div>
-                                <div className="swift-modal-portfolio-weights-content">
-                                  {stockArray.map((stockObj, stockIndex) => (
-                                    <>
-                                      {stockObj.stock
-                                        .split(",")
-                                        .map((item, index) => {
-                                          const optDataValue =
-                                            OptData.z[currentIndex];
-                                          currentIndex++;
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="swift-modal-portfolio-weight-stock"
-                                            >
-                                              <div className="swift-modal-portfolio-detailed-list">
-                                                <p
-                                                  className="swift-modal-portfolio-title"
-                                                  style={{ fontWeight: "800" }}
-                                                >
-                                                  {item}
-                                                </p>
-                                                <p className="swift-modal-weight-detailed-name">
-                                                  {stock_details
-                                                    ? stock_details.find(
-                                                        (s) =>
-                                                          s.stock == item.trim()
-                                                      ).detailed_name
-                                                    : ""}
-                                                </p>
-                                              </div>
-                                              <p className="swift-modal-portfolio-title">
-                                                {parseFloat(
-                                                  optDataValue * 100
-                                                ).toFixed(2)}
-                                                %
-                                              </p>
-                                              <p className="swift-modal-portfolio-title">
-                                                {
-                                                  stockObj.percentage.split(
-                                                    ","
-                                                  )[index]
-                                                }
-                                                %
-                                              </p>
-                                              <p
-                                                className={`swift-modal-portfolio-title ${
-                                                  parseFloat(
-                                                    optDataValue * 100
-                                                  ).toFixed(2) -
-                                                    parseFloat(
-                                                      stockObj.percentage.split(
-                                                        ","
-                                                      )[index]
-                                                    ) <
-                                                  0
-                                                    ? "red-text"
-                                                    : ""
-                                                }`}
-                                              >
-                                                {(
-                                                  parseFloat(
-                                                    optDataValue * 100
-                                                  ).toFixed(2) -
-                                                  parseFloat(
-                                                    stockObj.percentage.split(
-                                                      ","
-                                                    )[index]
-                                                  )
-                                                ).toFixed(2)}
-                                                %
-                                              </p>
-                                            </div>
-                                          );
-                                        })}
-                                    </>
-                                  ))}
-                                </div>
-                              </div>
-                              <div className="swift-accounts-content-btn modal-submit-btn-div">
-                                <CustomButton
-                                  text="Update portfolio"
-                                  classname="swift-accounts-content-button modal-submit-btn"
-                                  onClick={handleUpdatePortfolio}
-                                />
-                                <CustomButton
-                                  text="Save ranges"
-                                  classname="swift-accounts-content-button modal-submit-btn"
-                                  onClick={handleSaveclick}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="swift-aseet-loader">
-                            <Pulse />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiftModal>
-            )}
+
             {chartModal && (
               <SwiftModal closeModal={closeChartModal} top="10px">
                 <div className="swift-chart-modal-content">
-                  <div className="custom__alert__close">
+                  <div
+                    className="custom__alert__close"
+                    style={{ justifyContent: "space-between" }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "12px",
+                        color: "#011627",
+                        fontWeight: "700",
+                      }}
+                    >
+                      3m exp. ret{" "}
+                      <span
+                        className={pred_return >= 0 ? "green-text" : "red-text"}
+                      >
+                        {pred_return}%
+                      </span>
+                    </p>
                     <img
                       src={Close}
                       alt="X"
