@@ -24,6 +24,7 @@
     "react-scripts": "5.0.1",
     "react-stockcharts": "^0.7.8",
     "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5",
     "yahoo-finance2": "^2.11.3"
   },
   "scripts": {

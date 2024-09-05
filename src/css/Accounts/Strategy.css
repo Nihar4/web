@@ -41,20 +41,22 @@
 
 .swift-accounts-strategy-delete {
   color: #011627b3;
-  column-gap: 25px;
+  row-gap: 5px;
   display: flex;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   letter-spacing: -0.7px;
   line-height: normal;
   margin-top: 5px;
+  flex-direction: column;
 }
 
 .swift-accounts-strategy-delete div {
   display: flex;
   column-gap: 20px;
+  justify-content: flex-end;
 }
 
 .swift-accounts-strategy-delete p:hover {

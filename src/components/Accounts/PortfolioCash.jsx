@@ -39,7 +39,7 @@ const PortfolioCash = ({ id }) => {
   }, [id]);
 
   return !loading ? (
-    <div className="swift-portfolio-trades table-wrapper">
+    <div className="swift-portfolio-cash table-wrapper">
       {cashData.length > 0 ? (
         <table className="swift-strategy-created-table">
           <thead>

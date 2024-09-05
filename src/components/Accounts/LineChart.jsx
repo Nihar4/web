@@ -356,7 +356,7 @@ const LineChart = ({
               backgroundColor: "#f84aa7",
             }}
           ></div>
-          Predicted path probability
+          Predicted path
         </div>
       </div>
     </>

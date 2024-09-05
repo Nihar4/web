@@ -347,6 +347,7 @@ const Header = ({
 
   useEffect(() => {
     if (display) {
+      setselectedIndex(0);
       if (currentPage == "Multi-asset") {
         fetchAssetData();
       } else if (currentPage == "Portfolio Management") {

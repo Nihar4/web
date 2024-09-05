@@ -83,7 +83,7 @@
 //                         </div>
 //                     }
 //                 </div>
-               
+
 //             </>
 //         )
 //     }
@@ -165,7 +165,9 @@ class AlertBox extends React.PureComponent {
         $(DOMRef).removeClass('active');
         setTimeout(() => {
             DOMRef && document.body.contains(DOMRef) && document.body.removeChild(DOMRef);
-            this.props.closeAlert();
+            if (this.props.closeAlert) {
+                this.props.closeAlert();
+            }
         }, 1000);
     }
 

@@ -1,5 +1,5 @@
 export function isEmpty(value) {
-    return value === undefined || value === null || value === '';
+    return value === undefined || value === null || value === '' || !value || value == NaN;
 }
 
 export function validateEmail(email) {

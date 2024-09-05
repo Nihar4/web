@@ -40,6 +40,9 @@ const AddStrategyMain = () => {
   const [loading, setLoading] = useState(true);
   const [longName, setLongName] = useState({});
 
+  const [saveBtn, setSaveBtn] = useState(true);
+  const [oldStocks, setOldStocks] = useState([]);
+
   const fetchLongName = async (stock) => {
     const result = await ServerRequest({
       method: "get",
@@ -47,6 +50,13 @@ const AddStrategyMain = () => {
     });
     return result.data.longname;
   };
+
+  const newStocks = formValues.assetClasses.reduce((acc, assetClass) => {
+    const stocks = assetClass.underlyings.map(
+      (underlying) => underlying?.stock
+    );
+    return acc.concat(stocks);
+  }, []);
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -73,6 +83,13 @@ const AddStrategyMain = () => {
               }));
             }
           }
+          const Stocks = formData.assetClasses.reduce((acc, assetClass) => {
+            const stocks = assetClass.underlyings.map(
+              (underlying) => underlying.stock
+            );
+            return acc.concat(stocks);
+          }, []);
+          setOldStocks(Stocks);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -84,6 +101,17 @@ const AddStrategyMain = () => {
     };
     fetchdata();
   }, [id]);
+
+  useEffect(() => {
+    const allSymbolsExist = newStocks.every((newStock) =>
+      oldStocks.includes(newStock)
+    );
+    if (!allSymbolsExist && oldStocks.length != 0) {
+      setSaveBtn(false);
+    } else {
+      setSaveBtn(true);
+    }
+  }, [newStocks, oldStocks]);
 
   const extractPropertyNameAndIndex = (path) => {
     const matches = path.match(/^(.+)\[(\d+)\]$/);
@@ -326,6 +354,21 @@ const AddStrategyMain = () => {
         }, 0)
       : 0;
 
+  const showError = (msg) => {
+    Alert({
+      TitleText: "Error",
+      Message: msg,
+      BandColor: "#e51a4b",
+
+      AutoClose: {
+        Active: true,
+        Line: true,
+        LineColor: "#e51a4b",
+        Time: 2,
+      },
+    });
+  };
+
   const ValidateAll = () => {
     let hasError = false;
     if (isEmpty(formValues.strategyName)) {
@@ -363,6 +406,7 @@ const AddStrategyMain = () => {
     let totalPercentageError = false;
     if (formValues.assetClasses.length == 0) {
       settotalError("Add asset to strategy");
+      showError("Add asset to strategy");
       hasError = true;
       return hasError;
     }
@@ -370,16 +414,26 @@ const AddStrategyMain = () => {
     formValues.assetClasses.forEach((assetClass, index) => {
       if (isEmpty(assetClass.name)) {
         hasError = true;
+        showError("Asset Class name can not be empty");
         return hasError;
       }
-
+      if (assetClass.underlyings.length == 0) {
+        hasError = true;
+        showError("Asset Class can not be empty");
+        return hasError;
+      }
       assetClass.underlyings.forEach((underlying, underlyingIndex) => {
         if (isEmpty(underlying.stock)) {
+          showError("Stock can not be empty");
           hasError = true;
           return hasError;
         }
-        if (parseFloat(underlying.percentage) < 1) {
+        if (
+          parseFloat(underlying.percentage) < 1 ||
+          isEmpty(underlying.percentage)
+        ) {
           settotalError("Minimum percentage for each stock should be 1");
+          showError("Minimum percentage for each stock should be 1");
           totalPercentageError = true;
         }
       });
@@ -432,7 +486,7 @@ const AddStrategyMain = () => {
     const data = await ServerRequest({
       method: "post",
       URL: `/strategy/insert`,
-      data: { ...formValues, email_id: email_id },
+      data: { ...formValues, email_id: email_id, run: true },
     });
 
     if (data.server_error) {
@@ -449,8 +503,9 @@ const AddStrategyMain = () => {
     });
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (run) => {
     if (ValidateAll()) return;
+
     const stock = checkForDuplicateStocks();
     if (stock != "") {
       Alert({
@@ -485,7 +540,7 @@ const AddStrategyMain = () => {
     const data1 = await ServerRequest({
       method: "post",
       URL: `/strategy/insert?strategy_id=${id}`,
-      data: { ...formValues, email_id: email_id },
+      data: { ...formValues, email_id: email_id, run: run },
     });
 
     if (data1.server_error) {
@@ -715,14 +770,31 @@ const AddStrategyMain = () => {
                   visibility: totalError !== "error" ? "visible" : "hidden",
                 }}
               />
-              <CustomButton
-                text="Submit"
-                classname="swift-addstrategy-btn submitbtn"
-                onClick={() => {
-                  if (id) handleUpdate();
-                  else handleSubmit();
-                }}
-              />
+              <div style={{ display: "flex", columnGap: "10px" }}>
+                {id && (
+                  <CustomButton
+                    text="Save and Run"
+                    classname="swift-addstrategy-btn submitbtn"
+                    onClick={() => {
+                      if (id) handleUpdate(true);
+                      else handleSubmit();
+                    }}
+                  />
+                )}
+                <CustomButton
+                  text={id ? "Save" : "Submit"}
+                  classname="swift-addstrategy-btn submitbtn"
+                  style={{
+                    opacity: !saveBtn ? "0.6" : "1.0",
+                    cursor: !saveBtn ? "not-allowed" : "pointer",
+                  }}
+                  onClick={() => {
+                    if (!saveBtn && id) return;
+                    if (id) handleUpdate(false);
+                    else handleSubmit();
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

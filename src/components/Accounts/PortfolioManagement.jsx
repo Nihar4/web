@@ -67,7 +67,6 @@ const PortfolioManagement = () => {
   const [current_tab, setCurrent_Tab] = useState("portfolio");
 
   const handleDeleteStrategy = async (id) => {
-    alert("Delete");
     const data = await ServerRequest({
       method: "delete",
       URL: `/strategy/portfolio`,
@@ -621,7 +620,10 @@ const PortfolioManagement = () => {
                     className={`swift-accounts-content-div-2 ${
                       isRightVisible ? "showdiv-1" : ""
                     }`}
-                    style={{ width: "100%" }}
+                    style={{
+                      width: "100%",
+                      rowGap: current_tab == "trade" ? "0px" : "20px",
+                    }}
                   >
                     <div className="swift-accounts-sub-menu">
                       <p

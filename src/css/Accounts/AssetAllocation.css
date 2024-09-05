@@ -279,6 +279,7 @@ width: 400px !important;
   height: 100%;
   padding: 10px 10px;
   row-gap: 12px;
+  overflow-y: hidden;
 }
 
 .swift-accounts-content-stocks-left {

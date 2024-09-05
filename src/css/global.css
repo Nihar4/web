@@ -25,13 +25,14 @@ body {
 
 :root {
   /* --text-color: #011627b3; */
+  --white: #fff;
   --text-color: #011627;
   --font-btn: 14px;
   --font-large: 16px;
   --font-heading: 13px;
   --font-extra-small: 11px;
   --font-small: 12px;
-  --font-weight-light: 400;
+  --font-weight-light: 500;
   --font-weight-medium: 600;
   --font-weight-heavy: 700;
 }

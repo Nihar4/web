@@ -25,6 +25,7 @@ const CustomNumberInput = ({
   onKeyUp,
 }) => {
   const [formattedValue, setFormattedValue] = useState(value);
+  console.log(formattedValue);
 
   useEffect(() => {
     setFormattedValue(numberFormatMatrix(value, 0));
@@ -40,7 +41,7 @@ const CustomNumberInput = ({
     const formatted = numberFormatMatrix(unformattedValue, 0);
 
     onInputChange && onInputChange(name, unformattedValue);
-    setFormattedValue(formatted);
+    // setFormattedValue(formatted);
   };
 
   return (
