@@ -20,7 +20,8 @@ const PortfolioTrades = ({ id }) => {
   const [formData, setFormData] = useState();
   const [popup, setPopup] = useState(false);
 
-  const fileInputRef = useRef(null);
+  const uploadRef = useRef(null);
+  const updateRef = useRef(null);
 
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
@@ -70,7 +71,7 @@ const PortfolioTrades = ({ id }) => {
       if (selectedTrades.length == 0) {
         Alert(
           {
-            TitleText: "Error",
+            TitleText: "Warning",
             Message: `Select atleast 1 trade.`,
             BandColor: "#e51a4b",
             AutoClose: { Active: true, Time: 3 },
@@ -116,7 +117,7 @@ const PortfolioTrades = ({ id }) => {
       if (data.error) {
         Alert(
           {
-            TitleText: "Error",
+            TitleText: "Warning",
             Message: data.message,
             BandColor: "#e51a4b",
             AutoClose: { Active: true, Time: 3 },
@@ -132,7 +133,39 @@ const PortfolioTrades = ({ id }) => {
     }
   };
 
-  const handleFileChange = (e) => {
+  const handleBulkUpdate = async (excelData) => {
+    try {
+      setloading(true);
+      const data = await ServerRequest({
+        method: "put",
+        URL: `/strategy/portfolio/trades/bulk?id=${id}&email=${email_id}`,
+        data: excelData,
+      });
+
+      if (data.server_error) {
+        alert("Server Error");
+      }
+
+      if (data.error) {
+        Alert(
+          {
+            TitleText: "Warning",
+            Message: data.message,
+            BandColor: "#e51a4b",
+            AutoClose: { Active: true, Time: 3 },
+          },
+          () => {}
+        );
+      }
+
+      setSelectedTrades([]);
+      await fetchTradeData(id);
+    } catch (error) {
+      console.error("Error fetching Trade data:", error);
+    }
+  };
+
+  const handleUploadFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -156,10 +189,40 @@ const PortfolioTrades = ({ id }) => {
       reader.readAsBinaryString(file);
     }
   };
+  const handleUpdateFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const binaryStr = event.target.result;
+        const workbook = XLSX.read(binaryStr, { type: "binary" });
+
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+          raw: false,
+        });
+
+        console.log(jsonData);
+        handleBulkUpdate(jsonData);
+      };
+
+      reader.readAsBinaryString(file);
+    }
+  };
 
   const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    if (uploadRef.current) {
+      uploadRef.current.click();
+    }
+  };
+
+  const handleUpdateClick = () => {
+    if (updateRef.current) {
+      updateRef.current.click();
     }
   };
 
@@ -168,7 +231,7 @@ const PortfolioTrades = ({ id }) => {
       if (!formData.quantity || !formData.netprice) {
         Alert(
           {
-            TitleText: "Error",
+            TitleText: "Warning",
             Message: `Values cannot be empty`,
             BandColor: "#e51a4b",
             AutoClose: { Active: true, Time: 3 },
@@ -220,13 +283,23 @@ const PortfolioTrades = ({ id }) => {
       <div className="swift-portfolio-trades-buttons">
         <div onClick={handleDownload}>Download Upload Format</div>
         <p onClick={handleDelete}>Delete</p>
+        <p onClick={handleUpdateClick}>
+          Bulk Update
+          <input
+            type="file"
+            ref={updateRef}
+            accept=".xlsx, .xls"
+            onChange={handleUpdateFileChange}
+            style={{ display: "none" }}
+          />
+        </p>
         <p onClick={handleUploadClick}>
           Upload
           <input
             type="file"
-            ref={fileInputRef}
+            ref={uploadRef}
             accept=".xlsx, .xls"
-            onChange={handleFileChange}
+            onChange={handleUploadFileChange}
             style={{ display: "none" }}
           />
         </p>
@@ -312,7 +385,7 @@ const PortfolioTrades = ({ id }) => {
             <div className="swift-trade-modal-body">
               <CustomNumberInput
                 labelText="Quantity"
-                type="text"
+                type="number"
                 classnameDiv="swift-modal-trade-input"
                 name={"quantity"}
                 placeholder=""
@@ -339,7 +412,7 @@ const PortfolioTrades = ({ id }) => {
 
               <CustomNumberInput
                 labelText="Net Price"
-                type="text"
+                type="decimal"
                 classnameDiv="swift-modal-trade-input"
                 name={"net_price"}
                 placeholder=""

@@ -705,7 +705,7 @@ const PortfolioManagement = () => {
                               </p>
                               <CustomNumberInput
                                 labelText="Today's Inflow"
-                                type="text"
+                                type="number"
                                 classnameDiv="swift-accounts-portfolio-inflow-input"
                                 name="inflow"
                                 placeholder=""
@@ -719,7 +719,7 @@ const PortfolioManagement = () => {
                                   backgroundColor: "#f1f1f1",
                                 }}
                                 onInputChange={(symbol, value) =>
-                                  setInflow(value)
+                                  setInflow(parseFloat(value))
                                 }
                                 value={inflow}
                               />

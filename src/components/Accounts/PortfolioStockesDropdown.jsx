@@ -10,6 +10,7 @@ import Close from "../../assets/crossicon.svg";
 import Edit from "../../assets/icons/edit.svg";
 import CustomButton from "../CustomComponents/CustomButton/CustomButton";
 import { Alert } from "../CustomComponents/CustomAlert/CustomAlert";
+import ConfirmBox from "../CustomComponents/ConfirmBox/ConfirmBox";
 
 const PortfolioStockesDropdown = ({
   isOpen,
@@ -28,6 +29,8 @@ const PortfolioStockesDropdown = ({
   const [TotalPortfolio_value, setTotalPortfolioValue] = useState(0);
 
   const [allPropInvValue, setAllPropInvValue] = useState({});
+  const [allPropQtyValue, setAllPropQtyValue] = useState({});
+
   const [totalPropInvValue, setTotalPropInvValue] = useState(0);
   const [change, setChange] = useState(0);
 
@@ -176,157 +179,240 @@ const PortfolioStockesDropdown = ({
     }
   };
 
+  const showConfirmBox = () => {
+    let totalQty = 0;
+    for (const [symbol, quantity] of Object.entries(allPropQtyValue)) {
+      totalQty += quantity;
+    }
+    if (totalQty == 0) {
+      Alert({
+        TitleText: "Warning",
+        Message: "Quantity can not be 0",
+        BandColor: "#e51a4b",
+
+        AutoClose: {
+          Active: true,
+          Line: true,
+          LineColor: "#e51a4b",
+          Time: 2,
+        },
+      });
+      return;
+    }
+    ConfirmBox({
+      title: "Process Trade",
+      description: (
+        <>
+          <>Are you sure you want to process this trade ?</>
+        </>
+      ),
+      properties: [
+        {
+          id: "2",
+          label: "Yes",
+          color: "#192b40",
+          bgColor: "#ffffff",
+          handleFunction: (callback) => {
+            handleProcessTrade();
+            callback();
+          },
+        },
+      ],
+      cancel: true,
+    });
+  };
+
+  const handleProcessTrade = async () => {
+    try {
+      setloading(true);
+      const data = await ServerRequest({
+        method: "post",
+        URL: `/strategy/portfolio/process/trades`,
+        data: { qty: allPropQtyValue, id: id, email: email_id },
+      });
+
+      if (data.server_error) {
+        alert("error");
+      }
+
+      if (data.error) {
+        alert("error1");
+      }
+
+      setAllPropQtyValue({});
+      setAllPropInvValue({});
+      setTotalPropInvValue(0);
+
+      setTimeout(() => {
+        setChange(Math.random());
+      }, 1000);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      setloading(false);
+    }
+  };
+
   return !loading ? (
-    <>
-      <div>
-        <div className={`stocks-dropdown-option-details`}>
-          <div className="stocks-dropdown-option-up">
-            <div
-              className="stocks-dropdown-option-title"
-              style={{ width: "8%" }}
-            >
-              {data.cashData.symbol}
-            </div>
-            <div
-              className="stocks-dropdown-option-change"
-              style={{ width: "92%" }}
-            >
-              {getParaComponent(
-                numberFormatMatrix(data.cashData.percentage),
-                false,
-                true,
-                "%"
-              )}
-              {getParaComponent(
-                numberFormatMatrix(data.cashData.currentPrice),
-                false,
-                true,
-                ""
-              )}
-              {getParaComponent(
-                numberFormatMatrix(
-                  (data.cashData.percentage * TotalPortfolio_value) / 100,
-                  0
-                ),
-                false,
-                true,
-                ""
-              )}
-
-              <p
-                className={`stocks-dropdown-option-change-1 portfolio-dropdown-column ${
-                  parseFloat(data.cashData.current_qty) < 0 ? "red-text" : ""
-                }`}
+    <div className="swift-portfolio-management-wrapper">
+      <div className="swift-portfolio-management-dropdown-wrapper">
+        <div>
+          <div className={`stocks-dropdown-option-details`}>
+            <div className="stocks-dropdown-option-up">
+              <div
+                className="stocks-dropdown-option-title"
+                style={{ width: "8%" }}
               >
-                {numberFormatMatrix(data.cashData.current_qty, 0)}
-                <img
-                  src={Edit}
-                  onClick={() => {
-                    setCashInputValue(0);
-                    setInputPopup(true);
-                  }}
-                />
-              </p>
+                {data.cashData.symbol}
+              </div>
+              <div
+                className="stocks-dropdown-option-change"
+                style={{ width: "92%" }}
+              >
+                {getParaComponent(
+                  numberFormatMatrix(data.cashData.percentage),
+                  false,
+                  true,
+                  "%"
+                )}
+                {getParaComponent(
+                  numberFormatMatrix(data.cashData.currentPrice),
+                  false,
+                  true,
+                  ""
+                )}
+                {getParaComponent(
+                  numberFormatMatrix(
+                    (data.cashData.percentage * TotalPortfolio_value) / 100,
+                    0
+                  ),
+                  false,
+                  true,
+                  ""
+                )}
 
-              {getParaComponent(
-                numberFormatMatrix(data.cashData.current_qty + inflow, 0),
-                false,
-                true,
-                ""
-              )}
-              {getParaComponent(
-                numberFormatMatrix(
-                  ((data.cashData.current_qty + inflow) /
-                    TotalPortfolio_value) *
-                    100
-                ),
-                false,
-                true,
-                "%"
-              )}
-              {getParaComponent(
-                numberFormatMatrix(
-                  ((data.cashData.current_qty + inflow) /
-                    TotalPortfolio_value) *
-                    100 -
-                    data.cashData.percentage
-                ),
-                false,
-                true,
-                "%"
-              )}
+                <p
+                  className={`stocks-dropdown-option-change-1 portfolio-dropdown-column ${
+                    parseFloat(data.cashData.current_qty) < 0 ? "red-text" : ""
+                  }`}
+                >
+                  {numberFormatMatrix(data.cashData.current_qty, 0)}
+                  <img
+                    src={Edit}
+                    onClick={() => {
+                      setCashInputValue(0);
+                      setInputPopup(true);
+                    }}
+                  />
+                </p>
 
-              {getParaComponent(numberFormatMatrix(1), false, true, "")}
+                {getParaComponent(
+                  numberFormatMatrix(data.cashData.current_qty + inflow, 0),
+                  false,
+                  true,
+                  ""
+                )}
+                {getParaComponent(
+                  numberFormatMatrix(
+                    ((data.cashData.current_qty + inflow) /
+                      TotalPortfolio_value) *
+                      100
+                  ),
+                  false,
+                  true,
+                  "%"
+                )}
+                {getParaComponent(
+                  numberFormatMatrix(
+                    ((data.cashData.current_qty + inflow) /
+                      TotalPortfolio_value) *
+                      100 -
+                      data.cashData.percentage
+                  ),
+                  false,
+                  true,
+                  "%"
+                )}
 
-              {getParaComponent(
-                numberFormatMatrix(data.cashData.current_qty, 0),
-                false,
-                true,
-                ""
-              )}
-              {getParaComponent(
-                numberFormatMatrix(
-                  ((data.cashData.current_qty + inflow) /
-                    data.cashData.current_qty -
-                    1) *
-                    100
-                ),
-                false,
-                true,
-                "%"
-              )}
-              {getParaComponent(numberFormatMatrix(0), false, true, "%")}
-              {getParaComponent(numberFormatMatrix(0), false, true, "%")}
-              {getParaComponent("--", false, false, "")}
-              {getParaComponent("--", false, false, "")}
+                {getParaComponent(numberFormatMatrix(1), false, true, "")}
 
-              {getParaComponent(
-                numberFormatMatrix(
-                  data.cashData.current_qty + inflow - totalPropInvValue,
-                  0
-                ),
-                false,
-                true,
-                ""
-              )}
-              {getParaComponent(
-                numberFormatMatrix(
-                  ((data.cashData.current_qty +
-                    inflow +
-                    parseFloat(-totalPropInvValue || 0)) /
-                    TotalPortfolio_value) *
-                    100
-                ),
-                false,
-                true,
-                "%"
-              )}
+                {getParaComponent(
+                  numberFormatMatrix(data.cashData.current_qty, 0),
+                  false,
+                  true,
+                  ""
+                )}
+                {getParaComponent(
+                  numberFormatMatrix(
+                    ((data.cashData.current_qty + inflow) /
+                      data.cashData.current_qty -
+                      1) *
+                      100
+                  ),
+                  false,
+                  true,
+                  "%"
+                )}
+                {getParaComponent(numberFormatMatrix(0), false, true, "%")}
+                {getParaComponent(numberFormatMatrix(0), false, true, "%")}
+                {getParaComponent("--", false, false, "")}
+                {getParaComponent("--", false, false, "")}
 
-              {getParaComponent("--", false, false, "")}
-              {getParaComponent("", false, false, "")}
+                {getParaComponent(
+                  numberFormatMatrix(
+                    data.cashData.current_qty + inflow - totalPropInvValue,
+                    0
+                  ),
+                  false,
+                  true,
+                  ""
+                )}
+                {getParaComponent(
+                  numberFormatMatrix(
+                    ((data.cashData.current_qty +
+                      inflow +
+                      parseFloat(-totalPropInvValue || 0)) /
+                      TotalPortfolio_value) *
+                      100
+                  ),
+                  false,
+                  true,
+                  "%"
+                )}
+
+                {getParaComponent("--", false, false, "")}
+                {getParaComponent("", false, false, "")}
+              </div>
             </div>
           </div>
         </div>
+        {data.data.map((item, index) => (
+          <Dropdown
+            key={index}
+            index={index}
+            loading={loading}
+            data={item}
+            cashData={data.cashData}
+            inflow={inflow}
+            isOpen={isOpen}
+            onToggle={onToggle}
+            onStockSelect={onStockSelect}
+            selectedStock={selectedStock}
+            portfolio_value={TotalPortfolio_value}
+            allPropInvValue={allPropInvValue}
+            onUpdateTotalValue={updateTotalPropInvValue}
+            getParaComponent={getParaComponent}
+            setAllPropQtyValue={setAllPropQtyValue}
+          />
+        ))}
       </div>
 
-      {data.data.map((item, index) => (
-        <Dropdown
-          key={index}
-          index={index}
-          loading={loading}
-          data={item}
-          cashData={data.cashData}
-          inflow={inflow}
-          isOpen={isOpen}
-          onToggle={onToggle}
-          onStockSelect={onStockSelect}
-          selectedStock={selectedStock}
-          portfolio_value={TotalPortfolio_value}
-          allPropInvValue={allPropInvValue}
-          onUpdateTotalValue={updateTotalPropInvValue}
-          getParaComponent={getParaComponent}
+      <div className="swift-portfolio-process-trade-btn">
+        <CustomButton
+          text="Process Trade"
+          classname="swift-accounts-content-button"
+          onClick={showConfirmBox}
         />
-      ))}
+      </div>
 
       {inputPopup && (
         <SwiftModal closeModal={() => setInputPopup(false)} top="10px">
@@ -337,7 +423,7 @@ const PortfolioStockesDropdown = ({
 
             <CustomNumberInput
               labelText="Cash"
-              type="text"
+              type="number"
               classnameDiv="swift-modal-cash-input"
               name={"cashInput"}
               placeholder=""
@@ -368,7 +454,7 @@ const PortfolioStockesDropdown = ({
           </div>
         </SwiftModal>
       )}
-    </>
+    </div>
   ) : (
     <div className="swift-aseet-loader">
       <Pulse />
@@ -391,6 +477,7 @@ const Dropdown = ({
   onUpdateTotalValue,
   getParaComponent,
   allPropInvValue,
+  setAllPropQtyValue,
 }) => {
   const [propInvQty, setPropInvQty] = useState({});
   const [propInvValue, setPropInvValue] = useState({});
@@ -499,7 +586,7 @@ const Dropdown = ({
 
     if (cashInvValue < 0) {
       Alert({
-        TitleText: "Error",
+        TitleText: "Warning",
         Message: "You do not have enough cash available",
         BandColor: "#e51a4b",
 
@@ -532,6 +619,10 @@ const Dropdown = ({
 
       return newValue;
     });
+    setAllPropQtyValue((prev) => ({
+      ...prev,
+      [symbol]: value,
+    }));
   };
 
   const handleInputChangeValue = (symbol, value, price) => {
@@ -559,7 +650,7 @@ const Dropdown = ({
 
     if (cashInvValue < 0) {
       Alert({
-        TitleText: "Error",
+        TitleText: "Warning",
         Message: "You do not have enough cash available",
         BandColor: "#e51a4b",
 
@@ -589,6 +680,10 @@ const Dropdown = ({
       return newValue;
     });
     setPropInvQty((prev) => ({
+      ...prev,
+      [symbol]: Math.floor(value / price),
+    }));
+    setAllPropQtyValue((prev) => ({
       ...prev,
       [symbol]: Math.floor(value / price),
     }));
@@ -884,7 +979,7 @@ const Dropdown = ({
 
                       <CustomNumberInput
                         labelText=""
-                        type="text"
+                        type="number"
                         classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
                         name={stock.symbol}
                         placeholder=""
@@ -910,7 +1005,7 @@ const Dropdown = ({
                       />
                       <CustomNumberInput
                         labelText=""
-                        type="text"
+                        type="number"
                         classnameDiv="stocks-dropdown-option-change-1 portfolio-dropdown-column"
                         name={stock.symbol}
                         placeholder=""

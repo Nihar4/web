@@ -213,3 +213,42 @@
     justify-items: center;
     padding: 10px 30px;
 }
+
+.swift-portfolio-process-trade-btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.swift-portfolio-management-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    row-gap: 20px;
+}
+
+.swift-portfolio-management-dropdown-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    row-gap: 30px;
+}
+
+.swift-portfolio-management-dropdown-wrapper::-webkit-scrollbar {
+    width: 0px;
+}
+
+.swift-portfolio-management-dropdown-wrapper::-webkit-scrollbar-thumb {
+    background-color: #e8e8e8;
+    border-radius: 34px;
+    height: 4px;
+}
+
+.swift-portfolio-management-dropdown-wrapper::-webkit-scrollbar-track {
+    background-color: #eee;
+}
+
+.swift-portfolio-management-dropdown-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #ccc;
+}
