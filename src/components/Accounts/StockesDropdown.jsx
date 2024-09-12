@@ -253,7 +253,7 @@ const StockesDropdown = ({
                         }
                       >
                         {stockDetailsArray[stock] &&
-                        stockDetailsArray[stock].percentage_change !== "-" ? (
+                        stockDetailsArray[stock].percentage_change ? (
                           <p>
                             {stockDetailsArray[stock].percentage_change.toFixed(
                               2
@@ -261,52 +261,24 @@ const StockesDropdown = ({
                             %
                           </p>
                         ) : (
-                          <span
-                            className={
-                              stockDetailsArray[stock]
-                                .regularMarketChangePercent >= 0
-                                ? "green-text"
-                                : "red-text"
-                            }
-                          >
-                            {stockDetailsArray[
-                              stock
-                            ].regularMarketChangePercent.toFixed(3)}
-                            %
-                          </span>
+                          <p>--</p>
                         )}
                       </p>
 
                       <p className="stocks-dropdown-option-change-1">
-                        {stockDetailsArray[stock] ? (
+                        {stockDetailsArray[stock] &&
+                        stockDetailsArray[stock].regularMarketPrice !== null ? (
                           <>
                             {stockDetailsArray[
                               stock
                             ].regularMarketPrice.toFixed(2)}
-                            {/* {heading !== "eureka" && (
-                              <span
-                                className={
-                                  stockDetailsArray[stock]
-                                    .regularMarketChangePercent >= 0
-                                    ? "green-text"
-                                    : "red-text"
-                                }
-                              >
-                                {" "}
-                                (
-                                {stockDetailsArray[
-                                  stock
-                                ].regularMarketChangePercent.toFixed(3)}
-                                %)
-                              </span>
-                            )} */}
                           </>
                         ) : (
-                          ""
+                          <>--</>
                         )}
                       </p>
                       <p className="stocks-dropdown-option-change-2">
-                        {stock_saa_array[stock].toFixed(1)}%
+                        {stock_saa_array[stock].toFixed(2)}%
                       </p>
                       <p
                         className={

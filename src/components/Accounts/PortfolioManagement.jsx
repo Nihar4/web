@@ -65,6 +65,7 @@ const PortfolioManagement = () => {
   const [pred_return, setPred_Return] = useState(0);
 
   const [current_tab, setCurrent_Tab] = useState("portfolio");
+  const [chartError, setChartError] = useState(false);
 
   const handleDeleteStrategy = async (id) => {
     const data = await ServerRequest({
@@ -333,6 +334,7 @@ const PortfolioManagement = () => {
   };
   const [stock_details, setStock_details] = useState([]);
   const [loadingStock, setLoadingStock] = useState(true);
+  const [loadingChart, setLoadingChart] = useState(true);
 
   const [dev, setDev] = useState("Select");
 
@@ -408,6 +410,7 @@ const PortfolioManagement = () => {
           return;
         }
 
+        setChartError(false);
         setloading2(true);
 
         const name = await fetchStockData(selectedStock);
@@ -418,18 +421,18 @@ const PortfolioManagement = () => {
           method: "get",
           URL: `/strategy/chartdata?stock=${selectedStock}&range=${duration}&id=${strategyID}`,
         });
-        if (data1.server_error) {
-          // alert("error chart");
-        }
-
-        if (data1.error) {
-          // alert("error1 chart");
+        if (data1.server_error || data1.error) {
+          setChartError(true);
+          setloading2(false);
+          setChartData([]);
+          return;
         }
 
         setChartData(data1.data);
         setTimeout(() => {
           setloading2(false);
-        }, 1000);
+          setLoadingChart(false);
+        }, 0);
       } catch (error) {
         console.error(error);
       }
@@ -590,7 +593,8 @@ const PortfolioManagement = () => {
           change={change}
         />
         {!loading &&
-        (chart_data.length > 0 || loading2 == false) &&
+        !loadingChart &&
+        // (chart_data.length > 0 || loading2 == false || chartError) &&
         lastupdated ? (
           <>
             <div
@@ -857,104 +861,78 @@ const PortfolioManagement = () => {
                       className={`swift-account-content-graph ${
                         isRightVisible ? "showgraph" : ""
                       }`}
-                      style={{ height: "100%" }}
+                      style={{
+                        height: "100%",
+                        border: "none",
+                        boxShadow: "none",
+                      }}
                     >
-                      <div className="swift-asset-range-buttons">
-                        {/* {selectedStock &&
-                    selectedStock.split(".")[0] !== selectedStock && (
-                      <>
-                        <p
-                          onClick={() => handleDuraion("1M")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "1M" ? "selected_duration" : ""
-                          }
-                        >
-                          1m
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("3M")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "3M" ? "selected_duration" : ""
-                          }
-                        >
-                          3m
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("6M")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "6M" ? "selected_duration" : ""
-                          }
-                        >
-                          6m
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("YTD")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "YTD" ? "selected_duration" : ""
-                          }
-                        >
-                          YTD
-                        </p>
-                      </>
-                    )}
-                  <p
-                    onClick={() => handleDuraion("1Y")}
-                    style={{ cursor: "pointer" }}
-                    className={duration == "1Y" ? "selected_duration" : ""}
-                  >
-                    1y
-                  </p> */}
-                        <p
-                          onClick={() => handleDuraion("1Y")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "1Y" ? "selected_duration" : ""
-                          }
-                        >
-                          1y
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("5Y")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "5Y" ? "selected_duration" : ""
-                          }
-                        >
-                          5y
-                        </p>
-                        <p
-                          onClick={() => handleDuraion("MAX")}
-                          style={{ cursor: "pointer" }}
-                          className={
-                            duration == "MAX" ? "selected_duration" : ""
-                          }
-                        >
-                          Max
-                        </p>
-                      </div>
-                      <div
-                        className="swift-account-graph"
-                        ref={graphContainerRef}
-                      >
-                        {graphDimensions.width > 0 &&
-                          graphDimensions.height > 0 && (
-                            <LineChart
-                              data={chart_data}
-                              width={graphDimensions.width}
-                              height={graphDimensions.height}
-                              duration={duration}
-                              loading2={loading2}
-                              name={selectStockName}
-                              lastupdated={lastupdated}
-                            />
-                          )}
-                        {/* <p> {graphDimensions.width}</p>
+                      {!chartError ? (
+                        <>
+                          <div className="swift-asset-range-buttons">
+                            <p
+                              onClick={() => handleDuraion("1Y")}
+                              style={{ cursor: "pointer" }}
+                              className={
+                                duration == "1Y" ? "selected_duration" : ""
+                              }
+                            >
+                              1y
+                            </p>
+                            <p
+                              onClick={() => handleDuraion("5Y")}
+                              style={{ cursor: "pointer" }}
+                              className={
+                                duration == "5Y" ? "selected_duration" : ""
+                              }
+                            >
+                              5y
+                            </p>
+                            <p
+                              onClick={() => handleDuraion("MAX")}
+                              style={{ cursor: "pointer" }}
+                              className={
+                                duration == "MAX" ? "selected_duration" : ""
+                              }
+                            >
+                              Max
+                            </p>
+                          </div>
+                          <div
+                            className="swift-account-graph"
+                            ref={graphContainerRef}
+                          >
+                            {graphDimensions.width > 0 &&
+                              graphDimensions.height > 0 && (
+                                <LineChart
+                                  data={chart_data}
+                                  width={graphDimensions.width}
+                                  height={graphDimensions.height}
+                                  duration={duration}
+                                  loading2={loading2}
+                                  name={selectStockName}
+                                  lastupdated={lastupdated}
+                                  error={chartError}
+                                />
+                              )}
+                            {/* <p> {graphDimensions.width}</p>
                         <p> {graphDimensions.height}</p> */}
-                      </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="analysis-pending">
+                          <p className="analysis-pending-heading">
+                            Server Connection Issue
+                          </p>
+                          <p className="analysis-pending-content">
+                            We're currently experiencing issues connecting to
+                            our servers. Our team is working to resolve this as
+                            quickly as possible. Please check back shortly. We
+                            appreciate your patience and apologize for any
+                            inconvenience caused.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

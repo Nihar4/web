@@ -32,7 +32,9 @@ const LineChart = ({
   loading1,
   name,
   lastupdated: updatedDate,
+  error,
 }) => {
+  console.log("call");
   const lastupdated = new Date(updatedDate).toISOString().split("T")[0];
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -40,10 +42,17 @@ const LineChart = ({
   ]);
   const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setloading] = useState(true);
+  let lastDate;
+
+  console.log(loading, loading2, initialData.length, name);
+  useEffect(() => {
+    if (loading2) setloading(true);
+  }, [loading2]);
 
   useEffect(() => {
-    setloading(true);
-
+    // console.log(duration, initialData, error);
+    if (error || initialData.length == 0) return;
+    // setloading(true);
     const lastDate = new Date(initialData[initialData.length - 1]?.date);
     const lastDatePlusFiveDays = new Date(lastDate);
     lastDatePlusFiveDays.setDate(lastDatePlusFiveDays.getDate() + 15);
@@ -86,66 +95,84 @@ const LineChart = ({
 
     setTimeout(() => {
       setloading(false);
-    }, 2000);
-  }, [duration, initialData]);
+    }, 3000);
+  }, [duration, initialData, error]);
 
-  const today = new Date();
-  const oneDayAgo = new Date(today);
-  oneDayAgo.setDate(today.getDate() - 1);
-  let newestDate;
+  if (error) {
+    return (
+      <div className="analysis-pending">
+        <p className="analysis-pending-heading">Server Connection Issue</p>
+        <p className="analysis-pending-content">
+          We're currently experiencing issues connecting to our servers. Our
+          team is working to resolve this as quickly as possible. Please check
+          back shortly. We appreciate your patience and apologize for any
+          inconvenience caused.
+        </p>
+      </div>
+    );
+  }
 
-  if (name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC") {
-    newestDate = new Date(initialData[initialData.length - 13].date).setDate(0);
-  } else {
-    newestDate = initialData.reduce((acc, cur) => {
-      const currentDate = new Date(cur.date);
-      if (currentDate <= oneDayAgo && currentDate > acc) {
-        return currentDate;
+  if (!error && initialData.length > 0) {
+    const today = new Date();
+    const oneDayAgo = new Date(today);
+    oneDayAgo.setDate(today.getDate() - 1);
+    let newestDate;
+
+    if (name.startsWith("Eurekahedge") || name == "AGG" || name == "^GSPC") {
+      newestDate = new Date(initialData[initialData.length - 13].date).setDate(
+        0
+      );
+    } else {
+      newestDate = initialData.reduce((acc, cur) => {
+        const currentDate = new Date(cur.date);
+        if (currentDate <= oneDayAgo && currentDate > acc) {
+          return currentDate;
+        }
+        return acc;
+      }, new Date(0));
+    }
+
+    lastDate = new Date(initialData[initialData.length - 1]?.date);
+
+    const newData = [];
+    if (
+      duration == "1M" ||
+      duration == "3M" ||
+      duration == "6M" ||
+      duration == "YTD"
+    ) {
+      for (let i = 1; i <= 15; i++) {
+        const nextDate = new Date(lastDate);
+        nextDate.setDate(lastDate.getDate() + i);
+        const newDataItem = {
+          date: nextDate.toISOString(),
+          close1: 0,
+          close2: 0,
+          close3: 0,
+          close4: 0,
+          close5: 0,
+          close6: 0,
+        };
+        newData.push(newDataItem);
       }
-      return acc;
-    }, new Date(0));
-  }
-
-  const lastDate = new Date(initialData[initialData.length - 1]?.date);
-
-  const newData = [];
-  if (
-    duration == "1M" ||
-    duration == "3M" ||
-    duration == "6M" ||
-    duration == "YTD"
-  ) {
-    for (let i = 1; i <= 15; i++) {
-      const nextDate = new Date(lastDate);
-      nextDate.setDate(lastDate.getDate() + i);
-      const newDataItem = {
-        date: nextDate.toISOString(),
-        close1: 0,
-        close2: 0,
-        close3: 0,
-        close4: 0,
-        close5: 0,
-        close6: 0,
-      };
-      newData.push(newDataItem);
+    } else {
+      for (let i = 5; i <= 75; i += 5) {
+        const nextDate = new Date(lastDate);
+        nextDate.setDate(lastDate.getDate() + i);
+        const newDataItem = {
+          date: nextDate.toISOString(),
+          close1: 0,
+          close2: 0,
+          close3: 0,
+          close4: 0,
+          close5: 0,
+          close6: 0,
+        };
+        newData.push(newDataItem);
+      }
     }
-  } else {
-    for (let i = 5; i <= 75; i += 5) {
-      const nextDate = new Date(lastDate);
-      nextDate.setDate(lastDate.getDate() + i);
-      const newDataItem = {
-        date: nextDate.toISOString(),
-        close1: 0,
-        close2: 0,
-        close3: 0,
-        close4: 0,
-        close5: 0,
-        close6: 0,
-      };
-      newData.push(newDataItem);
-    }
+    initialData = [...initialData, ...newData];
   }
-  initialData = [...initialData, ...newData];
 
   return initialData.length > 0 && !loading2 && !loading ? (
     <>

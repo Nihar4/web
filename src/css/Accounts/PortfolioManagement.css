@@ -144,11 +144,11 @@
 .swift-portfolio-trade-btn {
     text-align: center;
     cursor: pointer;
-    background: #e8e8e8;
+    background: #000fff;
     padding: 5px 15px;
     border-radius: 35px;
     font-weight: 600;
-    color: #011627;
+    color: #ffffff;
     font-size: var(--font-small);
     letter-spacing: -0.5px;
     width: max-content;

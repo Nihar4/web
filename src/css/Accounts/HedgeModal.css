@@ -496,5 +496,5 @@
 
 .swift-chart-modal-content .swift-accounts-content-div-1 {
   height: calc(95vh - 50px);
-  width: calc(95vw - 50px);
+  width: calc(95vw - 20px);
 }

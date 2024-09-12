@@ -711,7 +711,7 @@ const Dropdown = ({
         >
           <div
             className="stocks-dropdown-header-left"
-            style={{ width: "8%", marginRight: "10px" }}
+            style={{ width: "8%", marginRight: "0px" }}
           >
             <div
               className="stocks-dropdown-heading"
