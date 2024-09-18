@@ -11,6 +11,7 @@ import Searchbar from "./components/Accounts/Searchbar";
 import SearchLive from "./components/Accounts/SearchLive";
 import Sample from "./components/Sample";
 import Auth from "./components/AccessManagement/Auth";
+import BackOfficeDashboard from "./components/BackOffice/BackOfficeDashboard";
 
 function App() {
   return (
@@ -25,6 +26,14 @@ function App() {
           element={
             <Auth>
               <DashBoard />
+            </Auth>
+          }
+        />
+        <Route
+          path="/back-office/*"
+          element={
+            <Auth>
+              <BackOfficeDashboard />
             </Auth>
           }
         />

@@ -1,0 +1,196 @@
+.swift-back-office-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    column-gap: 4px;
+    padding: 37px 40px 15px 15px;
+}
+
+.swift-back-office-main-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    column-gap: 14px;
+}
+
+.swift-back-office-main-content {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 250px - 14px);
+    height: 100%;
+}
+
+.swift-back-office-body-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    column-gap: 27px;
+}
+
+.swift-back-office-body-left {
+    width: auto;
+}
+
+.swift-back-office-body-right {
+    width: 400px;
+}
+
+.swift-back-office-header {
+    height: 100%;
+    width: 50px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 20px 5px 5px 5px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.swift-back-office-header-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 3px;
+}
+
+.swift-back-office-header-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 35px;
+    width: 35px;
+    height: 35px;
+}
+
+.swift-back-office-header-icon-wrapper.active {
+    background-color: #000fff;
+    color: white;
+}
+
+.swift-back-office-header-row-name {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 10px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.05em;
+    color: rgba(1, 22, 39, 0.3);
+}
+
+.swift-back-office-strategy {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    width: 250px;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.swift-back-office-strategy-wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    align-items: center;
+}
+
+.swift-back-office-add-fund-wrapper {
+    width: 70%;
+    height: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(232, 232, 232, 0.25);
+    border-radius: 10px;
+    padding: 11px 29px;
+}
+
+/* .swift-back-office-input-div {
+    row-gap: 9px;
+} */
+
+.swift-back-office-input-label {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-input-text {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    /* color: #0116274d; */
+    margin-top: 9px;
+    margin-bottom: 8px;
+
+}
+
+.swift-back-office-fund-created {
+    text-align: center;
+    font-family: 'Open Sans';
+    font-style: normal;
+    text-align: center;
+    letter-spacing: -0.05em;
+    color: #011627;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.swift-back-office-fund-created p:nth-child(1) {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.swift-back-office-fund-created p:nth-child(2) {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.swift-back-office-main-header {
+    width: 100%;
+    height: 52px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(232, 232, 232, 0.25);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    align-items: center;
+    letter-spacing: -0.05em;
+    color: #011627;
+    padding: 0px 20px;
+}
+
+.swift-back-office-main-header-left {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+
+.swift-back-office-main-header-right {
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+}

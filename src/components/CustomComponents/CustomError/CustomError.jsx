@@ -1,19 +1,19 @@
 import React from "react";
 import "../CustomError/CustomError.css";
 
-const CustomError = ({ errorText, style, classname }) => {
-  // const defaultStyle = {
-  //   color: "#011627",
-  //   fontFamily: "Open Sans",
-  //   fontSize: "12px",
-  //   fontStyle: "italic",
-  //   fontWeight: 700,
-  //   lineHeight: "normal",
-  //   letterSpacing: "-0.65px",
-  // };
+const CustomError = ({ errorText, style = {}, classname = "" }) => {
+  console.log(errorText);
+
+  const visibilityStyle = {
+    visibility:
+      errorText === "" || errorText === "error" ? "hidden" : "visible",
+  };
 
   return (
-    <p className={"swift-custom-error " + classname} style={style}>
+    <p
+      className={"swift-custom-error " + classname}
+      style={{ ...style, ...visibilityStyle }}
+    >
       {errorText}
     </p>
   );

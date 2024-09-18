@@ -103,7 +103,7 @@
   height: 25px;
   flex-shrink: 0;
   background: url("../../assets/Faq.png"),
-    #ffffff 50% / cover no-repeat;
+    #f1f1f1 50% / cover no-repeat;
   cursor: pointer;
   ;
 }
