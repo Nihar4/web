@@ -34,7 +34,6 @@ const LineChart = ({
   lastupdated: updatedDate,
   error,
 }) => {
-  console.log("call");
   const lastupdated = new Date(updatedDate).toISOString().split("T")[0];
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -44,13 +43,11 @@ const LineChart = ({
   const [loading, setloading] = useState(true);
   let lastDate;
 
-  console.log(loading, loading2, initialData.length, name);
   useEffect(() => {
     if (loading2) setloading(true);
   }, [loading2]);
 
   useEffect(() => {
-    // console.log(duration, initialData, error);
     if (error || initialData.length == 0) return;
     // setloading(true);
     const lastDate = new Date(initialData[initialData.length - 1]?.date);
@@ -95,7 +92,7 @@ const LineChart = ({
 
     setTimeout(() => {
       setloading(false);
-    }, 3000);
+    }, 1000);
   }, [duration, initialData, error]);
 
   if (error) {

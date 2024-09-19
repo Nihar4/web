@@ -73,6 +73,7 @@
   flex-shrink: 0;
   justify-content: space-between;
   /* border: 2px solid black; */
+  height: -webkit-fill-available;
 }
 
 .swift-accounts-content-button {
@@ -145,6 +146,7 @@
   /* width: 50%; */
   width: calc(100% - 12px - 410px);
   /* border: 2px solid black; */
+  height: -webkit-fill-available;
 }
 
 .swift-account-download {

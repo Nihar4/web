@@ -109,7 +109,6 @@ const AssetAllocation = () => {
   };
 
   const handleStockSelect = (stock, detailed_name) => {
-    // // console.log(stock,detailed_name, "stock");
     setloading2(true);
     setSelectedStock(stock);
     if (stock == stock.split(".")[0]) {
@@ -138,7 +137,6 @@ const AssetAllocation = () => {
       alert("error1");
     }
 
-    // console.log(data);
     if (data.data.length > 0) {
       const uniqueIds = new Set();
 
@@ -165,7 +163,6 @@ const AssetAllocation = () => {
           },
         ],
       }));
-      // console.log(strategiesArray);
 
       const combinedStrategiesArray = strategiesArray.reduce((acc, curr) => {
         const existingStrategy = acc.find((item) => item.id === curr.id);
@@ -190,10 +187,8 @@ const AssetAllocation = () => {
 
         return acc;
       }, []);
-      // console.log(combinedStrategiesArray);
 
       setInitialStrategies(combinedStrategiesArray);
-      // // console.log(combinedStrategiesArray);
 
       if (combinedStrategiesArray.length > 0) {
         setClickedStrategy(combinedStrategiesArray[0]);
@@ -205,7 +200,6 @@ const AssetAllocation = () => {
         setStrategyid(combinedStrategiesArray[0].id);
         let stock =
           combinedStrategiesArray[0].assetclass[0].stock.split(",")[0];
-        // console.log(stock);
         if (stock == stock.split(".")[0]) {
           setDuration("1Y");
         } else {
@@ -239,17 +233,11 @@ const AssetAllocation = () => {
     );
     setIschartvisible(false);
     let stock = initialStrategies[index].assetclass[0].stock.split(",")[0];
-    // console.log("click", stock);
     if (stock == stock.split(".")[0]) {
       setDuration("1Y");
     } else {
       setDuration("1Y");
     }
-
-    // // console.log(initialStrategies[index].assetclass);
-
-    // setStockArray(initialStrategies[index])
-    // // console.log(stockArray);
 
     if (window.innerWidth <= 768) {
       setIsLeftVisible(false);
@@ -298,7 +286,6 @@ const AssetAllocation = () => {
           );
           setLastupdated(latestDate);
           // setLastupdated("abc");
-          // // console.log(hasPendingStatus);
 
           setTimeout(() => {
             setloading(false);
@@ -353,12 +340,13 @@ const AssetAllocation = () => {
   useEffect(() => {
     const updateDimensions = () => {
       const container = graphContainerRef.current;
-      // // console.log("container",container);
 
       if (container) {
+        console.log("container", container);
+
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        // // console.log("wh", containerHeight,containerWidth)
+        console.log("wh", containerHeight, containerWidth);
 
         setGraphDimensions({ width: containerWidth, height: containerHeight });
         // setRadarKey((prevKey) => prevKey + 1);
@@ -379,17 +367,22 @@ const AssetAllocation = () => {
     return () => {
       window.removeEventListener("resize", updateDimensions);
     };
-  }, [cnt, ischartvisible, loading, loading2]);
+  }, [
+    cnt,
+    ischartvisible,
+    loading,
+    loading2,
+    graphContainerRef,
+    graphContainerRef.current,
+  ]);
 
   useEffect(() => {
     const updateDimensions = () => {
       const container = scatterRef.current;
-      // // console.log("container",container);
 
       if (container) {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        // // console.log("wh", containerHeight,containerWidth)
 
         setScatterDimensions({
           width: containerWidth,
@@ -426,7 +419,6 @@ const AssetAllocation = () => {
       if (data1.error) {
         alert("error1 jobqueue");
       }
-      // // console.log(data1);
     } catch (error) {
       console.error(error);
     }
@@ -453,7 +445,6 @@ const AssetAllocation = () => {
   const handleDuraion = (item) => {
     setDuration(item);
   };
-  // console.log(selectedStock);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -476,8 +467,6 @@ const AssetAllocation = () => {
         setloading2(true);
 
         const name = await fetchStockData(selectedStock);
-        // // console.log("name", name);
-        // const name = "abc";
         setSelectedStockName(name);
 
         const data1 = await ServerRequest({
@@ -495,7 +484,7 @@ const AssetAllocation = () => {
         setTimeout(() => {
           setloading2(false);
           setLoadingChart(false);
-        }, 0);
+        }, 2000);
       } catch (error) {
         console.error(error);
       }
@@ -546,7 +535,6 @@ const AssetAllocation = () => {
   useEffect(() => {
     animateValue(sum * 100);
   }, [sum]);
-  // // console.log(lastupdated);
 
   let currentIndex = 0;
   const openModal = async () => {
@@ -582,7 +570,6 @@ const AssetAllocation = () => {
       if (data.error) {
         alert("error1");
       }
-      // // console.log(stock,data.data);
       return data.data;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -643,7 +630,6 @@ const AssetAllocation = () => {
 
   const handleResultclick = async () => {
     // const data=weights;
-    // // console.log("wei", weights);
     if (weights) {
       try {
         // setLoadingChart(true);
@@ -681,7 +667,6 @@ const AssetAllocation = () => {
             },
           });
         }
-        // // console.log(data1);
         setScatter_data(data1.data);
         // setLoadingChart(false);
       } catch (error) {
@@ -718,7 +703,6 @@ const AssetAllocation = () => {
     const apiData = [];
     let valueIndex = 0;
     for (let stockObj of stockArray) {
-      // // console.log(stockObj);
       stockObj.stock.split(",").forEach(async (value, index) => {
         const stock = stockObj.name + "+" + value.trim();
         const percentage = OptData.z[valueIndex];
@@ -726,7 +710,6 @@ const AssetAllocation = () => {
         apiData.push({ [stock]: percentage });
       });
     }
-    // // console.log(apiData);
     // const apiData = stockArray[0].stock.split(",").map((value, index) => ({
     //   [value.trim()]: OptData.z[index],
     // }));
