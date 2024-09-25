@@ -72,7 +72,7 @@ const LoginMain = () => {
   };
 
   const handleGenerateOtp = async () => {
-    if (formValues["email"] == "demo@swiftfolios.co.uk") {
+    if (formValues["email"] == "demo@altsinsight.com") {
       setEmailError("error");
       setOtpVisible(true);
       // setCountdown(30);
@@ -125,7 +125,7 @@ const LoginMain = () => {
   }, [countdown]);
 
   const handleSubmit = async (e) => {
-    if (formValues["email"] == "demo@swiftfolios.co.uk") {
+    if (formValues["email"] == "demo@altsinsight.com") {
       if (formValues["otp"] == "128314") {
         localStorage.setItem("userData", formValues["email"]);
         navigate("/accounts/dashboard/asset", {
@@ -148,7 +148,7 @@ const LoginMain = () => {
       const data1 = await ServerRequest({
         method: "post",
         URL: `/access/validate-otp`,
-        data: { email_id: formValues["email"], otp: formValues["otp"] },
+        data: { email_id: formValues["email"], otp: String(formValues["otp"]) },
       });
 
       if (data1.server_error) {
@@ -258,7 +258,9 @@ const LoginMain = () => {
             cursor: isNextButtonDisabled ? "not-allowed" : "pointer",
             background: isNextButtonDisabled ? "#000fff59" : "#000fff",
             // background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
-            // color: isNextButtonDisabled ? "#011627" : "#fff",
+            color: "#fff",
+            fontSize: "14px",
+            fontWeight: "700",
           }}
         />
       </div>
@@ -293,7 +295,7 @@ const LoginPin = () => {
       const data1 = await ServerRequest({
         method: "post",
         URL: `/access/login/validate-pin`,
-        data: { email_id: email, pin: formValues["pin"] },
+        data: { email_id: email, pin: String(formValues["pin"]) },
       });
       if (data1.error) {
         setPinError(data1.message);
@@ -364,6 +366,11 @@ const LoginPin = () => {
           text="Login"
           classname="swift-login-form-btn"
           onClick={handleSubmit}
+          style={{
+            background: "#000fff",
+            color: "#fff",
+            fontSize: "14px",
+          }}
         />
       </div>
     </>
@@ -444,7 +451,7 @@ const LoginReset = () => {
       const data1 = await ServerRequest({
         method: "post",
         URL: `/access/validate-otp`,
-        data: { email_id: email_id, otp: formValues["otp"] },
+        data: { email_id: email_id, otp: String(formValues["otp"]) },
       });
       if (data1.server_error) {
         alert(data1.message);
@@ -498,7 +505,7 @@ const LoginReset = () => {
     const data1 = await ServerRequest({
       method: "put",
       URL: `/access/reset-pin`,
-      data: { email_id: email_id, pin: pin },
+      data: { email_id: email_id, pin: String(pin) },
     });
 
     if (data1.server_error) {
@@ -579,6 +586,10 @@ const LoginReset = () => {
             classname={"swift-login-form-validate-btn"}
             style={{
               visibility: otpVisible ? "visible" : "hidden",
+              background: "#000fff",
+              color: "#fff",
+              fontSize: "14px",
+              cursor: "pointer",
             }}
             onClick={handleValidate}
           />
@@ -629,7 +640,8 @@ const LoginReset = () => {
           style={{
             cursor: isResetButtonDisabled ? "not-allowed" : "pointer",
             background: isResetButtonDisabled ? "#000fff59" : "#000fff",
-            // background: isResetButtonDisabled ? "#F1F1F1" : "#000fff",
+            color: "#fff",
+            fontSize: "14px",
           }}
         />
       </div>
@@ -692,6 +704,11 @@ const LoginResetSuccessful = () => {
           text="Login Again"
           classname="swift-login-form-btn"
           onClick={handlerSubmit}
+          style={{
+            background: "#000fff",
+            color: "#fff",
+            fontSize: "14px",
+          }}
         />
         {/* </Link> */}
       </div>

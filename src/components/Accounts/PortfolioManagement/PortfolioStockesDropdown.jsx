@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import "../../css/Accounts/StocksDropdown.css";
-import ServerRequest from "../../utils/ServerRequest";
-import Pulse from "../Loader/Pulse";
-import { numberFormatMatrix } from "../../utils/utilsFunction";
-import CustomNumberInput from "../CustomComponents/CustomInput/CustomNumberInput";
-import Select from "../../assets/icons/select-graph.svg";
-import SwiftModal from "../CustomComponents/SwiftModal/SwiftModal";
-import Close from "../../assets/crossicon.svg";
-import Edit from "../../assets/icons/edit.svg";
-import CustomButton from "../CustomComponents/CustomButton/CustomButton";
-import { Alert } from "../CustomComponents/CustomAlert/CustomAlert";
-import ConfirmBox from "../CustomComponents/ConfirmBox/ConfirmBox";
+import React, { useEffect, useRef, useState } from "react";
+import "../../../css/Accounts/StocksDropdown.css";
+import ServerRequest from "../../../utils/ServerRequest";
+import Pulse from "../../Loader/Pulse";
+import { numberFormatMatrix } from "../../../utils/utilsFunction";
+import CustomNumberInput from "../../CustomComponents/CustomInput/CustomNumberInput";
+import Select from "../../../assets/icons/select-graph.svg";
+import SwiftModal from "../../CustomComponents/SwiftModal/SwiftModal";
+import Close from "../../../assets/crossicon.svg";
+import Edit from "../../../assets/icons/edit.svg";
+import CustomButton from "../../CustomComponents/CustomButton/CustomButton";
+import { Alert } from "../../CustomComponents/CustomAlert/CustomAlert";
+import ConfirmBox from "../../CustomComponents/ConfirmBox/ConfirmBox";
 
 const PortfolioStockesDropdown = ({
   isOpen,
@@ -20,7 +20,6 @@ const PortfolioStockesDropdown = ({
   selectedStock,
   inflow,
   setPortfolio_Value,
-  setTotalsum,
 }) => {
   const [data, setData] = useState({});
   const [loading, setloading] = useState(true);
@@ -40,6 +39,7 @@ const PortfolioStockesDropdown = ({
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
     : null;
+  const abortControllerRef = useRef(null);
 
   const updateTotalPropInvValue = (totalValue, index) => {
     setAllPropInvValue((prev) => ({
@@ -64,12 +64,19 @@ const PortfolioStockesDropdown = ({
 
   const fetchData = async (id, loader) => {
     try {
-      if (loader) setTotalsum(0);
       setloading(loader ? true : false);
+
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      abortControllerRef.current = new AbortController();
+      const signal = abortControllerRef.current.signal;
 
       const data = await ServerRequest({
         method: "get",
         URL: `/strategy/stockAllData?id=${id}`,
+        signal,
       });
 
       if (data.server_error) {
@@ -84,13 +91,12 @@ const PortfolioStockesDropdown = ({
       setPortfolioValue(data.data.portfolio_value);
       setTotalPortfolioValue(data.data.portfolio_value + parseFloat(inflow));
       setPortfolio_Value(data.data.portfolio_value + parseFloat(inflow));
-      if (loader) setTotalsum(data.data.totalPredictedPercentage);
       setTimeout(() => {
         setloading(false);
       }, 500);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setloading(false);
+      // setloading(false);
     }
   };
 
@@ -379,7 +385,7 @@ const PortfolioStockesDropdown = ({
                   "%"
                 )}
 
-                {getParaComponent("--", false, false, "")}
+                {/* {getParaComponent("--", false, false, "")} */}
                 {getParaComponent("", false, false, "")}
               </div>
             </div>
@@ -852,7 +858,7 @@ const Dropdown = ({
               "%"
             )}
             <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
-            <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p>
+            {/* <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column "></p> */}
           </div>
         </div>
       )}
@@ -1047,21 +1053,17 @@ const Dropdown = ({
                         true,
                         "%"
                       )} */}
-                      {getParaComponent(
+                      {/* {getParaComponent(
                         numberFormatMatrix(stock.predict_percentage * 100),
                         true,
                         true,
                         "%"
-                      )}
+                      )} */}
                       <p className="stocks-dropdown-option-change-1 portfolio-dropdown-column ">
                         <img
                           src={Select}
                           onClick={() =>
-                            onStockSelect(
-                              stock.symbol,
-                              stock.detailed_name,
-                              stock.predict_percentage * 100
-                            )
+                            onStockSelect(stock.symbol, stock.detailed_name)
                           }
                         />
                       </p>

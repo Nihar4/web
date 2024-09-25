@@ -7,6 +7,7 @@ function SwiftModal({
   opacity = 0.5,
   top = "10%",
   closeModal = () => { },
+  className
 }) {
   const modalRef = useRef(null);
 
@@ -27,7 +28,7 @@ function SwiftModal({
     <>
       {createPortal(
         <div
-          className="swift-modal"
+          className={`swift-modal ${className}`}
           style={{
             background: `rgba(140, 140, 140, ${opacity})`,
             paddingTop: `${top}`,

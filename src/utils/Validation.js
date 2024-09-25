@@ -8,6 +8,6 @@ export function validateEmail(email) {
 }
 
 export function checkLength(value, length) {
-    return value && value.length == length;
+    const stringValue = String(value);
+    return stringValue.length === length;
 }
-

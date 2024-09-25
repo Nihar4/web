@@ -11,11 +11,11 @@ import { scaleTime } from "d3-scale";
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import { fitWidth } from "react-stockcharts/lib/helper";
-import HoverTooltip from "../CustomComponents/CustomChartComponents/HoverTooltip";
-import { tooltipContent } from "../../exports/ChartProps";
-import PriceMarkerCoordinate from "../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
-import PriceEdgeIndicator from "../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
-import Pulse from "../Loader/Pulse";
+import HoverTooltip from "../../CustomComponents/CustomChartComponents/HoverTooltip";
+import { tooltipContent } from "../../../exports/ChartProps";
+import PriceMarkerCoordinate from "../../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
+import PriceEdgeIndicator from "../../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
+import Pulse from "../../Loader/Pulse";
 import {
   LabelAnnotation,
   Label,

@@ -1,6 +1,5 @@
 import React from "react";
-import "../../css/Accounts/Strategy.css";
-import ServerRequest from "../../utils/ServerRequest";
+import "../../../css/Accounts/Strategy.css";
 import { useNavigate } from "react-router-dom";
 
 const Strategy = ({

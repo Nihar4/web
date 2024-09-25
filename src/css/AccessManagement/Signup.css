@@ -34,21 +34,24 @@
 }
 
 .swift-signup-status-main .swift-signup-status-button {
-  height: 40px;
+  height: 35px;
   justify-content: center;
   padding: 10px 30px;
   flex-shrink: 0;
   border-radius: 35px;
-  background: #000fff;
   backdrop-filter: blur(2px);
   color: #fff;
   font-size: 13px;
   font-style: normal;
-  font-weight: var(--font-weight-heavy);
   line-height: normal;
   letter-spacing: -0.7px;
   border: none;
   cursor: pointer;
+  background: var(--btn-background);
+  font-size: 14px;
+  color: var(--btn-text);
+  font-weight: var(--font-weight-medium);
+
 }
 
 .swift-signup-status-main .swift-signup-status-info-2 {
@@ -58,18 +61,21 @@
   justify-content: center;
   padding-top: 23px;
 }
+
 .swift-signup-status-main .open-dashboard-btn {
   /* padding-top: 115px; */
   width: 100%;
   justify-content: left;
   margin: 0 !important;
-  
+
 }
+
 .swift-signup-status-main .swift-signup-status-info {
   width: 50%;
   margin: auto;
 }
-.swift-strategy-created-main{
+
+.swift-strategy-created-main {
   overflow-x: hidden !important;
 }
 

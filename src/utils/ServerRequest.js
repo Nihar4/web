@@ -22,9 +22,13 @@ const ServerRequest = async ({
         });
         return result.data;
     } catch (error) {
+        if (error.code == "ERR_CANCELED") {
+            console.log("cancelled")
+            throw error;
+        }
         return {
             server_error: true,
-            message: error.response.data.message || error.message
+            message: error?.response?.data?.message || error?.message
         };
     }
 };

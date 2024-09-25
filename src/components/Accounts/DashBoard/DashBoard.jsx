@@ -1,16 +1,17 @@
 import React from "react";
 import CustomButton from "../../CustomComponents/CustomButton/CustomButton";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import AssetAllocation from "../AssetAllocation";
-import { AddStrategy, AddStrategyMain, StrategyCreated } from "../AddStrategy";
-import Jobqueu from "../Jobqueu";
-import EdurekaHedge from "../EdurekaHedge";
+import AssetAllocation from "../AssetManagement/AssetAllocation";
+import PortfolioManagement from "../PortfolioManagement/PortfolioManagement";
 import {
-  AddStrategyMain_Eureka,
-  StrategyCreated_Eureka,
-} from "../AddStrategyEureka";
-import PortfolioManagement from "../../PortfolioManagement/PortfolioManagement";
-import { AddStrategyPortfolio } from "../../PortfolioManagement/AddStrategyPortfolio";
+  AddStrategyPortfolio,
+  PortfolioStrategyCreated,
+} from "../PortfolioManagement/AddStrategyPortfolio";
+import {
+  AddStrategyMain,
+  StrategyCreated,
+} from "../AssetManagement/AddStrategy";
+import JobQueue from "../JobQueue/JobQueue";
 
 const Dashboard = () => {
   const email_id = localStorage.getItem("userData")
@@ -32,14 +33,18 @@ const Dashboard = () => {
         path="/dashboard/portfolio-management/addstrategy/"
         element={<AddStrategyPortfolio />}
       />
+      <Route
+        path="/dashboard/portfolio-management/strategy"
+        element={<PortfolioStrategyCreated />}
+      />
 
       <Route path="/dashboard" element={<DashboardMain />} />
       <Route path="/dashboard/addstrategy/:id" element={<AddStrategyMain />} />
       <Route path="/dashboard/addstrategy/" element={<AddStrategyMain />} />
       <Route path="/dashboard/strategy" element={<StrategyCreated />} />
-      <Route path="/dashboard/jobqueue" element={<Jobqueu />} />
-      <Route path="/dashboard/edurekahedge" element={<EdurekaHedge />} />
-      <Route
+      <Route path="/dashboard/jobqueue" element={<JobQueue />} />
+      {/* <Route path="/dashboard/edurekahedge" element={<EurekaHedge />} /> */}
+      {/* <Route
         path="/dashboard/eureka/addstrategy/:id"
         element={<AddStrategyMain_Eureka />}
       />
@@ -50,7 +55,7 @@ const Dashboard = () => {
       <Route
         path="/dashboard/eureka/strategy/"
         element={<StrategyCreated_Eureka />}
-      />
+      /> */}
     </Routes>
   );
 };

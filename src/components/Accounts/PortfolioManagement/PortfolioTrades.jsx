@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import ServerRequest from "../../utils/ServerRequest";
-import Pulse from "../Loader/Pulse";
+import ServerRequest from "../../../utils/ServerRequest";
+import Pulse from "../../Loader/Pulse";
 import moment from "moment";
-import "../../css/Accounts/AddStrategy.css";
-import { numberFormatMatrix } from "../../utils/utilsFunction";
-import CustomButton from "../CustomComponents/CustomButton/CustomButton";
-import { Alert } from "../CustomComponents/CustomAlert/CustomAlert";
-import CustomNumberInput from "../CustomComponents/CustomInput/CustomNumberInput";
-import SwiftModal from "../CustomComponents/SwiftModal/SwiftModal";
-import Close from "../../assets/crossicon.svg";
-import CustomSelect from "../CustomComponents/CustomSelect/CustomSelect";
+import "../../../css/Accounts/AddStrategy.css";
+import { numberFormatMatrix } from "../../../utils/utilsFunction";
+import CustomButton from "../../CustomComponents/CustomButton/CustomButton";
+import { Alert } from "../../CustomComponents/CustomAlert/CustomAlert";
+import CustomNumberInput from "../../CustomComponents/CustomInput/CustomNumberInput";
+import SwiftModal from "../../CustomComponents/SwiftModal/SwiftModal";
+import Close from "../../../assets/crossicon.svg";
 import * as XLSX from "xlsx";
-import UploadFormat from "../../assets/files/UploadFormat.xlsx";
+import UploadFormat from "../../../assets/files/UploadFormat.xlsx";
 
 const PortfolioTrades = ({ id }) => {
   const [tradeData, SetTradeData] = useState([]);
@@ -27,12 +26,23 @@ const PortfolioTrades = ({ id }) => {
     ? localStorage.getItem("userData")
     : null;
 
+  const abortControllerRef = useRef(null);
+
   const fetchTradeData = async (strategyID) => {
     try {
       setloading(true);
+
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      abortControllerRef.current = new AbortController();
+      const signal = abortControllerRef.current.signal;
+
       const data = await ServerRequest({
         method: "get",
         URL: `/strategy/portfolio/trades?id=${strategyID}`,
+        signal,
       });
 
       if (data.server_error) {

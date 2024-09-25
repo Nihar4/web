@@ -1,22 +1,23 @@
 .swift-accounts-strategy {
   width: 97%;
   flex-shrink: 0;
-  border-radius: 10px;
-  border: 1px solid rgba(1, 22, 39, 0.05);
+  /* border-radius: 10px; */
+  /* border: 1px solid rgba(1, 22, 39, 0.05); */
   padding: 10px 13px;
   cursor: pointer;
   /* margin-right: 10px; */
+  border-bottom: 0.5px solid #CCCCCC;
 }
 
 .swift-accounts-strategy-active {
-  border-radius: 10px;
+  /* border-radius: 10px; */
   cursor: pointer;
   flex-shrink: 0;
   padding: 10px 13px;
   width: 97%;
   background: #ffffff;
-  box-shadow: 1px 3px 5px #e8e8e825;
-  border: 1px solid #e8e8e8;
+  /* box-shadow: 1px 3px 5px #e8e8e825; */
+  /* border: 1px solid #e8e8e8; */
   color: white;
 }
 

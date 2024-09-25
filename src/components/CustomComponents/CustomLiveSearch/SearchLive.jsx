@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import CustomLiveSearch from "../CustomComponents/CustomLiveSearch/CustomLiveSearch";
-import ServerRequest from "../../utils/ServerRequest";
+import CustomLiveSearch from "./CustomLiveSearch";
+import ServerRequest from "../../../utils/ServerRequest";
 
 const SearchLive = ({ name, onInputChange, value }) => {
   const [selectedValue, setSelectedValue] = useState("");

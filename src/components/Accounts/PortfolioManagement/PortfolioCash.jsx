@@ -1,20 +1,31 @@
-import React, { useEffect, useState } from "react";
-import ServerRequest from "../../utils/ServerRequest";
-import Pulse from "../Loader/Pulse";
+import React, { useEffect, useRef, useState } from "react";
+import ServerRequest from "../../../utils/ServerRequest";
+import Pulse from "../../Loader/Pulse";
 import moment from "moment";
-import "../../css/Accounts/AddStrategy.css";
-import { numberFormatMatrix } from "../../utils/utilsFunction";
+import "../../../css/Accounts/AddStrategy.css";
+import { numberFormatMatrix } from "../../../utils/utilsFunction";
 
 const PortfolioCash = ({ id }) => {
   const [cashData, SetCashData] = useState([]);
   const [loading, setloading] = useState(true);
 
+  const abortControllerRef = useRef(null);
+
   const fetchTradeData = async (strategyID) => {
     try {
       setloading(true);
+
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      abortControllerRef.current = new AbortController();
+      const signal = abortControllerRef.current.signal;
+
       const data = await ServerRequest({
         method: "get",
         URL: `/strategy/portfolio/cash?id=${strategyID}`,
+        signal,
       });
 
       if (data.server_error) {

@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import ServerRequest from "../../../utils/ServerRequest";
 import "../CustomSearch/CustomSearch.css";
 
-const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
+const CustomLiveSearchBelow = ({ onItemClick, prevvalue, filterArray }) => {
   const [searchQuery, setSearchQuery] = useState(prevvalue);
   const [filteredResults, setFilteredResults] = useState([]);
   // const [name, setName] = useState("name");
@@ -11,6 +11,7 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
   const handleInputChange = async (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
+    onItemClick("");
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -26,7 +27,13 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
           URL: `/access/getsearchlive?search=${query}`,
           signal,
         });
-        setFilteredResults(response);
+        let filteredResults = response;
+        if (filterArray && filterArray.length > 0) {
+          filteredResults = response.filter(
+            (item) => !filterArray.includes(item.symbol)
+          );
+        }
+        setFilteredResults(filteredResults);
       } else {
         setFilteredResults([]);
       }
@@ -64,16 +71,17 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
         onBlur={handleInputBlur}
         placeholder="Search..."
         className="search-input swift-custom-input-box swift-addstrategy-underlying-input"
+        style={{ width: "85%" }}
       />
       {searchQuery && filteredResults && filteredResults.length > 0 && (
-        <ul className={`results-list above`}>
+        <ul className={`results-list below`} style={{ width: "100%" }}>
           {filteredResults.map((result) => (
             <li key={result.code} onClick={() => handleItemClick(result)}>
-              <p style={{ width: "60px" }}>
+              <p style={{ width: "25%" }}>
                 {result.symbol && result.symbol.split(".")[0]}
               </p>
 
-              <p className="result-list-name" style={{ width: "200px" }}>
+              <p className="result-list-name" style={{ width: "50%" }}>
                 {/* {result.longname && result.longname.length > 30
                   ? result.longname.slice(0, 30) + "..."
                   : result.longname
@@ -83,7 +91,7 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
                   : result.shortname} */}
                 {result.longname ? result.longname : result.shortname}
               </p>
-              <p style={{ width: "80px" }}>{result.exchange}</p>
+              <p style={{ width: "25%" }}>{result.exchange}</p>
             </li>
           ))}
         </ul>
@@ -92,4 +100,4 @@ const CustomLiveSearch = ({ onItemClick, prevvalue }) => {
   );
 };
 
-export default CustomLiveSearch;
+export default CustomLiveSearchBelow;

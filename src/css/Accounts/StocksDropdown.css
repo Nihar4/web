@@ -13,7 +13,7 @@
   border-bottom: 0.5px solid #0116271a;
   background: #fafafa;
   padding: 10px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 
 .stocks-dropdown-header-right {
@@ -56,7 +56,7 @@
   padding: 10px 10px;
   margin: 3px 0;
   background: #ffffff;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   border-bottom: 1px solid #f1f1f1 !important;
   font-weight: 500;
 }
@@ -69,7 +69,7 @@
   padding: 10px 10px;
   margin: 3px 0;
   background: #fafafa;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   border-bottom: 1px solid #f1f1f1 !important;
   font-weight: 500;
 }
@@ -108,7 +108,7 @@
   line-height: 15px;
   /* 153.846% */
   letter-spacing: -0.65px;
-  width: 35%;
+  width: 30%;
 }
 
 .stocks-dropdown-option-change {
@@ -124,7 +124,7 @@
   justify-content:space-between; */
 
   display: flex;
-  width: 65%;
+  width: 70%;
   /* column-gap: 15px; */
   justify-content: space-between;
   color: var(--text-color);

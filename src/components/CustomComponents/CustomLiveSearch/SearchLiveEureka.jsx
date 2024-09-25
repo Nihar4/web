@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import CustomLiveSearch from "../CustomComponents/CustomLiveSearch/CustomLiveSearch";
-import ServerRequest from "../../utils/ServerRequest";
-import CustomLiveSearchEureka from "../CustomComponents/CustomLiveSearch/CustomLiveSearchEureka";
+import CustomLiveSearch from "./CustomLiveSearch";
+import ServerRequest from "../../../utils/ServerRequest";
+import CustomLiveSearchEureka from "./CustomLiveSearchEureka";
 
 const SearchLiveEureka = ({ name, onInputChange, value }) => {
   const [selectedValue, setSelectedValue] = useState("");
@@ -31,11 +31,12 @@ const SearchLiveEureka = ({ name, onInputChange, value }) => {
   // }, [selectedValue]);
 
   const handleItemClick = (value) => {
-
     setSelectedValue(value);
     onInputChange(name, value);
   };
-  return <CustomLiveSearchEureka onItemClick={handleItemClick} prevvalue={value} />;
+  return (
+    <CustomLiveSearchEureka onItemClick={handleItemClick} prevvalue={value} />
+  );
 };
 
 export default SearchLiveEureka;

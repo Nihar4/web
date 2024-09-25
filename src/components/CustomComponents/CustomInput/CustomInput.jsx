@@ -36,7 +36,6 @@ const CustomInput = ({
       inputValue = parseFloat(inputValue);
     }
     onInputChange && onInputChange(name, inputValue);
-    setValue1(inputValue);
   };
 
   return (

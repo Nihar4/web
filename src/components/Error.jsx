@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-import "./Error.css"
+import { Link } from "react-router-dom";
+import "./Error.css";
 
 const Error = () => {
   return (
@@ -16,7 +16,7 @@ const Error = () => {
           <div className="notfound__buttons">
             <button>
               {/* <Link to="/">Go to Home</Link> */}
-              <a href="https://www.swiftfolios.co.uk/">Go to Home</a>
+              <a href="https://www.altsinsight.com/">Go to Home</a>
             </button>
           </div>
         </div>

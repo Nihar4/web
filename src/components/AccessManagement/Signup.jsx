@@ -131,7 +131,7 @@ const SignupMain = () => {
       const data1 = await ServerRequest({
         method: "post",
         URL: `/access/validate-otp`,
-        data: { email_id: formValues["email"], otp: formValues["otp"] },
+        data: { email_id: formValues["email"], otp: String(formValues["otp"]) },
       });
       if (data1.server_error) {
         setError(true);
@@ -237,6 +237,8 @@ const SignupMain = () => {
           cursor: isNextButtonDisabled ? "not-allowed" : "pointer",
           background: isNextButtonDisabled ? "#000fff59" : "#000fff",
           // background: isNextButtonDisabled ? "#F1F1F1" : "#000fff",
+          color: "#fff",
+          fontSize: "14px",
         }}
       />
     </div>
@@ -281,7 +283,9 @@ const SignupPin = () => {
         } else {
           const data1 = await ServerRequest({
             method: "get",
-            URL: `/access/signup/set-pin?email_id=${email}&pin=${formValues["pin"]}`,
+            URL: `/access/signup/set-pin?email_id=${email}&pin=${String(
+              formValues["pin"]
+            )}`,
           });
 
           if (data1.server_error) {
@@ -370,6 +374,12 @@ const SignupPin = () => {
         text="Sign-up"
         classname="swift-login-form-btn"
         onClick={handleSubmit}
+        style={{
+          background: "#000fff",
+          color: "#fff",
+          fontSize: "14px",
+          cursor: "pointer",
+        }}
       />
     </div>
   );
@@ -378,7 +388,7 @@ const SignupPin = () => {
 const SignupStatus = () => {
   // const navigate = useNavigate();
   const clickHandler = () => {
-    window.location.href = "https://www.swiftfolios.co.uk/";
+    window.location.href = "https://www.altsinsight.com/";
   };
   return (
     <div className="swift-signup-status-main">

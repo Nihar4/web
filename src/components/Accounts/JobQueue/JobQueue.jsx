@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
-import BackButton from "../AccessManagement/BackButton";
 import { useLocation, useNavigate } from "react-router-dom";
-import ServerRequest from "../../utils/ServerRequest";
+import ServerRequest from "../../../utils/ServerRequest";
 import moment from "moment-timezone";
-import Pulse from "../Loader/Pulse";
+import Pulse from "../../Loader/Pulse";
 
-const Jobqueu = () => {
+const JobQueue = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const email_id = location.state ? location.state.email_id : null;
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
     : null;
@@ -42,21 +39,12 @@ const Jobqueu = () => {
 
   const clickHandler = () => {
     if (previousPath) {
-      if (
-        previousPath === "/accounts/dashboard/asset" ||
-        previousPath.startsWith("/accounts/dashboard/strategy") ||
-        previousPath.startsWith("/accounts/dashboard/addstrategy")
-      ) {
-        // currentPage = "Multi-asset";
+      if (previousPath == "Regulated") {
         navigate("/accounts/dashboard/asset", {
           state: { email_id: email_id },
         });
-      } else if (
-        previousPath === "/accounts/dashboard/edurekahedge" ||
-        previousPath.startsWith("/accounts/dashboard/eureka/addstrategy") ||
-        previousPath.startsWith("/accounts/dashboard/eureka/strategy")
-      ) {
-        navigate("/accounts/dashboard/edurekahedge", {
+      } else if (previousPath == "portfolio") {
+        navigate("/accounts/dashboard/portfolio-management", {
           state: { email_id: email_id },
         });
       } else {
@@ -109,11 +97,9 @@ const Jobqueu = () => {
       fetchDataAndSetState();
     }
   }, [email_id]);
-  console.log(moment.tz.guess(true));
 
   return !loading ? (
     <div className="swift-addstrategy-main">
-      <Header email_id={email_id} setloading={setloading} />
       <div className="swift-addstrategy-content">
         <div className="swift-addstrategy-content-wrap job-queue-wrap">
           {/* <BackButton /> */}
@@ -206,4 +192,4 @@ const Jobqueu = () => {
   );
 };
 
-export default Jobqueu;
+export default JobQueue;

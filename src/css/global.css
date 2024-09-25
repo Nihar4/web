@@ -18,7 +18,7 @@ body {
 }
 
 #root {
-  background: #f1f1f1;
+  background: #ffffff;
   height: 100%;
   width: 100%;
 }
@@ -27,7 +27,9 @@ body {
   /* --text-color: #011627b3; */
   --white: #fff;
   --text-color: #011627;
-  --font-btn: 14px;
+  --btn-background: #E8E8E8;
+  --btn-text: #011627;
+  --font-btn: 12px;
   --font-large: 16px;
   --font-heading: 13px;
   --font-extra-small: 11px;

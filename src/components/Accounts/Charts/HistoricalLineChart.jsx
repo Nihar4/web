@@ -11,35 +11,31 @@ import { scaleTime } from "d3-scale";
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import { fitWidth } from "react-stockcharts/lib/helper";
-import HoverTooltip from "../CustomComponents/CustomChartComponents/HoverTooltip";
-import { tooltipContent } from "../../exports/ChartProps";
-import PriceMarkerCoordinate from "../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
-import PriceEdgeIndicator from "../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
-import Pulse from "../Loader/Pulse";
+import HoverTooltip from "../../CustomComponents/CustomChartComponents/HoverTooltip";
+import { tooltipContent } from "../../../exports/ChartProps";
+import PriceMarkerCoordinate from "../../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
+import PriceEdgeIndicator from "../../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
+import Pulse from "../../Loader/Pulse";
 import {
   LabelAnnotation,
   Label,
   Annotate,
 } from "react-stockcharts/lib/annotation";
 
-const LineChart = ({
+const HistoricalLineChart = ({
   data: initialData,
   width,
   ratio,
   height,
   duration,
   loading2,
-  loading1,
   name,
-  lastupdated: updatedDate,
   error,
 }) => {
-  const lastupdated = new Date(updatedDate).toISOString().split("T")[0];
   const [xevents, setXevents] = useState([
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     new Date(),
   ]);
-  const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setloading] = useState(true);
   let lastDate;
 
@@ -235,78 +231,9 @@ const LineChart = ({
           <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
 
           <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close1 || d.close
-                : undefined
-            }
-            stroke="rgb(248 74 167 / 30%)"
-            highlightOnHover
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close2 || d.close
-                : undefined
-            }
-            stroke="rgb(248 74 167 / 30%)"
-            highlightOnHover
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close3 || d.close
-                : undefined
-            }
-            stroke="rgb(248 74 167 / 30%)"
-            highlightOnHover
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close4 || d.close
-                : undefined
-            }
-            stroke="rgb(248 74 167 / 30%)"
-            highlightOnHover
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close5 || d.close
-                : undefined
-            }
-            stroke="rgb(248 74 167 / 30%)"
-            highlightOnHover
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated)
-                ? d.close6 || d.close
-                : undefined
-            }
-            stroke="#f84aa7"
-            strokeWidth={3}
-            strokeDasharray={"Solid"}
-            highlightOnHover
-          />
-
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) <= new Date(lastupdated) ? d.close : undefined
-            }
+            yAccessor={(d) => d.close}
             strokeWidth={3}
             stroke="#000fff"
-          />
-          <LineSeries
-            yAccessor={(d) =>
-              new Date(d.date) >= new Date(lastupdated) &&
-              new Date(d.date) <= new Date()
-                ? d.close
-                : undefined
-            }
-            strokeWidth={3}
-            stroke="#cccccc"
           />
 
           <HoverTooltip
@@ -319,70 +246,12 @@ const LineChart = ({
             stroke="none"
             isLabled={false}
             isInline={true}
-            lastDate={lastDate.toISOString()}
+            lastDate={new Date().toISOString()}
           />
-
-          {/* <PriceEdgeIndicator
-          orient="left"
-          edgeAt="right"
-          itemType="last"
-          // yAccessor={(d) => (d.close ? d.close : d.close6)}
-          yAccessor={(d) => (new Date(d.date) <= lastDate ? (d.close ? d.close : d.close6) : undefined)}
-          displayFormat={format(".2f")}
-          arrowWidth={0}
-          fill="#efefef"
-          fontSize={11}
-          rectWidth={70}
-          rectHeight={22}
-          textFill={"rgba(1, 22, 39, 0.70)"}
-          strokeWidth={3}
-          lineOpacity={0}
-          opacity={1}
-          rectRadius={14}
-          fontWeight="700"
-          dx={1}
-        /> */}
         </Chart>
-
-        {/* <CrossHairCursor /> */}
       </ChartCanvas>
 
       <div className="x-axis-label">{name}</div>
-      <div
-        className="x-axis-label"
-        style={{ display: "flex", columnGap: "10px" }}
-      >
-        <div style={{ display: "flex", columnGap: "5px" }}>
-          <div
-            style={{
-              width: "20px",
-              height: "15px",
-              backgroundColor: "#000fff",
-            }}
-          ></div>
-          Actual data till run date
-        </div>
-        <div style={{ display: "flex", columnGap: "5px" }}>
-          <div
-            style={{
-              width: "20px",
-              height: "15px",
-              backgroundColor: "#cccccc",
-            }}
-          ></div>
-          Actual data since run date
-        </div>
-        <div style={{ display: "flex", columnGap: "5px" }}>
-          <div
-            style={{
-              width: "20px",
-              height: "15px",
-              backgroundColor: "#f84aa7",
-            }}
-          ></div>
-          Predicted path
-        </div>
-      </div>
     </>
   ) : (
     <div className="swift-aseet-loader">
@@ -391,4 +260,4 @@ const LineChart = ({
   );
 };
 
-export default LineChart;
+export default HistoricalLineChart;

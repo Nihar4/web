@@ -11,14 +11,14 @@ import { scaleTime } from "d3-scale";
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import { fitWidth } from "react-stockcharts/lib/helper";
-import HoverTooltip from "../CustomComponents/CustomChartComponents/HoverTooltip";
+import HoverTooltip from "../../CustomComponents/CustomChartComponents/HoverTooltip";
 import {
   PerformancetooltipContent,
   tooltipContent,
-} from "../../exports/ChartProps";
-import PriceMarkerCoordinate from "../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
-import PriceEdgeIndicator from "../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
-import Pulse from "../Loader/Pulse";
+} from "../../../exports/ChartProps";
+import PriceMarkerCoordinate from "../../CustomComponents/CustomChartComponents/PriceMaker/PriceMarkerCoordinate";
+import PriceEdgeIndicator from "../../CustomComponents/CustomChartComponents/EdgeIndicator/PriceEdgeIndicator";
+import Pulse from "../../Loader/Pulse";
 import {
   LabelAnnotation,
   Label,
@@ -26,7 +26,7 @@ import {
 } from "react-stockcharts/lib/annotation";
 import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
 import { last } from "react-stockcharts/lib/utils";
-import PerformanceHoverTooltip from "../CustomComponents/CustomChartComponents/PerformanceHoverTooltip";
+import PerformanceHoverTooltip from "../../CustomComponents/CustomChartComponents/PerformanceHoverTooltip";
 
 const PerformanceChart = ({ data: initialData, ratio, loading2 }) => {
   const vwToPixels = (vw) => {
