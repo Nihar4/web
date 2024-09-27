@@ -6,7 +6,7 @@
 
 .swift-accounts-sub-menu>div {
     display: flex;
-    column-gap: 20px;
+    column-gap: 0px;
 }
 
 .swift-accounts-sub-menu p {
@@ -142,7 +142,7 @@
     justify-content: flex-end;
     padding-right: 20px;
     padding-bottom: 10px;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     /* margin-top: -20px; */
 }
 
@@ -268,7 +268,7 @@
     height: 100vh;
     column-gap: 14px;
     width: 350px;
-    border-radius: 10px;
+    border-radius: 10px 0 0 10px;
     padding: 10px;
     padding-top: 0px;
     display: flex;

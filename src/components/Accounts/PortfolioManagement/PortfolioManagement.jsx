@@ -417,11 +417,22 @@ const PortfolioManagement = () => {
                     }`}
                     style={{
                       width: "100%",
-                      rowGap: current_tab == "trade" ? "0px" : "20px",
+                      rowGap: "15px",
                     }}
                   >
                     <div className="swift-accounts-sub-menu">
                       <div>
+                        {/* <CustomButton
+                          text="Portfolio"
+                          // classname="swift-accounts-content-button"
+                          className={
+                            current_tab === "portfolio"
+                              ? "swift-accounts-content-button active"
+                              : "swift-accounts-content-button"
+                          }
+                          onClick={() => setCurrent_Tab("portfolio")}
+                        /> */}
+
                         <p
                           className={
                             current_tab === "portfolio" ? "active" : ""
@@ -445,7 +456,7 @@ const PortfolioManagement = () => {
                       </div>
                       <p
                         onClick={() => setShowPortfolio(true)}
-                        style={{ fontWeight: "700" }}
+                        className="active"
                       >
                         Select Portfolio
                       </p>

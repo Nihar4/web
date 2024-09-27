@@ -4,22 +4,28 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  row-gap: 14px;
+  /* row-gap: 5px; */
 }
 
 .swift-accounts-main {
   width: 100%;
-  height: calc(100% - 5% - 14px);
+  height: calc(100% - 40px - 30px);
   overflow-x: hidden;
   overflow-y: auto;
   border-top: 0.5px solid #CCCCCC;
+  border-bottom: 0.5px solid #CCCCCC;
+}
+
+.swift-small-screen-container {
+  display: flex;
+  margin: auto;
 }
 
 .swift-accounts-content {
   height: 100%;
-  padding-left: 21px;
-  padding-right: 21px;
-  padding-bottom: 22px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* padding-bottom: 10px; */
   display: flex;
   /* column-gap: 14px; */
   flex: 1;
@@ -325,25 +331,38 @@ width: 400px !important;
 .swift-accounts-content-stocks-right>p {
   text-align: center;
   cursor: pointer;
-  background: #e8e8e8;
   padding: 5px 15px;
   border-radius: 35px;
   font-weight: 600;
-  color: #011627;
-  font-size: var(--font-small);
-  letter-spacing: -0.5px;
-}
-
-
-.swift-accounts-content-stocks-right p {
   font-size: var(--font-small);
   font-style: normal;
   line-height: normal;
   letter-spacing: -0.65px;
-  cursor: pointer;
   background: var(--btn-background);
   color: var(--btn-text);
 }
+
+.swift-accounts-sub-menu p {
+  text-align: center;
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 35px;
+  font-weight: 600;
+  font-size: var(--font-small);
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.65px;
+  /* background: var(--btn-background); */
+  color: var(--btn-text);
+}
+
+.swift-accounts-sub-menu .active {
+  font-weight: 700;
+  background: var(--btn-background);
+}
+
+.swift-accounts-content-stocks-right p,
+.swift-accounts-sub-menu p {}
 
 .swift-accounts-content-stocks-header {
   display: flex;

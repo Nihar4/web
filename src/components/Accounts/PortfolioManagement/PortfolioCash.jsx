@@ -68,8 +68,12 @@ const PortfolioCash = ({ id }) => {
                 <tr key={index}>
                   <td>{item.strategy_id}</td>
                   <td>{item.description}</td>
-                  <td>{numberFormatMatrix(item.amount, 0)}</td>
-                  <td>{numberFormatMatrix(item.balance, 0)}</td>
+                  <td className={item.amount < 0 ? "red-text" : ""}>
+                    {numberFormatMatrix(item.amount, 0)}
+                  </td>
+                  <td className={item.balance < 0 ? "red-text" : ""}>
+                    {numberFormatMatrix(item.balance, 0)}
+                  </td>
                   <td>
                     {moment
                       .tz(

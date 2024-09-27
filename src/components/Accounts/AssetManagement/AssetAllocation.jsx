@@ -425,8 +425,14 @@ const AssetAllocation = () => {
                       <Pulse />
                     </div>
                   ) : selectedStock && selectedStock?.status == "Pending" ? (
-                    <div className="analysis-pending">
-                      <p className="analysis-pending-heading">
+                    <div
+                      className="analysis-pending"
+                      style={{ width: "auto", margin: "0" }}
+                    >
+                      <p
+                        className="analysis-pending-heading"
+                        style={{ fontWeight: "500" }}
+                      >
                         Analysis Pending
                       </p>
                     </div>

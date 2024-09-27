@@ -1,0 +1,16 @@
+.swift-accounts-footer {
+    display: flex;
+    flex-direction: row;
+    /* border: 2px solid red; */
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 30px;
+    justify-content: space-between;
+    height: 30px;
+}
+
+.swift-accounts-footer-left {
+    font-size: 11px;
+    letter-spacing: -0.05px;
+}

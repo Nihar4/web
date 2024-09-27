@@ -171,6 +171,22 @@ const LineChart = ({
     initialData = [...initialData, ...newData];
   }
 
+  const lineSeriesArray = Array.from({ length: 10 }, (_, index) => {
+    const closeKey = `close${index + 1}`;
+    return (
+      <LineSeries
+        key={closeKey}
+        yAccessor={(d) =>
+          new Date(d.date) >= new Date(lastupdated)
+            ? d[closeKey] || d.close
+            : undefined
+        }
+        stroke="rgb(248 74 167 / 30%)"
+        highlightOnHover
+      />
+    );
+  });
+
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
       <ChartCanvas
@@ -234,7 +250,8 @@ const LineChart = ({
           />
           <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
 
-          <LineSeries
+          {lineSeriesArray}
+          {/* <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= new Date(lastupdated)
                 ? d.close1 || d.close
@@ -278,11 +295,11 @@ const LineChart = ({
             }
             stroke="rgb(248 74 167 / 30%)"
             highlightOnHover
-          />
+          /> */}
           <LineSeries
             yAccessor={(d) =>
               new Date(d.date) >= new Date(lastupdated)
-                ? d.close6 || d.close
+                ? d.close11 || d.close
                 : undefined
             }
             stroke="#f84aa7"

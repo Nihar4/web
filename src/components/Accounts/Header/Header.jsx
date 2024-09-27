@@ -20,6 +20,18 @@ const Header = () => {
     window.location.href = `mailto:hello@swiftfolios.com`;
   };
 
+  useEffect(() => {
+    const currentPath = window.location.href;
+    console.log("Current URL path:", currentPath);
+    if (currentPath.includes("asset")) {
+      setPath("Regulated");
+    } else if (currentPath.includes("portfolio")) {
+      setPath("portfolio");
+    } else if (currentPath.includes("jobqueue")) {
+      setPath("jobqueue");
+    }
+  }, [window.location.href]);
+
   const logOutHandler = () => {
     ConfirmBox({
       title: "Logout",
@@ -56,18 +68,15 @@ const Header = () => {
   const onDropdownSelect = (option) => {
     if (option == "Regulated") {
       setDropdownOption("Regulated");
-      setPath("Regulated");
       navigate("/accounts/dashboard/asset", {
         state: { email_id: email_id },
       });
     } else if (option == "portfolio") {
-      setPath("portfolio");
       navigate("/accounts/dashboard/portfolio-management", {
         state: { email_id: email_id },
       });
     } else if (option == "jobqueue") {
       let currentPath = path;
-      setPath("jobqueue");
       navigate("/accounts/dashboard/jobqueue", {
         state: { email_id: email_id, previousPath: currentPath },
       });
@@ -78,8 +87,8 @@ const Header = () => {
     <div className="swift-accounts-header">
       <div className="swift-accounts-header-left">
         <p className="swift-accounts-heading">
-          <i style={{ fontWeight: 400 }}>swift</i>
-          folios
+          <i style={{ fontWeight: 400 }}>alts</i>
+          insight
         </p>
         <CustomDropdown
           options={["Regulated"]}
@@ -96,31 +105,22 @@ const Header = () => {
           onSelect={onDropdownSelect}
           default_value={dropdownOption}
         />
-
-        {/* {display && (
-          <CustomStrategyDropdown
-            options={Strategies}
-            style={{
-              width: "auto",
-              color: "var(--text-color)",
-              fontSize: "var(--font-heading)",
-              fontStyle: "normal",
-              fontWeight: "var(--font-weight-heavy)",
-              lineHeight: "normal",
-              letterSpacing: "-0.7px",
-              cursor: "pointer",
-            }}
-            onSelect={onDropdownStrategySelect}
-            default_value={Strategies[selectedIndex]}
-            email={email_id}
-          />
-        )} */}
-        <p
-          className="swift-accounts-heading-2"
-          onClick={() => onDropdownSelect("portfolio")}
-        >
-          Portfolio Management
-        </p>
+        {path != "Regulated" && (
+          <p
+            className="swift-accounts-heading-2"
+            onClick={() => onDropdownSelect("Regulated")}
+          >
+            Watchlist
+          </p>
+        )}
+        {path != "portfolio" && (
+          <p
+            className="swift-accounts-heading-2"
+            onClick={() => onDropdownSelect("portfolio")}
+          >
+            Portfolio Management
+          </p>
+        )}
       </div>
       <div className="swift-accounts-header-right">
         <div className="swift-accounts-header-details-2">
@@ -137,9 +137,9 @@ const Header = () => {
             <p>Log Out</p>
           </div>
 
-          <div className="swift-accounts-header-logos">
+          {/* <div className="swift-accounts-header-logos">
             <div className="faq" onClick={handleclick}></div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

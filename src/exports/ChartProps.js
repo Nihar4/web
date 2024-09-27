@@ -106,7 +106,7 @@ const tooltipContent = (range) => {
           label: "close",
           value: currentItem.close
             ? nf(currentItem.close)
-            : nf(currentItem.close6),
+            : nf(currentItem.close11),
         },
       ],
     };

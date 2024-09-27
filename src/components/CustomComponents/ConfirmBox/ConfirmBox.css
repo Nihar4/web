@@ -46,6 +46,7 @@
     font-size: 13px;
     font-weight: 600;
     color: var(--font-primary);
+    letter-spacing: -0.05px;
 }
 
 .confirm-box-header .confirm-box-close {
@@ -61,6 +62,7 @@
 
 .confirm-box-body .confirm-box-description {
     font-size: 13px;
+    letter-spacing: -0.05px;
 }
 
 .confirm-box-container .confirm-box-footer {
@@ -80,6 +82,7 @@
     font-size: 12px;
     font-weight: 700;
     color: var(--font-primary);
+    letter-spacing: -0.05px;
 }
 
 .confirm-box-footer button:hover {

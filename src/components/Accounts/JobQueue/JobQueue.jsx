@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ServerRequest from "../../../utils/ServerRequest";
 import moment from "moment-timezone";
 import Pulse from "../../Loader/Pulse";
+import CustomButton from "../../CustomComponents/CustomButton/CustomButton";
 
 const JobQueue = () => {
   const navigate = useNavigate();
@@ -38,25 +39,9 @@ const JobQueue = () => {
   };
 
   const clickHandler = () => {
-    if (previousPath) {
-      if (previousPath == "Regulated") {
-        navigate("/accounts/dashboard/asset", {
-          state: { email_id: email_id },
-        });
-      } else if (previousPath == "portfolio") {
-        navigate("/accounts/dashboard/portfolio-management", {
-          state: { email_id: email_id },
-        });
-      } else {
-        navigate("/accounts/dashboard/asset", {
-          state: { email_id: email_id },
-        });
-      }
-    } else {
-      navigate(-1, {
-        state: { email_id: email_id },
-      });
-    }
+    navigate("/accounts/dashboard/asset", {
+      state: { email_id: email_id },
+    });
   };
 
   useEffect(() => {
@@ -172,12 +157,17 @@ const JobQueue = () => {
                 </div>
               </div>
               <div className="swift-signup-status-info-2 open-dashboard-btn ">
-                <button
+                <CustomButton
+                  text="Open Dashboard"
+                  classname="swift-accounts-content-button"
+                  onClick={clickHandler}
+                />
+                {/* <button
                   className="swift-signup-status-button"
                   onClick={clickHandler}
                 >
                   Open Dashboard
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
