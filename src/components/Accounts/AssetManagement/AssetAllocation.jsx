@@ -105,6 +105,7 @@ const AssetAllocation = () => {
   }, [sum]);
 
   useEffect(() => {
+    console.log("call");
     setPageLoading(true);
     setChartLoading(true);
     fetchStrategyDetail();
@@ -141,7 +142,11 @@ const AssetAllocation = () => {
 
       setStrategyDetails(uniqueData);
       setSelectedStrategy(uniqueData[0].id);
+    } else {
+      setStrategyDetails([]);
+      setSelectedStrategy();
     }
+
     setTimeout(() => {
       setPageLoading(false);
     }, 2000);
@@ -255,7 +260,7 @@ const AssetAllocation = () => {
       if (data1.error) {
         alert("error1 delete");
       }
-      setChange(Math.random());
+      // setChange(Math.random());s
       setChangeStock(Math.random());
     } catch (error) {
       console.error(error);
@@ -399,52 +404,6 @@ const AssetAllocation = () => {
                 isRightVisible ? "showdiv-1" : ""
               }`}
             >
-              <div
-                className="swift-accounts-content-details"
-                style={{ rowGap: "16px" }}
-              >
-                <div className="swift-accounts-content-stocks-header">
-                  {selectedStock &&
-                  !StocksLoading &&
-                  selectedStock?.status !== "Pending" ? (
-                    <>
-                      <div className="swift-accounts-content-stocks-right">
-                        <p onClick={() => DeleteStock(selectedStock.symbol)}>
-                          Delete
-                        </p>
-                        <p
-                          className="run-analysis-btn"
-                          onClick={() => run_analysis(selectedStock.symbol)}
-                        >
-                          Run Analysis
-                        </p>
-                      </div>
-                    </>
-                  ) : StocksLoading ? (
-                    <div className="swift-aseet-loader">
-                      <Pulse />
-                    </div>
-                  ) : selectedStock && selectedStock?.status == "Pending" ? (
-                    <div
-                      className="analysis-pending"
-                      style={{ width: "auto", margin: "0" }}
-                    >
-                      <p
-                        className="analysis-pending-heading"
-                        style={{ fontWeight: "500" }}
-                      >
-                        Analysis Pending
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="analysis-pending">
-                      <p className="analysis-pending-heading">
-                        Add Stocks First
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
               <div
                 className={`swift-account-content-graph ${
                   isRightVisible ? "showgraph" : ""

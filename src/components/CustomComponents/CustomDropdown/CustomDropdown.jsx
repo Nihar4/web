@@ -33,7 +33,7 @@ const CustomDropdown = ({ options, onSelect, style, default_value }) => {
   return (
     <div className="custom-dropdown" ref={dropdownRef} style={style}>
       <div className="dropdown-header" onClick={handleToggleDropdown}>
-        <div style={{ fontSize: "13px" }}>{selectedOption}</div>
+        <div style={{ fontSize: "12px" }}>{selectedOption}</div>
         <span className={`dropdown-icon ${isOpen ? "up-arrow" : "down-arrow"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

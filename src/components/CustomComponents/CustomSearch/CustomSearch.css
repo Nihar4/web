@@ -29,6 +29,7 @@
 
 .results-list.below {
   top: calc(100% + 0px);
+  max-height: 450px;
 }
 
 .results-list.above {

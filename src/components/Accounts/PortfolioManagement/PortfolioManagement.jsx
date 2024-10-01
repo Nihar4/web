@@ -138,7 +138,11 @@ const PortfolioManagement = () => {
       if (groupedData[0].assets.length > 0) {
         setOpenDropdown(new Array(groupedData[0].assets.length).fill(true));
       }
+    } else {
+      setStrategyDetails([]);
+      setSelectedStrategy();
     }
+
     setTimeout(() => {
       setPageLoading(false);
     }, 2000);
@@ -391,10 +395,20 @@ const PortfolioManagement = () => {
               style={{ padding: "0 10px 10px 10px" }}
             >
               {StrategyDetails.length == 0 ? (
-                <div className="analysis-pending">
-                  <p className="analysis-pending-heading">
-                    Add Portfolio First
-                  </p>
+                <div className="analysis-pending" style={{ rowGap: "15px" }}>
+                  <p className="analysis-pending-heading">No Portfolio Exist</p>
+                  <CustomButton
+                    text="Add Portfolio"
+                    classname="swift-accounts-content-button"
+                    onClick={() => {
+                      navigate(
+                        "/accounts/dashboard/portfolio-management/addstrategy",
+                        {
+                          state: { email_id: email_id },
+                        }
+                      );
+                    }}
+                  />
                 </div>
               ) : (
                 <div

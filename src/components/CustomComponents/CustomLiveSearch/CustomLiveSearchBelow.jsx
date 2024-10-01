@@ -1,8 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ServerRequest from "../../../utils/ServerRequest";
 import "../CustomSearch/CustomSearch.css";
 
-const CustomLiveSearchBelow = ({ onItemClick, prevvalue, filterArray }) => {
+const CustomLiveSearchBelow = ({
+  onItemClick,
+  prevvalue,
+  filterArray,
+  onInputChangeEmpty,
+}) => {
   const [searchQuery, setSearchQuery] = useState(prevvalue);
   const [filteredResults, setFilteredResults] = useState([]);
   // const [name, setName] = useState("name");
@@ -11,7 +16,6 @@ const CustomLiveSearchBelow = ({ onItemClick, prevvalue, filterArray }) => {
   const handleInputChange = async (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    onItemClick("");
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -51,7 +55,9 @@ const CustomLiveSearchBelow = ({ onItemClick, prevvalue, filterArray }) => {
     // console.log(result.code);
     onItemClick(`${result.symbol},${result.longname}`);
     // setName(`${result.longname}`)
-    setSearchQuery(`${result.symbol}`);
+    if (onInputChangeEmpty) {
+      setSearchQuery("");
+    } else setSearchQuery(`${result.symbol}`);
     setFilteredResults([]);
   };
 
@@ -66,10 +72,10 @@ const CustomLiveSearchBelow = ({ onItemClick, prevvalue, filterArray }) => {
     <div className="search-container">
       <input
         type="text"
-        value={searchQuery}
+        value={searchQuery.toUpperCase()}
         onChange={handleInputChange}
         onBlur={handleInputBlur}
-        placeholder="Search..."
+        placeholder="Search Symbol"
         className="search-input swift-custom-input-box swift-addstrategy-underlying-input"
         style={{ width: "85%" }}
       />

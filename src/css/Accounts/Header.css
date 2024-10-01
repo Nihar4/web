@@ -38,9 +38,9 @@
 
 .swift-accounts-heading-2 {
   color: var(--text-color);
-  font-size: var(--font-heading);
+  font-size: 12px;
   font-style: normal;
-  font-weight: var(--font-weight-heavy);
+  font-weight: var(--font-weight-medium);
   line-height: normal;
   letter-spacing: -0.7px;
   cursor: pointer;

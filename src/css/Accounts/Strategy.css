@@ -41,6 +41,15 @@
   white-space: normal;
 }
 
+.swift-accounts-strategy-content p:nth-child(2) {
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
 .swift-accounts-strategy-delete {
   color: #011627b3;
   row-gap: 5px;

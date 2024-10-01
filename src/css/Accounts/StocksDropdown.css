@@ -386,6 +386,21 @@
   column-gap: 0 !important;
 }
 
+.delete-hover-blue:hover path {
+  /* color: blue; */
+  fill: blue;
+}
+
+.run-hover-blue:hover path,
+.run-hover-blue:hover circle {
+  stroke: blue;
+  /* fill: blue; */
+}
+
+.swift-symbol-input-model {
+  align-items: center;
+}
+
 @media screen and (max-width: 1325px) {
 
   .stocks-dropdown-option-info,

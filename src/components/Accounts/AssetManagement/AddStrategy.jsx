@@ -56,8 +56,8 @@ const AddStrategyMain = () => {
 
       hasError = true;
       return hasError;
-    } else if (formValues.name.length < 10) {
-      setStrategyNameError("Bucket Name should be atleast 10 characters");
+    } else if (formValues.name.length < 5) {
+      setStrategyNameError("Bucket Name should be atleast 5 characters");
 
       hasError = true;
       return hasError;
@@ -70,8 +70,8 @@ const AddStrategyMain = () => {
 
       hasError = true;
       return hasError;
-    } else if (formValues.description.length < 50) {
-      setDescError("Description should be atleast 50 characters");
+    } else if (formValues.description.length < 20) {
+      setDescError("Description should be atleast 20 characters");
 
       hasError = true;
       return hasError;
@@ -229,12 +229,11 @@ const StrategyCreated = () => {
                 </div>
               </div>
               <div className="swift-signup-status-info-2 open-dashboard-btn ">
-                <button
-                  className="swift-signup-status-button"
+                <CustomButton
+                  text="Open Dashboard"
+                  classname="swift-accounts-content-button"
                   onClick={clickHandler}
-                >
-                  Open Dashboard
-                </button>
+                />
               </div>
             </div>
           </div>

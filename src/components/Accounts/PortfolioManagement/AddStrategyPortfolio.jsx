@@ -400,8 +400,8 @@ const AddStrategyPortfolio = () => {
 
       hasError = true;
       return hasError;
-    } else if (formValues.strategyName.length < 10) {
-      setStrategyNameError("Strategyname should be atleast 10 characters");
+    } else if (formValues.strategyName.length < 5) {
+      setStrategyNameError("Name should be atleast 5 characters");
       settotalError("error");
 
       hasError = true;
@@ -416,8 +416,8 @@ const AddStrategyPortfolio = () => {
 
       hasError = true;
       return hasError;
-    } else if (formValues.description.length < 50) {
-      setDescError("Description should be atleast 50 characters");
+    } else if (formValues.description.length < 20) {
+      setDescError("Description should be atleast 20 characters");
       settotalError("error");
 
       hasError = true;
@@ -428,8 +428,8 @@ const AddStrategyPortfolio = () => {
 
     let totalPercentageError = false;
     if (formValues.assetClasses.length == 0) {
-      settotalError("Add asset to strategy");
-      showError("Add asset to strategy");
+      settotalError("Add asset to portfolio");
+      showError("Add asset to portfolio");
       hasError = true;
       return hasError;
     }
@@ -895,100 +895,34 @@ const PortfolioStrategyCreated = () => {
 
   // console.log(dl_data);
 
-  return !loading ? (
+  return (
     <div className="swift-addstrategy-main">
       <div className="swift-addstrategy-content">
         <div className="swift-addstrategy-content-wrap strategy-created-wrap">
           <BackButton />
           <div className="swift-signup-status-main swift-strategy-created-main">
             <div className="swift-signup-status-info swift-strategy-info strategy-created-info">
-              <div className="swift-signup-status-info-1 swift-strategy-created strategy-created-content">
+              <div
+                className="swift-signup-status-info-1 swift-strategy-created strategy-created-content"
+                style={{ alignItems: "center", justifyContent: "center" }}
+              >
                 <div className="swift-strategy-created-head-text">
-                  {/* <div>Status</div> */}
                   <div style={{ fontWeight: 800 }}>
                     Portfolio created/updated
                   </div>
                 </div>
-                <div style={{ fontSize: "13px" }}>
-                  We are adding the securities to our queue and will be running
-                  them through our deep learning models. The status of each is
-                  as below For anything else, kindly reach out to us on
-                  help@swiftfolios.co.uk
-                </div>
-                <div style={{ fontSize: "13px" }}>
-                  For anything else, kindly reach out to us on
-                  <span style={{ fontWeight: 700 }}>
-                    {" "}
-                    help@swiftfolios.co.uk
-                  </span>
-                </div>
-                <div className="table-wrapper">
-                  <table className="swift-strategy-created-table">
-                    <thead>
-                      <tr>
-                        {/* <th>Strategy ID</th> */}
-                        <th>Security</th>
-                        <th>Date added</th>
-                        <th>Status</th>
-                        <th>Completed on</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dl_data &&
-                        dl_data.map((item, index) => (
-                          <tr key={index}>
-                            {/* <td>{item.strategy_id}</td> */}
-                            <td>{item.security}</td>
-                            <td>
-                              {!item.date_created
-                                ? ""
-                                : moment
-                                    .tz(
-                                      new Date(item.date_created).toISOString(),
-                                      moment.tz.guess()
-                                    )
-                                    .add(5, "hours")
-                                    .add(30, "minutes")
-                                    .format("DD-MM-YYYY HH:mm:ss")}
-                            </td>
-                            <td>{item.status}</td>
-                            <td>
-                              {!item.date_completed
-                                ? ""
-                                : moment
-                                    .tz(
-                                      new Date(
-                                        item.date_completed
-                                      ).toISOString(),
-                                      moment.tz.guess()
-                                    )
-                                    .add(5, "hours")
-                                    .add(30, "minutes")
-                                    .format("DD-MM-YYYY HH:mm:ss")}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
               </div>
               <div className="swift-signup-status-info-2 open-dashboard-btn ">
-                <button
-                  className="swift-signup-status-button"
+                <CustomButton
+                  text="Open Dashboard"
+                  classname="swift-accounts-content-button"
                   onClick={clickHandler}
-                >
-                  Open Dashboard
-                </button>
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  ) : (
-    <div className="swift-aseet-loader">
-      <p>Loading</p>
-      <Pulse />
     </div>
   );
 };

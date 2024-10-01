@@ -101,7 +101,7 @@ const StockesDropdown = ({
     }
   };
 
-  const HandleAdd = async () => {
+  const HandleAdd = async (symbol) => {
     if (isEmpty(symbol)) {
       Alert({
         TitleText: "Warning",
@@ -137,9 +137,24 @@ const StockesDropdown = ({
       if (data.error) {
         alert("error1");
       }
-      setInputPopup(false);
+      const symbolName = firstPartOfSymbol.split(".")[0];
+      // setLoading(true);
       setSymbol("");
-      setChange(Math.random());
+      // setChange(Math.random());
+      fetchAllStocksDetails(false, selectedStock);
+      setInputPopup(false);
+      Alert({
+        TitleText: "Success",
+        Message: `${symbolName} added successfully`,
+        BandColor: "#e51a4b",
+
+        AutoClose: {
+          Active: true,
+          Line: true,
+          LineColor: "#e51a4b",
+          Time: 2,
+        },
+      });
     }
   };
 
@@ -278,14 +293,18 @@ const StockesDropdown = ({
                     </p>
 
                     <p
-                      className={"stocks-dropdown-option-change-2 "}
+                      className={"stocks-dropdown-option-change-2"}
                       style={{
                         width: "12%",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                       }}
-                      onClick={() => DeleteHandle(stock.symbol)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        DeleteHandle(stock.symbol);
+                      }}
+                      title="Delete"
                     >
                       {/* <DeleteIcon color="black" size={20} /> */}
 
@@ -295,6 +314,7 @@ const StockesDropdown = ({
                         viewBox="0 0 20 20"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        className="delete-hover-blue"
                       >
                         <path
                           d="M6.10002 18.6667H13.9667C14.8667 18.6667 15.5667 17.9333 15.5667 17.0667V6.23333H16.2667C16.4667 6.23333 16.6 6.1 16.6 5.9V5.13333C16.6 4.43333 16.0333 3.9 15.3667 3.9H12.5333V3.03333C12.5333 2.46667 12.0667 2 11.5 2H8.53335C7.96668 2 7.50002 2.46667 7.50002 3.03333V3.9H4.66668C3.96668 3.9 3.43335 4.46667 3.43335 5.13333V5.9C3.43335 6.1 3.56668 6.23333 3.76668 6.23333H4.46668V17.0667C4.46668 17.9333 5.20002 18.6667 6.10002 18.6667ZM14.9 17.0667C14.9 17.6 14.4667 18 13.9667 18H6.10002C5.56668 18 5.16668 17.5667 5.16668 17.0667V6.23333H14.9333V17.0667H14.9ZM8.16668 3.03333C8.16668 2.83333 8.33335 2.66667 8.53335 2.66667H11.5C11.7 2.66667 11.8667 2.83333 11.8667 3.03333V3.9H8.20002V3.03333H8.16668ZM4.10002 5.13333C4.10002 4.8 4.36668 4.56667 4.66668 4.56667H15.3334C15.6667 4.56667 15.9 4.83333 15.9 5.13333V5.56667H4.10002V5.13333Z"
@@ -307,17 +327,21 @@ const StockesDropdown = ({
                       </svg>
                     </p>
                     <p
-                      className={"stocks-dropdown-option-change-2 "}
+                      className={"stocks-dropdown-option-change-2"}
                       style={{
                         width: "12%",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                       }}
-                      onClick={() => {
+                      onClick={(event) => {
                         if (stock.status == "Pending") return;
-                        else RunAnalysis(stock.symbol);
+                        else {
+                          event.stopPropagation();
+                          RunAnalysis(stock.symbol);
+                        }
                       }}
+                      title="Run Analysis"
                     >
                       {stock.status !== "Pending" && (
                         <svg
@@ -325,6 +349,7 @@ const StockesDropdown = ({
                           viewBox="0 0 256.001 256.001"
                           id="gear"
                           width={20}
+                          className="run-hover-blue"
                         >
                           <rect width="256" height="256" fill="none"></rect>
                           <circle
@@ -377,17 +402,26 @@ const StockesDropdown = ({
           ))}
           {data.length == 0 && (
             <div className="analysis-pending" style={{ height: "80vh" }}>
-              <p className="analysis-pending-heading">Add Stocks First</p>
+              <p
+                className="analysis-pending-heading"
+                style={{ fontWeight: "600", fontSize: "12px" }}
+              >
+                Add Stocks First
+              </p>
             </div>
           )}
         </ul>
       </div>
 
       {inputPopup && (
-        <SwiftModal closeModal={() => setInputPopup(false)} top="10px">
+        <SwiftModal
+          closeModal={() => setInputPopup(false)}
+          top="10px"
+          className="swift-symbol-input-model"
+        >
           <div
             className="swift-input-modal-content"
-            style={{ height: "350px", width: "450px" }}
+            style={{ height: "600px", width: "500px" }}
           >
             <div className="custom__alert__close">
               <img src={Close} alt="X" onClick={() => setInputPopup(false)} />
@@ -396,11 +430,15 @@ const StockesDropdown = ({
             <CustomPopupLiveSearch
               name="symbol"
               value={symbol}
-              onInputChange={(name, value) => setSymbol(value)}
+              onInputChange={(name, value) => {
+                setSymbol(value);
+                HandleAdd(value);
+              }}
+              onInputChangeEmpty={true}
               filterArray={data.map((item) => item.symbol)}
             />
 
-            <div
+            {/* <div
               className="swift-modal-apply-btn"
               style={{ flex: "auto", alignItems: "end" }}
             >
@@ -409,7 +447,7 @@ const StockesDropdown = ({
                 classname="swift-accounts-content-button"
                 onClick={HandleAdd}
               />
-            </div>
+            </div> */}
           </div>
         </SwiftModal>
       )}

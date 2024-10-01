@@ -97,7 +97,7 @@ const Header = () => {
             color: "var(--text-color)",
             fontSize: "var(--font-heading)",
             fontStyle: "normal",
-            fontWeight: "var(--font-weight-heavy)",
+            fontWeight: "var(--font-weight-medium)",
             lineHeight: "normal",
             letterSpacing: "-0.7px",
             cursor: "pointer",
