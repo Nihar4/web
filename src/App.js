@@ -12,6 +12,7 @@ import Auth from "./components/AccessManagement/Auth";
 import BackOfficeDashboard from "./components/BackOffice/BackOfficeDashboard";
 import Header from "./components/Accounts/Header/Header";
 import Footer from "./components/Accounts/Footer/Footer";
+import UploadFile from "./components/Accounts/UploadFile";
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login/*" element={<Login />} />
         <Route path="/signup/*" element={<Signup />} />
+        <Route path="/upload-test" element={<UploadFile />} />
         <Route
           path="/accounts/*"
           element={
