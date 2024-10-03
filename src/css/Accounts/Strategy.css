@@ -6,19 +6,18 @@
   padding: 10px 13px;
   cursor: pointer;
   /* margin-right: 10px; */
-  border-bottom: 0.5px solid #CCCCCC;
+  /* border-bottom: 0.5px solid #CCCCCC; */
 }
 
 .swift-accounts-strategy-active {
-  /* border-radius: 10px; */
+  background: #fafafa;
+  color: #fff;
   cursor: pointer;
   flex-shrink: 0;
-  padding: 10px 5px;
+  padding: 10px 10px;
   width: 97%;
-  background: #ffffff;
-  /* box-shadow: 1px 3px 5px #e8e8e825; */
-  /* border: 1px solid #e8e8e8; */
-  color: white;
+  border-radius: 15px;
+  border: none;
 }
 
 .swift-accounts-strategy-content {

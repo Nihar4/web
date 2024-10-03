@@ -1,28 +1,225 @@
-.swift-accounts-sub-menu {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 10px 0 10px;
+.swift-accounts-portfolio-main {
+    width: 100%;
+    height: calc(100% - 40px - 30px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* border-top: 0.5px solid #CCCCCC; */
+    /* border-bottom: 0.5px solid #CCCCCC; */
+    padding: 10px;
 }
 
-.swift-accounts-sub-menu>div {
+.swift-accounts-portfolio-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    row-gap: 10px;
+}
+
+/* Submenu */
+.swift-accounts-portfolio-sub-menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px;
+}
+
+.swift-accounts-portfolio-sub-menu>div {
     display: flex;
     column-gap: 0px;
 }
 
-.swift-accounts-sub-menu p {
-    font-size: var(--font-heading);
+.swift-accounts-portfolio-sub-menu p {
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    cursor: pointer;
+    font-weight: 400;
+    text-align: center;
+    padding: 5px 15px;
+
+}
+
+.swift-accounts-portfolio-sub-menu p.active {
+    font-weight: 600;
+    border-radius: 35px;
+    letter-spacing: -0.65px;
+    background: var(--btn-background);
+    color: var(--btn-text);
+}
+
+/* Stocks DETAILS */
+
+.swift-accounts-portfolio-content-stocks-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 10px 10px 10px;
+    row-gap: 12px;
+    overflow-y: hidden;
+}
+
+.swift-accounts-portfolio-content-stocks-header {
+    display: flex;
+    width: 100%;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}
+
+.swift-accounts-portfolio-content-stocks-header>p {
+    text-align: center;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 35px;
+    font-weight: 600;
+    font-size: var(--font-small);
     font-style: normal;
     line-height: normal;
     letter-spacing: -0.65px;
-    cursor: pointer;
-    color: #011627;
-    font-weight: 400;
+    background: var(--btn-background);
+    color: var(--btn-text);
 }
 
-.swift-accounts-sub-menu p.active {
+.swift-accounts-portfolio-dropdown-header {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 10px;
+    font-style: normal;
     font-weight: 700;
+    letter-spacing: -.55px;
+    line-height: 1.5em;
+    color: #011627;
+    border-bottom: 0.5px solid rgba(1, 22, 39, 0.1);
+    padding-bottom: 8px;
 }
 
+.swift-accounts-portfolio-dropdown-header-text {
+    display: flex;
+    justify-content: space-between;
+    width: 92%;
+}
+
+.stocks-portfolio-management-dropdown-main {
+    position: relative;
+}
+
+.stocks-portfolio-management-dropdown-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid #0116271a;
+    background: #fafafa;
+    padding: 10px;
+
+}
+
+.stocks-portfolio-management-dropdown-header-row-left {
+    width: 8%;
+    margin-right: 0px;
+    display: flex;
+    column-gap: 11px;
+    align-items: center;
+}
+
+.stocks-portfolio-management-dropdown-header-row-title {
+    color: #000;
+    font-size: var(--font-small);
+    font-style: normal;
+    font-weight: var(--font-weight-light);
+    line-height: normal;
+    letter-spacing: -0.65px;
+    cursor: pointer;
+}
+
+.stocks-portfolio-management-dropdown-header-row-right {
+    display: flex;
+    width: 92%;
+    justify-content: space-between;
+    column-gap: 0px;
+    padding-right: 10px;
+}
+
+.stocks-portfolio-management-dropdown-header-row-right p {
+    color: var(--text-color);
+    font-size: var(--font-small);
+    font-style: normal;
+    font-weight: var(--font-weight-medium);
+    line-height: 15px;
+    letter-spacing: -0.65px;
+    margin: 0;
+}
+
+.stocks-portfolio-management-dropdown-row-container {
+    position: static;
+    width: 100%;
+}
+
+.stocks-portfolio-management-dropdown-row-ul {
+    list-style: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.stocks-portfolio-management-dropdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px;
+    margin: 3px 0;
+    background: #ffffff;
+    border-bottom: 1px solid #f1f1f1 !important;
+    font-weight: 500;
+}
+
+.stocks-portfolio-management-dropdown-row-left-title {
+    color: var(--text-color);
+    font-size: var(--font-small);
+    font-style: normal;
+    font-weight: var(--font-weight-medium);
+    line-height: 15px;
+    letter-spacing: -0.65px;
+    width: 8%;
+}
+
+.stocks-portfolio-management-dropdown-row-left-subtitle {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(1, 22, 39, 0.5);
+    font-size: var(--font-small);
+    font-style: normal;
+    font-weight: var(--font-weight-light);
+    line-height: 20px;
+    letter-spacing: -0.6px;
+
+}
+
+.stocks-portfolio-management-dropdown-row-right {
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: -.55px;
+    line-height: 15px;
+    font-weight: var(--font-weight-light);
+    display: flex;
+    width: 92%;
+    justify-content: space-between;
+    color: var(--text-color);
+}
+
+.swift-account-chart-wrapper {
+    height: calc(95vh - 50px);
+    width: calc(95vw - 20px);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+}
+
+/* ================================================= */
 .swift-portfolio-trades,
 .swift-portfolio-cash {
     color: #011627;
@@ -263,7 +460,7 @@
     justify-content: end;
 }
 
-.swift-show-portfolio-modal-content {
+.swift-show-portfolio-modal-wrapper {
     background-color: white;
     height: 100vh;
     column-gap: 14px;
@@ -274,4 +471,22 @@
     display: flex;
     flex-direction: column;
     justify-self: end;
+}
+
+.swift-show-portfolio-modal-content {
+    width: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.swift-show-portfolio-modal-strategy-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    align-items: flex-start;
+    padding-bottom: 10px;
 }

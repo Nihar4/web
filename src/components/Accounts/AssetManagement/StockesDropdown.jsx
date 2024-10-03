@@ -58,6 +58,7 @@ const StockesDropdown = ({
     intervalId
   ) => {
     try {
+      console.log(isFirstTime, selectedStock, intervalId);
       if (!selectedStrategy) return;
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -86,6 +87,10 @@ const StockesDropdown = ({
       if (isFirstTime) {
         onStockSelect(data.data[0]);
       } else {
+        if (!selectedStock && data.data.length > 0) {
+          onStockSelect(data.data[0]);
+          return;
+        }
         const stockIndex = data.data.findIndex(
           (stock) => stock.symbol == selectedStock.symbol
         );
@@ -93,6 +98,8 @@ const StockesDropdown = ({
         if (stockIndex !== -1) {
           if (data.data[stockIndex].status != selectedStock.status)
             onStockSelect(data.data[stockIndex]);
+        } else if (data.data.length > 0) {
+          onStockSelect(data.data[0]);
         }
       }
     } catch (error) {
@@ -119,6 +126,37 @@ const StockesDropdown = ({
     } else {
       const symbolParts = symbol.split(",");
       const firstPartOfSymbol = symbolParts[0]?.trim();
+      const symbolName = firstPartOfSymbol.split(".")[0];
+
+      const data1 = await ServerRequest({
+        method: "get",
+        URL: `/strategy/validatestock?stock=${firstPartOfSymbol}`,
+      });
+
+      if (data1.server_error) {
+        alert("Server Error");
+      }
+
+      if (data1.error) {
+        alert("Server Error");
+      }
+
+      if (data1.data == false) {
+        Alert({
+          TitleText: "Error",
+          Message: `${firstPartOfSymbol}'s data is not sufficient for analysis, please choose another one. Minimum data points is 500.`,
+          BandColor: "#e51a4b",
+          AutoClose: {
+            Active: true,
+            Line: true,
+            LineColor: "#e51a4b",
+            Time: 5,
+          },
+        });
+        setSymbol("");
+
+        return;
+      }
 
       const data = await ServerRequest({
         method: "post",
@@ -137,11 +175,7 @@ const StockesDropdown = ({
       if (data.error) {
         alert("error1");
       }
-      const symbolName = firstPartOfSymbol.split(".")[0];
-      // setLoading(true);
       setSymbol("");
-      // setChange(Math.random());
-      fetchAllStocksDetails(false, selectedStock);
       setInputPopup(false);
       Alert({
         TitleText: "Success",
@@ -155,6 +189,7 @@ const StockesDropdown = ({
           Time: 2,
         },
       });
+      fetchAllStocksDetails(false, selectedStock);
     }
   };
 

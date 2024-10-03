@@ -76,8 +76,8 @@ const CustomLiveSearchBelow = ({
         onChange={handleInputChange}
         onBlur={handleInputBlur}
         placeholder="Search Symbol"
-        className="search-input swift-custom-input-box swift-addstrategy-underlying-input"
-        style={{ width: "85%" }}
+        className="search-input swift-custom-input-box"
+        style={{ width: "100%" }}
       />
       {searchQuery && filteredResults && filteredResults.length > 0 && (
         <ul className={`results-list below`} style={{ width: "100%" }}>

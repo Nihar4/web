@@ -365,35 +365,12 @@ const PortfolioManagement = () => {
     fetchData();
   }, [selectedStock, duration]);
 
-  const fieldNames = [
-    "Target Weight",
-    "Curr. Price",
-    "Target Qty.",
-    "Curr. Qty.",
-    "Curr. Value",
-    "Curr. Weight",
-    "Active Weight",
-    "Inv. Price",
-    "Inv. Value",
-    "Total Ret",
-    "Today's Return",
-    "Today's Cont.",
-    "Total Gains (Real. + Unreal.)",
-    "Prop. Invesment Qty.",
-    "Prop. Invesment Value",
-    "Eff. Weight",
-    "",
-  ];
-
   return (
     <>
-      <div className="swift-accounts-main swift-accounts-portfolio-main">
+      <div className="swift-accounts-portfolio-main">
         {!PageLoading ? (
           <>
-            <div
-              className="swift-accounts-content"
-              style={{ padding: "0 10px 10px 10px" }}
-            >
+            <div className="swift-accounts-portfolio-content">
               {StrategyDetails.length == 0 ? (
                 <div className="analysis-pending" style={{ rowGap: "15px" }}>
                   <p className="analysis-pending-heading">No Portfolio Exist</p>
@@ -411,175 +388,82 @@ const PortfolioManagement = () => {
                   />
                 </div>
               ) : (
-                <div
-                  className={`swift-accounts-content-right ${
-                    isRightVisible ? "showright" : ""
-                  }`}
-                  style={{ width: "100%", padding: "0px" }}
-                  id="right"
-                >
-                  <div
-                    className={`back-button ${
-                      isRightVisible ? "showbackbutton" : ""
-                    }`}
-                  >
-                    <BackButton customFunction={backButoonFunction} />
-                  </div>
-                  <div
-                    className={`swift-accounts-content-div-2 ${
-                      isRightVisible ? "showdiv-1" : ""
-                    }`}
-                    style={{
-                      width: "100%",
-                      rowGap: "15px",
-                    }}
-                  >
-                    <div className="swift-accounts-sub-menu">
-                      <div>
-                        {/* <CustomButton
-                          text="Portfolio"
-                          // classname="swift-accounts-content-button"
-                          className={
-                            current_tab === "portfolio"
-                              ? "swift-accounts-content-button active"
-                              : "swift-accounts-content-button"
-                          }
-                          onClick={() => setCurrent_Tab("portfolio")}
-                        /> */}
-
-                        <p
-                          className={
-                            current_tab === "portfolio" ? "active" : ""
-                          }
-                          onClick={() => setCurrent_Tab("portfolio")}
-                        >
-                          Portfolio
-                        </p>
-                        <p
-                          className={current_tab === "trade" ? "active" : ""}
-                          onClick={() => setCurrent_Tab("trade")}
-                        >
-                          Trades
-                        </p>
-                        <p
-                          className={current_tab === "cash" ? "active" : ""}
-                          onClick={() => setCurrent_Tab("cash")}
-                        >
-                          Cash
-                        </p>
-                      </div>
+                <>
+                  <div className="swift-accounts-portfolio-sub-menu">
+                    <div>
                       <p
-                        onClick={() => setShowPortfolio(true)}
-                        className="active"
+                        className={current_tab === "portfolio" ? "active" : ""}
+                        onClick={() => setCurrent_Tab("portfolio")}
                       >
-                        Select Portfolio
+                        Portfolio
+                      </p>
+                      <p
+                        className={current_tab === "trade" ? "active" : ""}
+                        onClick={() => setCurrent_Tab("trade")}
+                      >
+                        Trades
+                      </p>
+                      <p
+                        className={current_tab === "cash" ? "active" : ""}
+                        onClick={() => setCurrent_Tab("cash")}
+                      >
+                        Cash
                       </p>
                     </div>
-                    {current_tab == "portfolio" ? (
-                      <div
-                        className="swift-accounts-content-stocks-info"
-                        style={{
-                          border: "none",
-                          padding: "0px 10px 10px 10px",
-                        }}
-                      >
-                        <div className="swift-accounts-content-stocks-details">
-                          <div className="swift-accounts-content-stocks-header">
-                            <div className="swift-accounts-content-stocks-right">
-                              <p onClick={handleEditStrategy}>Change</p>
-                              <p
-                                onClick={() =>
-                                  handleDeleteStrategy(selectedStrategy)
-                                }
-                              >
-                                Delete
-                              </p>
-
-                              <CustomNumberInput
-                                labelText="Today's Inflow"
-                                type="number"
-                                classnameDiv="swift-accounts-portfolio-inflow-input"
-                                name="inflow"
-                                placeholder=""
-                                styleInput={{
-                                  marginTop: "4px",
-                                  width: "150px",
-                                  padding: "5px 8px",
-                                  fontSize: "12px",
-                                  border: "none",
-                                  // borderBottom: "1px solid #f0f0f0",
-                                  backgroundColor: "#f1f1f1",
-                                }}
-                                onInputChange={(symbol, value) =>
-                                  setInflow(parseFloat(value))
-                                }
-                                value={inflow}
-                              />
-                            </div>
-                          </div>
-
-                          <div
-                            className="swift-accounts-content-stocks-text"
-                            style={{
-                              borderBottom: "0.5px solid rgba(1, 22, 39, 0.1)",
-                              paddingBottom: "8px",
-                            }}
-                          >
-                            <div className="swift-accounts-content-stocks-text-left">
-                              <div
-                                className="swift-accounts-content-stocks-text-left-sub-div"
-                                style={{ width: "92%" }}
-                              >
-                                {fieldNames.map((item, index) => {
-                                  const words = item.split(" ");
-                                  let firstPart, secondPart;
-                                  if (index === 12 && words.length > 2) {
-                                    firstPart = words.slice(0, 2).join(" ");
-                                    secondPart = words.slice(2).join(" ");
-                                  } else {
-                                    firstPart = words.slice(0, -1).join(" ");
-                                    secondPart = words[words.length - 1];
-                                  }
-
-                                  return (
-                                    <p
-                                      key={index}
-                                      className={`swift-accounts-content-stocks-text-left-sub-div-p1 portfolio-dropdown-column`}
-                                      style={{
-                                        fontSize: "10px",
-                                        fontWeight: "700",
-                                        lineHeight: "1.5em",
-                                      }}
-                                    >
-                                      {firstPart}
-                                      <br />
-                                      {secondPart}
-                                    </p>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="swift-accounts-content-stocks-show">
-                          <PortfolioStockesDropdown
-                            id={selectedStrategy}
-                            isOpen={openDropdown}
-                            onToggle={handleDropdownToggle}
-                            onStockSelect={handleStockSelect}
-                            selectedStock={selectedStock}
-                            setPortfolio_Value={setPortfolio_Value}
-                            inflow={inflow ? inflow : 0}
-                          />
-                        </div>
-                      </div>
-                    ) : current_tab == "trade" ? (
-                      <PortfolioTrades id={selectedStrategy} />
-                    ) : (
-                      <PortfolioCash id={selectedStrategy} />
-                    )}
+                    <p
+                      onClick={() => setShowPortfolio(true)}
+                      className="active"
+                    >
+                      Select Portfolio
+                    </p>
                   </div>
-                </div>
+                  {current_tab == "portfolio" ? (
+                    <div className="swift-accounts-portfolio-content-stocks-info">
+                      <div className="swift-accounts-portfolio-content-stocks-header">
+                        <p onClick={handleEditStrategy}>Change</p>
+                        <p
+                          onClick={() => handleDeleteStrategy(selectedStrategy)}
+                        >
+                          Delete
+                        </p>
+
+                        <CustomNumberInput
+                          labelText="Today's Inflow"
+                          type="number"
+                          classnameDiv="swift-accounts-portfolio-inflow-input"
+                          name="inflow"
+                          placeholder=""
+                          styleInput={{
+                            marginTop: "4px",
+                            width: "150px",
+                            padding: "5px 8px",
+                            fontSize: "12px",
+                            border: "none",
+                            // borderBottom: "1px solid #f0f0f0",
+                            backgroundColor: "#f1f1f1",
+                          }}
+                          onInputChange={(symbol, value) =>
+                            setInflow(parseFloat(value))
+                          }
+                          value={inflow}
+                        />
+                      </div>
+                      <PortfolioStockesDropdown
+                        id={selectedStrategy}
+                        isOpen={openDropdown}
+                        onToggle={handleDropdownToggle}
+                        onStockSelect={handleStockSelect}
+                        selectedStock={selectedStock}
+                        setPortfolio_Value={setPortfolio_Value}
+                        inflow={inflow ? inflow : 0}
+                      />
+                    </div>
+                  ) : current_tab == "trade" ? (
+                    <PortfolioTrades id={selectedStrategy} />
+                  ) : (
+                    <PortfolioCash id={selectedStrategy} />
+                  )}
+                </>
               )}
             </div>
 
@@ -596,97 +480,72 @@ const PortfolioManagement = () => {
                       onClick={() => closeChartModal()}
                     />
                   </div>
-                  <div
-                    className={`swift-accounts-content-div-1 ${
-                      isRightVisible ? "showdiv-1" : ""
-                    }`}
-                    style={{ border: "none" }}
-                  >
-                    {/* <div className="swift-accounts-content-details">
-                      <p className="swift-account-content-heading">
-                        {clickedStrategy != null &&
-                          clickedStrategy.strategyname}
-                      </p>
-                      <p className="swift-account-content-content">
-                        {clickedStrategy != null && clickedStrategy.description}
-                      </p>
-                    </div> */}
-                    <div
-                      className={`swift-account-content-graph ${
-                        isRightVisible ? "showgraph" : ""
-                      }`}
-                      style={{
-                        height: "100%",
-                        border: "none",
-                        boxShadow: "none",
-                      }}
-                    >
-                      {!chartError ? (
-                        <>
-                          <div className="swift-asset-range-buttons">
-                            <p
-                              onClick={() => setDuration("1Y")}
-                              style={{ cursor: "pointer" }}
-                              className={
-                                duration == "1Y" ? "selected_duration" : ""
-                              }
-                            >
-                              1y
-                            </p>
-                            <p
-                              onClick={() => setDuration("5Y")}
-                              style={{ cursor: "pointer" }}
-                              className={
-                                duration == "5Y" ? "selected_duration" : ""
-                              }
-                            >
-                              5y
-                            </p>
-                            <p
-                              onClick={() => setDuration("MAX")}
-                              style={{ cursor: "pointer" }}
-                              className={
-                                duration == "MAX" ? "selected_duration" : ""
-                              }
-                            >
-                              Max
-                            </p>
-                          </div>
-                          <div
-                            className="swift-account-graph"
-                            ref={graphContainerRef}
+                  <div className="swift-account-chart-wrapper">
+                    {!chartError ? (
+                      <>
+                        <div className="swift-asset-range-buttons">
+                          <p
+                            onClick={() => setDuration("1Y")}
+                            style={{ cursor: "pointer" }}
+                            className={
+                              duration == "1Y" ? "selected_duration" : ""
+                            }
                           >
-                            {graphDimensions.width > 0 &&
-                              graphDimensions.height > 0 && (
-                                <HistoricalLineChart
-                                  data={chart_data}
-                                  width={graphDimensions.width}
-                                  height={graphDimensions.height}
-                                  duration={duration}
-                                  loading2={ChartLoading}
-                                  name={selectedStock.name}
-                                  error={chartError}
-                                />
-                              )}
-                            {/* <p> {graphDimensions.width}</p>
-                        <p> {graphDimensions.height}</p> */}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="analysis-pending">
-                          <p className="analysis-pending-heading">
-                            Server Connection Issue
+                            1y
                           </p>
-                          <p className="analysis-pending-content">
-                            We're currently experiencing issues connecting to
-                            our servers. Our team is working to resolve this as
-                            quickly as possible. Please check back shortly. We
-                            appreciate your patience and apologize for any
-                            inconvenience caused.
+                          <p
+                            onClick={() => setDuration("5Y")}
+                            style={{ cursor: "pointer" }}
+                            className={
+                              duration == "5Y" ? "selected_duration" : ""
+                            }
+                          >
+                            5y
+                          </p>
+                          <p
+                            onClick={() => setDuration("MAX")}
+                            style={{ cursor: "pointer" }}
+                            className={
+                              duration == "MAX" ? "selected_duration" : ""
+                            }
+                          >
+                            Max
                           </p>
                         </div>
-                      )}
-                    </div>
+                        <div
+                          className="swift-account-graph"
+                          ref={graphContainerRef}
+                        >
+                          {graphDimensions.width > 0 &&
+                            graphDimensions.height > 0 && (
+                              <HistoricalLineChart
+                                data={chart_data}
+                                width={graphDimensions.width}
+                                height={graphDimensions.height}
+                                duration={duration}
+                                loading2={ChartLoading}
+                                name={selectedStock.name}
+                                error={chartError}
+                              />
+                            )}
+                          {/* <p> {graphDimensions.width}</p>
+                        <p> {graphDimensions.height}</p> */}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="analysis-pending">
+                        <p className="analysis-pending-heading">
+                          Server Connection Issue
+                        </p>
+                        <p className="analysis-pending-content">
+                          We're currently experiencing issues connecting to our
+                          servers. Our team is working to resolve this as
+                          quickly as possible. Please check back shortly. We
+                          appreciate your patience and apologize for any
+                          inconvenience caused.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </SwiftModal>
@@ -698,7 +557,7 @@ const PortfolioManagement = () => {
                 top="0"
                 className="swift-show-portfolio-modal"
               >
-                <div className="swift-show-portfolio-modal-content">
+                <div className="swift-show-portfolio-modal-wrapper">
                   <div
                     className="custom__alert__close"
                     style={{ justifyContent: "flex-end" }}
@@ -709,12 +568,8 @@ const PortfolioManagement = () => {
                       onClick={() => closeShowPortfolio()}
                     />
                   </div>
-                  <div
-                    className={`swift-accounts-content-left`}
-                    id="left"
-                    style={{ width: "100%", border: "none" }}
-                  >
-                    <div className="swift-accounts-content-strategy">
+                  <div className={`swift-show-portfolio-modal-content`}>
+                    <div className="swift-show-portfolio-modal-strategy-wrapper">
                       {StrategyDetails.length == 0 && (
                         <div className="analysis-pending">
                           <p className="analysis-pending-heading">

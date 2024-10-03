@@ -164,56 +164,33 @@ const AddStrategyPortfolio = () => {
       const longNameValue = value.split(",")[1];
       console.log(stockValue, longName);
       // console.log("name", name[13],name[28]);
-      const data = await ServerRequest({
-        method: "get",
-        URL: `/strategy/validatestock?stock=${stockValue}`,
-      });
+      // const data = await ServerRequest({
+      //   method: "get",
+      //   URL: `/strategy/validatestock?stock=${stockValue}`,
+      // });
 
-      if (data.server_error) {
-        alert("error");
-      }
+      // if (data.server_error) {
+      //   alert("error");
+      // }
 
-      if (data.error) {
-        alert("error1");
-      }
+      // if (data.error) {
+      //   alert("error1");
+      // }
 
-      if (data.data == false) {
-        // alert(
-        //   `${value}'s data is not sufficient for analysis, please choose another one`
-        // );
-        // setShowalert(true);
-        // Alert({
-        //   TitleText: "Error",
-        //   Message: `${stockValue}'s data is not sufficient for analysis, please choose another one`,
-        //   BandColor: "#e51a4b",
-
-        //   AutoClose: {
-        //     Active: false,
-        //     Line: true,
-        //     LineColor: "#e51a4b",
-        //     Time: 4,
-        //   },
-        // });
-        // setTimeout(() => {
-        //   setShowalert(false);
-        // }, 2000);
-        setShowalert(true);
-        Alert(
-          {
-            TitleText: "Error",
-            Message: `${stockValue}'s data is not sufficient for analysis, please choose another one. Minimum data points is 500.`,
-            BandColor: "#e51a4b",
-            AutoClose: { Active: false, Time: 5 },
-          },
-          closeAlert
-        );
-
-        // if(document.getElementsByClassName("custom__alert__box").length==0){
-        //   setShowalert(false);
-        // }
-        handleDeleteUnderlying(parseInt(name[13]), parseInt(name[28]));
-        return;
-      }
+      // if (data.data == false) {
+      //   setShowalert(true);
+      //   Alert(
+      //     {
+      //       TitleText: "Error",
+      //       Message: `${stockValue}'s data is not sufficient for analysis, please choose another one. Minimum data points is 500.`,
+      //       BandColor: "#e51a4b",
+      //       AutoClose: { Active: false, Time: 5 },
+      //     },
+      //     closeAlert
+      //   );
+      //   handleDeleteUnderlying(parseInt(name[13]), parseInt(name[28]));
+      //   return;
+      // }
 
       setShowalert(false);
       setLongName((prevLongName) => ({

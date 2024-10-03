@@ -12,8 +12,9 @@
   height: calc(100% - 40px - 30px);
   overflow-x: hidden;
   overflow-y: auto;
-  border-top: 0.5px solid #CCCCCC;
-  border-bottom: 0.5px solid #CCCCCC;
+  /* border-top: 0.5px solid #CCCCCC; */
+  /* border-bottom: 0.5px solid #CCCCCC; */
+  padding: 10px 0;
 }
 
 .swift-small-screen-container {
@@ -32,17 +33,18 @@
 }
 
 .swift-accounts-content-left {
-  /* border: 2px solid black; */
-  width: 15%;
-  padding: 0px;
-  /* border-radius: 10px; */
-  background: #ffffff;
-  /* box-shadow: 0px 0px 3px 0px rgba(1, 22, 39, 0.1); */
+
+  background: #fff;
+  border-right: 0.5px solid #ccc;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
-  border-right: 0.5px solid #CCCCCC;
+  justify-content: space-between;
+  width: 17%;
+  box-shadow: 0 0 5px #e8e8e8;
+  border: 1px solid #e8e8e8;
+  border-radius: 15px;
+  padding: 10px;
 }
 
 .swift-accounts-content-strategy {
@@ -160,7 +162,7 @@
   width: calc(100% - 410px);
   /* border: 2px solid black; */
   height: -webkit-fill-available;
-  border-right: 0.5px solid #CCCCCC;
+  /* border-right: 0.5px solid #CCCCCC; */
 }
 
 .swift-account-download {
@@ -220,9 +222,10 @@ width: 400px !important;
   row-gap: 20px;
   width: 410px;
   background: #fff;
-  /* border-radius: 10px; */
-  /* border: 1px solid #e8e8e8; */
-  /* box-shadow: 1px 3px 5px #e8e8e825; */
+  box-shadow: 0 0 5px #e8e8e8;
+  border: 1px solid #e8e8e8;
+  border-radius: 15px;
+  padding: 10px;
 }
 
 .swift-accounts-content-info {
@@ -360,9 +363,6 @@ width: 400px !important;
   font-weight: 700;
   background: var(--btn-background);
 }
-
-.swift-accounts-content-stocks-right p,
-.swift-accounts-sub-menu p {}
 
 .swift-accounts-content-stocks-header {
   display: flex;
