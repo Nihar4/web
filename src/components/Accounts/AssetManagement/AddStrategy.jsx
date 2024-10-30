@@ -24,7 +24,7 @@ const AddStrategyMain = () => {
   const [strategyNameError, setStrategyNameError] = useState("error");
   const [descError, setDescError] = useState("error");
   const [loading, setLoading] = useState(true);
-
+  const [names, setNames] = useState([]);
   useEffect(() => {
     const fetchdata = async () => {
       setLoading(true);
@@ -38,6 +38,11 @@ const AddStrategyMain = () => {
           const formData = data.data;
           setFormValues(formData);
         }
+        const data1 = await ServerRequest({
+          method: "get",
+          URL: `/strategy/names/?id=${id}&email=${email_id}`,
+        });
+        setNames(data1.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -49,8 +54,13 @@ const AddStrategyMain = () => {
     fetchdata();
   }, [id]);
 
+  console.log(names);
+
   const ValidateAll = () => {
     let hasError = false;
+    const formNameLower = formValues.name.toLowerCase();
+    const namesArrayLower = names.map((name) => name.toLowerCase());
+
     if (isEmpty(formValues.name)) {
       setStrategyNameError("cannot be empty");
 
@@ -59,6 +69,10 @@ const AddStrategyMain = () => {
     } else if (formValues.name.length < 5) {
       setStrategyNameError("Bucket Name should be atleast 5 characters");
 
+      hasError = true;
+      return hasError;
+    } else if (namesArrayLower.includes(formNameLower)) {
+      setStrategyNameError("Name already exists");
       hasError = true;
       return hasError;
     } else {
@@ -147,11 +161,11 @@ const AddStrategyMain = () => {
                 placeholder="sample Bucket"
                 styleInput={{
                   height: "50px",
-                  opacity: id ? "0.5" : "1.0",
-                  cursor: id ? "not-allowed" : "normal",
+                  // opacity: id ? "0.5" : "1.0",
+                  // cursor: id ? "not-allowed" : "normal",
                 }}
                 onInputChange={(name, value) => {
-                  if (id) return;
+                  // if (id) return;
                   handleInputChange(name, value);
                 }}
                 value={formValues.name}

@@ -35,7 +35,7 @@
 
 .custom-select .custom-select-header .custom-select-title {
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 600;
 }
 
 .custom-select .custom-select-header .custom-width-select-title {

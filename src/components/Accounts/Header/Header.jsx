@@ -7,11 +7,10 @@ import ServerRequest from "../../../utils/ServerRequest";
 import CustomStrategyDropdown from "../../CustomComponents/CustomDropdown/CustomStrategyDropdown";
 import ConfirmBox from "../../CustomComponents/ConfirmBox/ConfirmBox";
 
-const Header = () => {
+const Header = ({ setLoading }) => {
   const navigate = useNavigate();
   const [dropdownOption, setDropdownOption] = useState("Regulated");
   const [path, setPath] = useState("Regulated");
-
   const email_id = localStorage.getItem("userData")
     ? localStorage.getItem("userData")
     : null;
@@ -47,9 +46,12 @@ const Header = () => {
           color: "#192b40",
           bgColor: "#ffffff",
           handleFunction: (callback) => {
+            setLoading(true);
             localStorage.removeItem("userData");
 
             setTimeout(() => {
+              setLoading(false);
+
               window.history.pushState(null, null, window.location.href);
               window.history.pushState(null, null, "/login");
               window.history.replaceState(null, null, "/login");
@@ -123,24 +125,22 @@ const Header = () => {
         )}
       </div>
       <div className="swift-accounts-header-right">
-        <div className="swift-accounts-header-details-2">
-          <p
-            className="swift-accounts-heading-2"
-            onClick={() => onDropdownSelect("jobqueue")}
-          >
-            Job Queue
-          </p>
-          <div className="swift-accounts-header-user">
-            <p>Logged in as {email_id}</p>
-          </div>
-          <div className="swift-accounts-header-logout" onClick={logOutHandler}>
-            <p>Log Out</p>
-          </div>
+        <p
+          className="swift-accounts-heading-2"
+          onClick={() => onDropdownSelect("jobqueue")}
+        >
+          Job Queue
+        </p>
+        <div className="swift-accounts-header-user">
+          <p>Logged in as {email_id}</p>
+        </div>
+        <div className="swift-accounts-header-logout" onClick={logOutHandler}>
+          <p>Log Out</p>
+        </div>
 
-          {/* <div className="swift-accounts-header-logos">
+        {/* <div className="swift-accounts-header-logos">
             <div className="faq" onClick={handleclick}></div>
           </div> */}
-        </div>
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ const StockesDropdown = ({
   const [inputPopup, setInputPopup] = useState(false);
   const [symbol, setSymbol] = useState("");
   const [change, setChange] = useState(1);
+  const [runStock, setRunStock] = useState();
   const abortControllerRef = useRef(null);
 
   const email_id = localStorage.getItem("userData")
@@ -85,6 +86,19 @@ const StockesDropdown = ({
       setLoading(false);
       setStocksLoading(false);
       if (isFirstTime) {
+        if (!runStock && data.data.length > 0) {
+          onStockSelect(data.data[0]);
+          return;
+        }
+        const stockIndex = data.data.findIndex(
+          (stock) => stock.symbol == runStock
+        );
+
+        if (stockIndex !== -1) {
+          onStockSelect(data.data[stockIndex]);
+          setRunStock();
+          return;
+        }
         onStockSelect(data.data[0]);
       } else {
         if (!selectedStock && data.data.length > 0) {
@@ -309,7 +323,7 @@ const StockesDropdown = ({
                           <g clip-path="url(#clip0_7_8)">
                             <path
                               d="M10 2.3999C5.80002 2.3999 2.40002 5.7999 2.40002 9.9999C2.40002 14.1999 5.80002 17.5999 10 17.5999C14.2 17.5999 17.6 14.1999 17.6 9.9999C17.6 5.7999 14.2 2.3999 10 2.3999ZM10.4 16.7799V16.3799C10.4 16.1599 10.22 15.9799 10 15.9799C9.78002 15.9799 9.60002 16.1599 9.60002 16.3799V16.7799C6.16002 16.5799 3.42002 13.8199 3.22002 10.3999H3.62002C3.84002 10.3999 4.02002 10.2199 4.02002 9.9999C4.02002 9.7799 3.84002 9.5999 3.62002 9.5999H3.22002C3.42002 6.1599 6.18002 3.4199 9.60002 3.2199V3.6199C9.60002 3.8399 9.78002 4.0199 10 4.0199C10.22 4.0199 10.4 3.8399 10.4 3.6199V3.2199C13.84 3.4199 16.58 6.1799 16.78 9.5999H16.38C16.16 9.5999 15.98 9.7799 15.98 9.9999C15.98 10.2199 16.16 10.3999 16.38 10.3999H16.78C16.58 13.8399 13.84 16.5799 10.4 16.7799ZM12.4 12.3999C12.24 12.5599 12 12.5599 11.84 12.3999L9.72002 10.2799C9.74002 10.2999 9.60002 10.1999 9.60002 9.9999V5.1999C9.60002 4.9799 9.78002 4.7999 10 4.7999C10.22 4.7999 10.4 4.9799 10.4 5.1999V9.8399L12.4 11.8399C12.56 11.9999 12.56 12.2399 12.4 12.3999Z"
-                              fill="black"
+                              fill="#cccccc"
                             />
                             <path
                               d="M300.8 -214V122.8H-56V-214H300.8ZM302.4 -215.6H-57.6V124.4H302.4V-215.6Z"
@@ -353,11 +367,11 @@ const StockesDropdown = ({
                       >
                         <path
                           d="M6.10002 18.6667H13.9667C14.8667 18.6667 15.5667 17.9333 15.5667 17.0667V6.23333H16.2667C16.4667 6.23333 16.6 6.1 16.6 5.9V5.13333C16.6 4.43333 16.0333 3.9 15.3667 3.9H12.5333V3.03333C12.5333 2.46667 12.0667 2 11.5 2H8.53335C7.96668 2 7.50002 2.46667 7.50002 3.03333V3.9H4.66668C3.96668 3.9 3.43335 4.46667 3.43335 5.13333V5.9C3.43335 6.1 3.56668 6.23333 3.76668 6.23333H4.46668V17.0667C4.46668 17.9333 5.20002 18.6667 6.10002 18.6667ZM14.9 17.0667C14.9 17.6 14.4667 18 13.9667 18H6.10002C5.56668 18 5.16668 17.5667 5.16668 17.0667V6.23333H14.9333V17.0667H14.9ZM8.16668 3.03333C8.16668 2.83333 8.33335 2.66667 8.53335 2.66667H11.5C11.7 2.66667 11.8667 2.83333 11.8667 3.03333V3.9H8.20002V3.03333H8.16668ZM4.10002 5.13333C4.10002 4.8 4.36668 4.56667 4.66668 4.56667H15.3334C15.6667 4.56667 15.9 4.83333 15.9 5.13333V5.56667H4.10002V5.13333Z"
-                          fill="black"
+                          fill="#cccccc"
                         />
                         <path
                           d="M12.6333 16.4C12.8333 16.4 12.9667 16.2667 12.9667 16.0667V8.13338C12.9667 7.93338 12.8333 7.80005 12.6333 7.80005C12.4333 7.80005 12.3 7.93338 12.3 8.13338V16.0667C12.3 16.2667 12.4667 16.4 12.6333 16.4ZM10.0333 16.4C10.2333 16.4 10.3667 16.2667 10.3667 16.0667V8.13338C10.3667 7.93338 10.2333 7.80005 10.0333 7.80005C9.83332 7.80005 9.69998 7.93338 9.69998 8.13338V16.0667C9.69998 16.2667 9.83332 16.4 10.0333 16.4ZM7.39998 16.4C7.59998 16.4 7.73332 16.2667 7.73332 16.0667V8.13338C7.73332 7.93338 7.59998 7.80005 7.39998 7.80005C7.19998 7.80005 7.06665 7.93338 7.06665 8.13338V16.0667C7.06665 16.2667 7.19998 16.4 7.39998 16.4Z"
-                          fill="black"
+                          fill="#cccccc"
                         />
                       </svg>
                     </p>
@@ -373,6 +387,7 @@ const StockesDropdown = ({
                         if (stock.status == "Pending") return;
                         else {
                           event.stopPropagation();
+                          setRunStock(stock.symbol);
                           RunAnalysis(stock.symbol);
                         }
                       }}
@@ -392,14 +407,14 @@ const StockesDropdown = ({
                             cy="128"
                             r="48"
                             fill="none"
-                            stroke="#000"
+                            stroke="#cccccc"
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="12"
                           ></circle>
                           <path
                             fill="none"
-                            stroke="#000"
+                            stroke="#cccccc"
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="12"
@@ -419,19 +434,19 @@ const StockesDropdown = ({
                     {stock.detailed_name}
                   </div>
                 </div>
-                {stock.symbol == selectedStock?.symbol && (
-                  <div className="stocks-dropdown-option-info">
-                    <div
-                      className="stocks-dropdown-option-down"
-                      style={{ width: "100%", fontStyle: "italic" }}
-                    >
-                      Last Run date:{" "}
-                      {moment
-                        .tz(moment(stock.date_completed), moment.tz.guess())
-                        .format("DD-MM-YYYY HH:mm:ss")}
-                    </div>
+                {/* {stock.symbol == selectedStock?.symbol && ( */}
+                <div className="stocks-dropdown-option-info">
+                  <div
+                    className="stocks-dropdown-option-down"
+                    style={{ width: "100%", fontStyle: "italic" }}
+                  >
+                    Last Run date:{" "}
+                    {moment
+                      .tz(moment(stock.date_completed), moment.tz.guess())
+                      .format("DD-MM-YYYY HH:mm:ss")}
                   </div>
-                )}
+                </div>
+                {/* )} */}
               </div>
             </li>
           ))}

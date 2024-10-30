@@ -3,18 +3,14 @@ import "../../css/Accounts/Strategy.css";
 import CustomButton from "../CustomComponents/CustomButton/CustomButton";
 
 const BackOfficeStrategy = ({
-  strategies,
-  setSelectedStrategy,
-  setAddFund,
+  funds,
+  setSelectedFund,
+  setCurrentPage,
+  selectedfund,
 }) => {
-  const [selectedStrategyId, setSelectedStrategyId] = useState(
-    strategies[0]?.id || null
-  );
-
   const handleStrategyClick = (id) => {
-    setSelectedStrategyId(id);
-    setSelectedStrategy(id);
-    setAddFund(false);
+    setSelectedFund(id);
+    setCurrentPage("preview");
   };
 
   const handleDelete = (id) => {
@@ -24,11 +20,11 @@ const BackOfficeStrategy = ({
   return (
     <div className="swift-back-office-strategy">
       <div className="swift-back-office-strategy-wrapper">
-        {strategies.map((strategy) => (
+        {funds.map((strategy) => (
           <div
             key={strategy.id}
             className={`swift-accounts-strategy ${
-              selectedStrategyId === strategy.id
+              selectedfund == strategy.id
                 ? "swift-accounts-strategy-active"
                 : ""
             }`}
@@ -38,19 +34,13 @@ const BackOfficeStrategy = ({
               onClick={() => handleStrategyClick(strategy.id)}
             >
               <p style={{ fontWeight: 700, fontSize: 13 }}>
-                {strategy.heading}
+                {strategy.fund_name}
               </p>
-              <p
-                style={{
-                  whiteSpace: "normal",
-                  paddingTop: "12px",
-                  fontStyle: "italic",
-                }}
-              >
-                Date Created: {strategy.createdDate}
+              <p className="swift-back-office-strategy-date">
+                Date Created: {strategy.date_time}
               </p>
             </div>
-            {selectedStrategyId === strategy.id && (
+            {selectedfund == strategy.id && (
               <div className="swift-accounts-strategy-delete">
                 <div>
                   <p onClick={() => handleDelete(strategy.id)}>Delete</p>
@@ -59,12 +49,13 @@ const BackOfficeStrategy = ({
             )}
           </div>
         ))}
+        {funds.length == 0 && <p>Add Funds</p>}
       </div>
       <div className="swift-back-office-strategy-add-btn">
         <CustomButton
           text="Add Fund"
           classname="swift-accounts-content-button"
-          onClick={() => setAddFund(true)}
+          onClick={() => setCurrentPage("add")}
         />
       </div>
     </div>

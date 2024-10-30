@@ -56,7 +56,7 @@
   padding: 10px 10px;
   margin: 3px 0;
   background: #ffffff;
-  /* border-radius: 10px; */
+  border-radius: 10px;
   border-bottom: 1px solid #f1f1f1 !important;
   font-weight: 500;
 }
@@ -69,7 +69,7 @@
   padding: 10px 10px;
   margin: 3px 0;
   background: #fafafa;
-  /* border-radius: 10px; */
+  border-radius: 10px;
   border-bottom: 1px solid #f1f1f1 !important;
   font-weight: 500;
 }
@@ -279,12 +279,10 @@
 }
 
 .portfolio-dropdown-column {
-  width: 4% !important;
   text-align: right !important;
-  /* display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  column-gap: 2px; */
+  width: 4% !important;
+  font-weight: 600;
+  font-size: 11px;
 }
 
 .portfolio-dropdown-column:nth-child(1),
@@ -363,7 +361,7 @@
   display: flex;
   align-items: center;
   column-gap: 10px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
 .stocks-dropdown-option-change,
@@ -388,12 +386,12 @@
 
 .delete-hover-blue:hover path {
   /* color: blue; */
-  fill: blue;
+  fill: #011627;
 }
 
 .run-hover-blue:hover path,
 .run-hover-blue:hover circle {
-  stroke: blue;
+  stroke: #011627;
   /* fill: blue; */
 }
 

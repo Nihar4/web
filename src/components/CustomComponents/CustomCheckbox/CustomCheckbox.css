@@ -1,15 +1,26 @@
 .custom-checkbox-label {
-  color: rgba(0, 0, 0, 0.7);
-  font-family: "Open Sans";
-  font-size: 13px;
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.65px;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.05em;
+  color: #011627;
 }
 
-.custom-checkbox{
-    display: flex;
-    /* justify-content: center; */
-    column-gap: 7px;
+.custom-checkbox {
+  display: flex;
+  /* justify-content: center; */
+  column-gap: 7px;
+  align-items: center;
+}
+
+.custom-checkbox input {
+  width: 18px;
+  height: 18px;
+  /* outline: 1px solid #000000; */
+  cursor: pointer;
+
+
+
 }

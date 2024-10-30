@@ -154,5 +154,5 @@ export {
   getCompareXAxisProps,
   getCompareYAxisProps,
   tooltipContent,
-  PerformancetooltipContent
+  PerformancetooltipContent,
 };

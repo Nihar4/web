@@ -166,6 +166,29 @@ const HistoricalLineChart = ({
     }
     initialData = [...initialData, ...newData];
   }
+  var margin = { left: 20, right: 70, top: 10, bottom: 30 };
+  var gridHeight = height - margin.top - margin.bottom;
+  var gridWidth = width - margin.left - margin.right;
+
+  var showGrid = true;
+  var yGrid = showGrid
+    ? {
+        innerTickSize: -1 * gridWidth,
+        tickStrokeDasharray: "Solid",
+        tickStrokeOpacity: 0.1,
+        tickStrokeWidth: 1,
+        // tickStroke: "#f1f1f1",
+      }
+    : {};
+  var xGrid = showGrid
+    ? {
+        innerTickSize: -1 * gridHeight,
+        tickStrokeDasharray: "Solid",
+        tickStrokeOpacity: 0.1,
+        tickStrokeWidth: 1,
+        // tickStroke: "#f1f1f1",
+      }
+    : {};
 
   return initialData.length > 0 && !loading2 && !loading ? (
     <>
@@ -173,7 +196,7 @@ const HistoricalLineChart = ({
         width={width}
         height={height - 70}
         ratio={ratio}
-        margin={{ left: 20, right: 70, top: 10, bottom: 30 }}
+        margin={margin}
         seriesName="MSFT"
         data={initialData}
         clamp={"both"}
@@ -221,6 +244,7 @@ const HistoricalLineChart = ({
             tickLabelAngle={-45}
             ticks={6}
             stroke="#f1f1f1"
+            {...xGrid}
           />
           <Label
             x={(width - 15 - 70) / 2}
@@ -228,7 +252,13 @@ const HistoricalLineChart = ({
             fontSize="12"
             text={`${name}`}
           />
-          <YAxis axisAt="right" orient="right" ticks={5} stroke="#f1f1f1" />
+          <YAxis
+            axisAt="right"
+            orient="right"
+            ticks={5}
+            stroke="#f1f1f1"
+            {...yGrid}
+          />
 
           <LineSeries
             yAccessor={(d) => d.close}

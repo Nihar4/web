@@ -6,16 +6,13 @@ import "../src/components/CustomComponents/CustomTable/CustomTable.css"
 import Login from "./components/AccessManagement/Login";
 import Signup from "./components/AccessManagement/Signup";
 import Home from "./components/Home/Home";
-import DashBoard from "./components/Accounts/DashBoard/DashBoard";
 import Error from "./components/Error";
 import Auth from "./components/AccessManagement/Auth";
 import BackOfficeDashboard from "./components/BackOffice/BackOfficeDashboard";
-import Header from "./components/Accounts/Header/Header";
-import Footer from "./components/Accounts/Footer/Footer";
 import UploadFile from "./components/Accounts/UploadFile";
+import Dashboard from "./components/DashBoard/DashBoard";
 
 function App() {
-
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
@@ -55,11 +52,9 @@ function App() {
                     </p>
                   </div>
                 </div>) :
-                  (<>
-                    <Header />
-                    <DashBoard />
-                    <Footer />
-                  </>)}
+                  (
+                    <Dashboard />
+                  )}
               </div>
             </Auth>
           }

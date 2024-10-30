@@ -4,19 +4,17 @@
     min-height: 100vh;
     display: flex;
     column-gap: 4px;
-    padding: 37px 40px 15px 15px;
+    padding: 15px;
 }
 
 .swift-back-office-main-wrapper {
     display: flex;
     width: 100%;
     height: 100%;
-    column-gap: 14px;
 }
 
 .swift-back-office-main-content {
     display: flex;
-    flex-direction: column;
     width: calc(100% - 250px - 14px);
     height: 100%;
 }
@@ -29,11 +27,14 @@
 }
 
 .swift-back-office-body-left {
-    width: auto;
+    width: calc(100% - 350px);
+    padding: 5px 20px;
+    height: 100%;
+    overflow: hidden;
 }
 
 .swift-back-office-body-right {
-    width: 400px;
+    width: 350px;
 }
 
 .swift-back-office-header {
@@ -90,6 +91,11 @@
     height: 100%;
     align-items: center;
     justify-content: space-between;
+    background: #FFFFFF;
+    border: 0.5px solid #E8E8E8;
+    box-shadow: 0px 0px 5px #E8E8E8;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .swift-back-office-strategy-wrapper {
@@ -103,7 +109,7 @@
 }
 
 .swift-back-office-add-fund-wrapper {
-    width: 70%;
+    width: 100%;
     height: 100%;
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(232, 232, 232, 0.25);
@@ -134,11 +140,12 @@
     letter-spacing: -0.05em;
     /* color: #0116274d; */
     margin-top: 9px;
-    margin-bottom: 8px;
+    margin-bottom: 3px;
 
 }
 
 .swift-back-office-fund-created {
+    width: calc(90vw - 250px - 14px - 100px);
     text-align: center;
     font-family: 'Open Sans';
     font-style: normal;
@@ -149,7 +156,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 90%;
+    row-gap: 5px;
 }
 
 .swift-back-office-fund-created p:nth-child(1) {
@@ -166,31 +174,810 @@
 
 .swift-back-office-main-header {
     width: 100%;
-    height: 52px;
     background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(232, 232, 232, 0.25);
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
     font-family: 'Open Sans';
     font-style: normal;
     font-size: 12px;
     line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+    /* padding: 0px 20px; */
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+.swift-back-office-main-header-row-1,
+.swift-back-office-main-header-row-2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.swift-back-office-main-header-row-1-left {
+    display: flex;
+    column-gap: 5px;
+}
+
+.swift-back-office-main-header-row-1-right {
+    display: flex;
+    justify-content: space-between;
+    width: 15%;
+}
+
+.swift-back-office-strategy-date {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    padding-top: 5px;
+    line-height: 14px;
+    letter-spacing: -0.05em;
+    color: rgba(1, 22, 39, 0.7);
+}
+
+.swift-back-office-fund-edit {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.swift-back-office-fund-edit-save {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 15px;
+    align-items: center;
+}
+
+.swift-back-office-fund-edit-save>p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-fund-edit-body {
+    overflow-y: auto;
+    height: calc(100% - 40px);
+    /* overflow-x: hidden; */
+    padding-bottom: 50px;
+    padding-right: 10px;
+}
+
+.swift-back-office-fund-edit-body::-webkit-scrollbar {
+    width: 9px;
+}
+
+.swift-back-office-fund-edit-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.swift-back-office-fund-edit-body::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 35px;
+}
+
+.swift-back-office-fund-edit-body::-webkit-scrollbar-thumb:hover {
+    background: #cccccc;
+}
+
+.swift-back-office-fund-edit-upload-logo {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-fund-edit-upload-logo-title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-fund-edit-upload-logo-file-deatil {
+    display: flex;
+    column-gap: 15px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
     align-items: center;
     letter-spacing: -0.05em;
     color: #011627;
-    padding: 0px 20px;
 }
 
-.swift-back-office-main-header-left {
+.swift-back-office-fund-edit-upload-logo-file-error {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-fund-edit-about-firm {
+    display: flex;
+    column-gap: 50px;
+}
+
+.swift-back-office-fund-edit-about p:nth-child(1) {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-fund-edit-about-main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 15px 0;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-fund-edit-about,
+.swift-back-office-fund-edit-team-row-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.swift-back-office-fund-edit-about textarea,
+.swift-back-office-fund-edit-team-row-2 textarea {
+    width: 80%;
+    background: rgba(241, 241, 241, 0.254902);
+    border-radius: 5px;
+    padding: 14px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: rgba(1, 22, 39);
+    outline: none;
+    border: none;
+    margin: 5px 0 3px 0;
+}
+
+.swift-back-office-fund-edit-about textarea::placeholder,
+.swift-back-office-fund-edit-team-row-2 textarea::placeholder {
+    color: rgba(1, 22, 39, 0.3);
+}
+
+textarea:focus {
+
+    outline: none;
+    border: none;
+}
+
+.swift-back-office-error {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.05em;
+    color: #011627;
+    min-height: 16px;
+}
+
+.swift-back-office-fund-edit-team {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 15px 0;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-fund-edit-team-row-1 {
+    display: flex;
+    column-gap: 50px;
+}
+
+.swift-back-office-fund-edit-team-heading {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-fund-edit-team-row-2 p:nth-child(1) {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+    padding-bottom: 9px;
+}
+
+.swift-back-office-fund-edit-team-row-4 {
+    display: flex;
+    column-gap: 20px;
+}
+
+.swift-back-office-fund-edit-team-row-4 button {
+    background: none;
+    border: 1px solid #011627;
+    border-radius: 57px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+    height: 30px;
+}
+
+.swift-back-office-fund-edit-upload-data {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    padding: 15px 0;
+}
+
+.swift-back-office-edit-upload-data-row {
     display: flex;
     justify-content: space-between;
-    width: 60%;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+
+    color: #011627;
+}
+
+.swift-back-office-edit-upload-data-row .right-side-div {
+    display: flex;
+    column-gap: 20px;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+
+    color: #011627;
+}
+
+.swift-back-office-table-popup {
+    align-items: center;
+}
+
+.swift-back-office-table-popup-content {
+    background-color: white;
+    height: 90vh;
+    column-gap: 14px;
+    width: 60vw;
+    border-radius: 10px;
+    padding: 10px;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.swift-back-office-popup-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    padding-top: 15px;
+}
+
+.swift-back-office-table {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding-right: 20px;
 }
 
 
-.swift-back-office-main-header-right {
+.swift-back-office-table::-webkit-scrollbar {
+    width: 9px;
+}
+
+.swift-back-office-table::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.swift-back-office-table::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 35px;
+}
+
+.swift-back-office-table::-webkit-scrollbar-thumb:hover {
+    background: #cccccc;
+}
+
+.swift-back-office-table table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+}
+
+.swift-back-office-table th,
+.swift-back-office-table td {
+    padding: 5px;
+    border: none;
+    text-align: left;
+}
+
+.swift-back-office-table th {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+    font-weight: 600;
+    border: none;
+}
+
+.swift-back-office-table tr {
+    border: none;
+}
+
+.swift-back-office-table td {
+    border: none;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+}
+
+.swift-back-office-preview-container {
+    width: 100%;
+    height: calc(100% - 50px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 30px 15px 20px 0;
+}
+
+.swift-back-office-preview-container::-webkit-scrollbar {
+    width: 9px;
+}
+
+.swift-back-office-preview-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.swift-back-office-preview-container::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 35px;
+}
+
+.swift-back-office-preview-container::-webkit-scrollbar-thumb:hover {
+    background: #cccccc;
+}
+
+.swift-back-office-preview-title-logo {
+    display: flex;
+    column-gap: 25px;
+    align-items: center;
+}
+
+.swift-back-office-preview-logo-img {
+    width: 30px;
+    height: auto;
+    object-fit: contain;
+}
+
+.swift-back-office-preview-title {
+    display: flex;
+    flex-direction: column;
+    /* row-gap: 5px; */
+}
+
+.swift-back-office-preview-title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-preview-launch-date {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: -0.05em;
+
+    color: rgba(1, 22, 39, 0.7);
+}
+
+.swift-back-office-preview-about {
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    padding-bottom: 30px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-preview-about-heading,
+.swift-back-office-preview-team-heading {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-preview-about-desc {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.05em;
+    color: #011627;
+    /* white-space: pre-wrap; */
+}
+
+.swift-back-office-preview-team {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    row-gap: 15px;
+    padding-bottom: 20px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-preview-team-members {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 40px;
+}
+
+.swift-back-office-preview-team-member-name {
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+
+    color: #011627;
+}
+
+.swift-back-office-preview-team-member-designation {
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+
+    color: #011627;
+}
+
+.swift-back-office-preview-team-member-url {
+    border-radius: 50%;
+    width: 30px;
+    margin-top: 3px;
+}
+
+.swift-back-office-preview-monthly-return {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-preview-monthly-return-title {
     display: flex;
     justify-content: space-between;
-    width: 25%;
+}
+
+.swift-back-office-preview-monthly-return-sub-title {
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 15px;
+    letter-spacing: -0.05em;
+
+    color: #011627;
+}
+
+.swift-back-office-preview-monthly-return-table {
+    padding-top: 15px;
+}
+
+.swift-back-office-preview-monthly-return-table table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+}
+
+.swift-back-office-preview-monthly-return-table th,
+.swift-back-office-preview-monthly-return-table td {
+    padding: 5px;
+    border: none;
+    text-align: center;
+}
+
+.swift-back-office-preview-monthly-return-table th {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+    font-weight: 600;
+    border: none;
+}
+
+.swift-back-office-preview-monthly-return-table tr {
+    border: none;
+}
+
+.swift-back-office-preview-monthly-return-table td {
+    border: none;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+}
+
+.swift-back-office-preview-performance {
+    padding-top: 10px;
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-preview-performance-table {
+    padding-top: 15px;
+}
+
+.swift-back-office-preview-performance-table table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+}
+
+.swift-back-office-preview-performance-table th,
+.swift-back-office-preview-performance-table td {
+    padding: 5px;
+    border: none;
+    text-align: left;
+}
+
+
+.swift-back-office-preview-performance-table th {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+    font-weight: 600;
+    border: none;
+}
+
+.swift-back-office-preview-performance-table tr {
+    border: none;
+}
+
+.swift-back-office-preview-performance-table td {
+    border: none;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+}
+
+
+.swift-back-office-preview-shareclass {
+    display: flex;
+    flex-direction: column;
+    row-gap: 7px;
+    padding-top: 20px;
+}
+
+.swift-back-office-preview-shareclass-sub-heading {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+
+.swift-back-office-preview-shareclass-table table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+}
+
+.swift-back-office-preview-shareclass-table th,
+.swift-back-office-preview-shareclass-table td {
+    padding: 5px;
+    border: none;
+    text-align: left;
+}
+
+
+.swift-back-office-preview-shareclass-table th {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+    font-weight: 700;
+    border: none;
+}
+
+.swift-back-office-preview-shareclass-table tr {
+    border: none;
+}
+
+.swift-back-office-preview-shareclass-table td {
+    border: none;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #000000;
+}
+
+.swift-back-office-preview-shareclass-download {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    padding-top: 5px;
+}
+
+.swift-back-office-preview-performance-chart {
+    padding-top: 20px;
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-preview-performance-chart-container {
+    min-height: 500px;
+}
+
+.swift-back-office-preview-performance-chart-row-1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.swift-back-office-preview-performance-chart-select {
+    display: flex;
+    padding-left: 15px;
+    column-gap: 15px;
+    padding-right: 15px;
+    width: 65%;
+}
+
+.swift-back-office-preview-performance-chart-select .select-title {
+    display: none !important;
+}
+
+.swift-back-office-preview-performance-chart-select .custom-select .custom-select-header {
+    border: none;
+    margin: 0;
+
+}
+
+.swift-back-office-preview-performance-chart-select .custom-select .custom-select-header span {
+    font-style: normal;
+    font-weight: 400 !important;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-preview-performance-chart-select .custom-select:nth-child(3) {
+    width: 200px;
+}
+
+.swift-back-office-preview-performance-chart-add {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-preview-allocation {
+    padding-top: 20px;
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid #F1F1F1;
+}
+
+.swift-back-office-preview-allocation-row-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.swift-back-office-preview-allocation-row-1 p span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 15px;
+    letter-spacing: -0.05em;
+    color: rgba(1, 22, 39, 0.7);
+    padding-left: 3px;
+}
+
+.swift-back-office-preview-allocation-historical {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 15px;
+    letter-spacing: -0.05em;
+    color: #011627;
+}
+
+.swift-back-office-preview-allocation-chart-container .react-stockcharts-x-axis text {
+    font-size: 9px;
+}
+
+.recharts-legend-wrapper ul {
+    overflow: auto;
+}
+
+.recharts-legend-wrapper ul::-webkit-scrollbar {
+    width: 9px;
+}
+
+.recharts-legend-wrapper ul::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.recharts-legend-wrapper ul::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 35px;
+}
+
+.recharts-legend-wrapper ul::-webkit-scrollbar-thumb:hover {
+    background: #cccccc;
+}
+
+.swift-back-office-preview-drawdowns,
+.swift-back-office-preview-distribution {
+    padding-top: 15px;
+    /* padding-bottom: 15px; */
+    border-bottom: 0.5px solid #F1F1F1;
 }

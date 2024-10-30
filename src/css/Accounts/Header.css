@@ -23,7 +23,7 @@
   display: flex;
   /* border: 2px solid blue; */
   /* width: 50%; */
-  column-gap: 158px;
+  column-gap: 41px;
   align-items: center;
 }
 
@@ -77,15 +77,16 @@
 }
 
 .swift-accounts-header-user {
-  color: rgba(1, 22, 39, 0.7);
+  background-color: #000fff;
+  border-radius: 35px;
+  color: white;
   font-size: var(--font-small);
   font-style: normal;
   font-weight: var(--font-weight-heavy);
+  letter-spacing: -.65px;
   line-height: normal;
-  letter-spacing: -0.65px;
-  background-color: #e8e8e8;
   padding: 5px 15px;
-  border-radius: 35px;
+
 }
 
 .swift-accounts-header-logos {

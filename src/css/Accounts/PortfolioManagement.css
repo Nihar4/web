@@ -9,19 +9,23 @@
 }
 
 .swift-accounts-portfolio-content {
-    height: 100%;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    height: 100%;
     overflow: hidden;
     row-gap: 10px;
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 15px;
+    box-shadow: 0 0 5px #e8e8e8;
 }
 
 /* Submenu */
 .swift-accounts-portfolio-sub-menu {
     display: flex;
     justify-content: space-between;
-    padding: 0px 10px;
+    padding: 10px 10px;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .swift-accounts-portfolio-sub-menu>div {
@@ -30,22 +34,42 @@
 }
 
 .swift-accounts-portfolio-sub-menu p {
+    cursor: pointer;
     font-size: 12px;
     font-style: normal;
+    font-weight: 500;
     line-height: normal;
-    cursor: pointer;
-    font-weight: 400;
-    text-align: center;
     padding: 5px 15px;
+    text-align: center;
+    letter-spacing: -0.5px;
+    color: #ccc;
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+}
 
+.swift-accounts-portfolio-sub-menu p:hover {
+    color: #011627;
+}
+
+.swift-accounts-portfolio-sub-menu p:hover svg {
+    fill: #011627;
+}
+
+.swift-accounts-portfolio-sub-menu p svg {
+    fill: #ccc;
+}
+
+.swift-accounts-portfolio-sub-menu p.active svg {
+    fill: #011627;
 }
 
 .swift-accounts-portfolio-sub-menu p.active {
-    font-weight: 600;
+    background: none;
     border-radius: 35px;
-    letter-spacing: -0.65px;
-    background: var(--btn-background);
-    color: var(--btn-text);
+    color: #011627;
+    font-weight: 600;
+    letter-spacing: -.65px;
 }
 
 /* Stocks DETAILS */
@@ -60,25 +84,25 @@
 }
 
 .swift-accounts-portfolio-content-stocks-header {
+    align-items: center;
+    column-gap: 8px;
     display: flex;
     width: 100%;
-    display: flex;
-    column-gap: 8px;
-    align-items: center;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .swift-accounts-portfolio-content-stocks-header>p {
-    text-align: center;
-    cursor: pointer;
-    padding: 5px 15px;
+    background: none;
     border-radius: 35px;
-    font-weight: 600;
+    color: var(--btn-text);
+    cursor: pointer;
     font-size: var(--font-small);
     font-style: normal;
+    font-weight: 600;
+    letter-spacing: -.65px;
     line-height: normal;
-    letter-spacing: -0.65px;
-    background: var(--btn-background);
-    color: var(--btn-text);
+    padding: 5px 15px;
+    text-align: center;
 }
 
 .swift-accounts-portfolio-dropdown-header {
@@ -112,7 +136,7 @@
     border-bottom: 0.5px solid #0116271a;
     background: #fafafa;
     padding: 10px;
-
+    border-radius: 10px;
 }
 
 .stocks-portfolio-management-dropdown-header-row-left {
@@ -138,7 +162,7 @@
     width: 92%;
     justify-content: space-between;
     column-gap: 0px;
-    padding-right: 10px;
+    /* padding-right: 10px; */
 }
 
 .stocks-portfolio-management-dropdown-header-row-right p {
@@ -489,4 +513,15 @@
     overflow-y: auto;
     align-items: flex-start;
     padding-bottom: 10px;
+}
+
+.swift-portfolio-name {
+    color: var(--text-color);
+    font-family: "Open Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: var(--font-weight-heavy);
+    line-height: normal;
+    letter-spacing: -0.65px;
+    padding: 5px 15px 5px 0;
 }

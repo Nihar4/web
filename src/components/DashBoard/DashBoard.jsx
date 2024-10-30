@@ -1,56 +1,144 @@
-import React from "react";
-import CustomButton from "../../CustomComponents/CustomButton/CustomButton";
+import React, { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import AssetAllocation from "../AssetAllocation";
-import { AddStrategy, AddStrategyMain, StrategyCreated } from "../AddStrategy";
-import Jobqueu from "../Jobqueu";
-import EdurekaHedge from "../EdurekaHedge";
+import Header from "../Accounts/Header/Header";
+import Footer from "../Accounts/Footer/Footer";
+import Pulse from "../Loader/Pulse";
+import AssetAllocation from "../Accounts/AssetManagement/AssetAllocation";
+import PortfolioManagement from "../Accounts/PortfolioManagement/PortfolioManagement";
+import { AddStrategyPortfolio } from "../Accounts/PortfolioManagement/AddStrategyPortfolio";
 import {
-  AddStrategyMain_Eureka,
-  StrategyCreated_Eureka,
-} from "../AddStrategyEureka";
-import PortfolioManagement from "../../PortfolioManagement/PortfolioManagement";
-import { AddStrategyPortfolio } from "../../PortfolioManagement/AddStrategyPortfolio";
+  AddStrategyMain,
+  StrategyCreated,
+} from "../Accounts/AssetManagement/AddStrategy";
+import JobQueue from "../Accounts/JobQueue/JobQueue";
+import CustomButton from "../CustomComponents/CustomButton/CustomButton";
 
 const Dashboard = () => {
-  const email_id = localStorage.getItem("userData")
-    ? localStorage.getItem("userData")
-    : null;
-  return (
-    <Routes>
-      <Route path="/dashboard/asset" element={<AssetAllocation />} />
+  const [loading, setLoading] = useState(false);
 
+  const MainLayout = ({ children }) => {
+    return (
+      <>
+        <Header setLoading={setLoading} />
+        {children}
+        <Footer />
+      </>
+    );
+  };
+
+  return loading ? (
+    <div className="swift-aseet-loader">
+      <p>Loading</p>
+      <Pulse />
+    </div>
+  ) : (
+    <Routes>
+      <Route
+        path="/dashboard/asset"
+        element={
+          <MainLayout>
+            <AssetAllocation />
+          </MainLayout>
+        }
+      />
       <Route
         path="/dashboard/portfolio-management"
-        element={<PortfolioManagement />}
+        element={
+          <>
+            <Header setLoading={setLoading} />
+            <PortfolioManagement />
+            <Footer />
+          </>
+        }
       />
       <Route
         path="/dashboard/portfolio-management/addstrategy/:id"
-        element={<AddStrategyPortfolio />}
+        element={
+          <MainLayout>
+            <AddStrategyPortfolio />
+          </MainLayout>
+        }
       />
       <Route
-        path="/dashboard/portfolio-management/addstrategy/"
-        element={<AddStrategyPortfolio />}
+        path="/dashboard/portfolio-management/addstrategy"
+        element={
+          <MainLayout>
+            <AddStrategyPortfolio />
+          </MainLayout>
+        }
       />
-
-      <Route path="/dashboard" element={<DashboardMain />} />
-      <Route path="/dashboard/addstrategy/:id" element={<AddStrategyMain />} />
-      <Route path="/dashboard/addstrategy/" element={<AddStrategyMain />} />
-      <Route path="/dashboard/strategy" element={<StrategyCreated />} />
-      <Route path="/dashboard/jobqueue" element={<Jobqueu />} />
-      <Route path="/dashboard/edurekahedge" element={<EdurekaHedge />} />
+      <Route
+        path="/dashboard"
+        element={
+          <MainLayout>
+            <DashboardMain />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/dashboard/addstrategy/:id"
+        element={
+          <MainLayout>
+            <AddStrategyMain />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/dashboard/addstrategy"
+        element={
+          <MainLayout>
+            <AddStrategyMain />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/dashboard/strategy"
+        element={
+          <MainLayout>
+            <StrategyCreated />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/dashboard/jobqueue"
+        element={
+          <MainLayout>
+            <JobQueue />
+          </MainLayout>
+        }
+      />
+      {/* <Route
+        path="/dashboard/edurekahedge"
+        element={
+          <MainLayout>
+            <EdurekaHedge />
+          </MainLayout>
+        }
+      />
       <Route
         path="/dashboard/eureka/addstrategy/:id"
-        element={<AddStrategyMain_Eureka />}
+        element={
+          <MainLayout>
+            <AddStrategyMain_Eureka />
+          </MainLayout>
+        }
       />
       <Route
-        path="/dashboard/eureka/addstrategy/"
-        element={<AddStrategyMain_Eureka />}
+        path="/dashboard/eureka/addstrategy"
+        element={
+          <MainLayout>
+            <AddStrategyMain_Eureka />
+          </MainLayout>
+        }
       />
       <Route
-        path="/dashboard/eureka/strategy/"
-        element={<StrategyCreated_Eureka />}
-      />
+        path="/dashboard/eureka/strategy"
+        element={
+          <MainLayout>
+            <StrategyCreated_Eureka />
+          </MainLayout>
+        }
+      /> */}
     </Routes>
   );
 };

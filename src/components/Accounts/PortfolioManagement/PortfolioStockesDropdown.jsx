@@ -996,7 +996,8 @@ const Dropdown = ({
                         padding: "5px 5px",
                         fontSize: "12px",
                         border: "none",
-                        backgroundColor: "#f1f1f1",
+                        backgroundColor: "none",
+                        borderBottom: "1px solid rgb(232, 232, 232)",
                       }}
                       onInputChange={(symbol, value) =>
                         handleInputChangeQty(
@@ -1020,7 +1021,8 @@ const Dropdown = ({
                         padding: "5px 5px",
                         fontSize: "12px",
                         border: "none",
-                        backgroundColor: "#f1f1f1",
+                        backgroundColor: "none",
+                        borderBottom: "1px solid rgb(232, 232, 232)",
                       }}
                       onInputChange={(symbol, value) =>
                         handleInputChangeValue(

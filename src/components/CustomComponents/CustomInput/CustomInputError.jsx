@@ -16,11 +16,13 @@ const CustomInputError = ({
   classnameDiv,
   classnameLabel,
   classnameInput,
+  classnameError,
   styleDiv = {},
   styleInput = {},
   styleLabel = {},
   onKeyUp,
   error,
+  errorDisplay = true,
 }) => {
   const [value1, setValue1] = useState(value);
 
@@ -61,7 +63,12 @@ const CustomInputError = ({
         style={styleInput}
         onKeyUp={onKeyUp}
       />
-      <CustomError errorText={error === "" ? "error" : error} />
+      {errorDisplay && (
+        <CustomError
+          errorText={!error ? "error" : error}
+          classname={classnameError}
+        />
+      )}
     </div>
   );
 };
