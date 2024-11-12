@@ -9,6 +9,7 @@ import BackOfficeDashboardPreview from "./BackOfficeDashboardPreview";
 import BackOfficeAddFund from "./BackOfficeAddFund";
 import BackOfficeBodyLeft from "./BackOfficeBodyLeft";
 import BackOfficeBodyRight from "./BackOfficeBodyRight";
+
 import ServerRequest from "../../utils/ServerRequest";
 import Pulse from "../Loader/Pulse";
 
@@ -92,7 +93,7 @@ const BackOfficeDashboardMain = () => {
               setReset={setReset}
               setSelectedFund={setSelectedFund}
             />
-            <BackOfficeBodyRight currentpage={currentpage} />
+            <BackOfficeBodyRight currentpage={currentpage} selectedfund={selectedfund}/>
           </>
         ) : (
           <>No Funds</>
